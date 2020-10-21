@@ -64,7 +64,7 @@ class Programa extends abstractModel
 
     public function get_program(){
         $this->getInstance();
-        $sql = "SELECT * FROM programas WHERE idProgramas LIKE '%" . $this->programa . "%' OR nombreprograma LIKE '%" . $this->programa . "%';";
+        $sql = "SELECT * FROM programas WHERE id LIKE '%" . $this->programa . "%' OR nombreprograma LIKE '%" . $this->programa . "%';";
         $query = $this->Connection->query($sql);
         return $query;
     }
@@ -86,7 +86,7 @@ class Programa extends abstractModel
     public function delete_program(){
         $this->getInstance();
         $id = $this->clean_string($this->id);
-        $query = $this->Connection->prepare("DELETE FROM programas WHERE idProgramas = ?");
+        $query = $this->Connection->prepare("DELETE FROM programas WHERE id = ?");
         $query->bindParam(1, $id);
         $result = $query->execute();
         if($result){
@@ -99,7 +99,7 @@ class Programa extends abstractModel
     public function get_forId(){
         $this->getInstance();
         $id = $this->clean_string($this->id);
-        $query = $this->Connection->prepare("SELECT * FROM programas WHERE idProgramas = ?");
+        $query = $this->Connection->prepare("SELECT * FROM programas WHERE id = ?");
         $query->bindParam(1, $id);
         $query->execute();
         return $query;
@@ -107,7 +107,7 @@ class Programa extends abstractModel
 
     public function program_edit(){
         $this->getInstance();
-        $query = $this->Connection->prepare("UPDATE programas SET nombreprograma = ? WHERE idProgramas = ?");
+        $query = $this->Connection->prepare("UPDATE programas SET nombreprograma = ? WHERE id = ?");
         $query->bindParam(1, $this->programa);
         $query->bindParam(2, $this->id);
         $result = $query->execute();

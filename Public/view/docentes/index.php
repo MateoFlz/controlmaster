@@ -40,15 +40,15 @@
                          
                         foreach($datos->fetchAll(\PDO::FETCH_ASSOC) as $row){
                         ?>
-                        <tr <?php echo 'respon="'.$row['cedula'].'"'?>>
+                        <tr <?php echo 'respon="'.$row['id'].'"'?>>
                             <td><?php echo $row['cedula'] ?></td>
                             <td><?php echo $row['nombre'] ?></td>
                             <td><?php echo $row['telefono'] ?></td>
                             <td><?php echo $row['tipo'] ?></td>
                             <td class="text-center">
-                            <button class="btn btn-primary border"><i class="fas fa-eye"></i></button>
-                                <a href="docentes/editar/<?php echo $row['cedula'] ?>" class="btnedit btn btn-info border"><i class="fas fa-edit"></i></a>
-                                <form action="docentes/delete/<?php echo $row['cedula'] ?>" method="post" style="display: inline">
+                                <a href="docentes/show/<?php echo $row['id'] ?>"class="btn btn-primary border"><i class="fas fa-eye"></i></a>
+                                <a href="docentes/editar/<?php echo $row['id'] ?>" class="btnedit btn btn-info border"><i class="fas fa-edit"></i></a>
+                                <form action="docentes/delete/<?php echo $row['id'] ?>" method="post" style="display: inline">
                                     <button type="submit" class="btn btn-danger"> <i class="fas fa-trash-alt"></i></button>
                                 </form>
                             </td>

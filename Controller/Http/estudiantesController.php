@@ -24,9 +24,8 @@ class estudiantesController extends Controller
 
     public function index()
     {
-        $data = $this->program->getAll();
-        return $data;
-        //return $this->view('estudiantes/index');
+        $data = $this->estudiante->getAll()->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->view('estudiantes/index', $data);
     }
 
     public function getProgram()
@@ -43,7 +42,7 @@ class estudiantesController extends Controller
 
     public function insert_student(){
         if(isset($_POST['idcedula'])){
-            $this->estudiante->setIdcedula($this->estudiante->clean_string($_POST['idcedula']));
+            $this->estudiante->setCedula($this->estudiante->clean_string($_POST['idcedula']));
             $this->estudiante->setPnombre($this->estudiante->clean_string($_POST['idnombre1']));
             $this->estudiante->setSnombre($this->estudiante->clean_string($_POST['idnombre2']));
             $this->estudiante->setPapellido($this->estudiante->clean_string($_POST['idapellido1']));
@@ -57,7 +56,6 @@ class estudiantesController extends Controller
 
             $response = $this->estudiante->create();
 
-
             if($response){
                 Redirect::redirect('estudiantes/create?response=true');
             }else{
@@ -70,8 +68,9 @@ class estudiantesController extends Controller
 
     public function edit_student(){
 
-        if(isset($_POST['idcedulaedit'])){
-            $this->estudiante->setIdcedula($this->estudiante->clean_string($_POST['idcedulaedit']));
+        if(isset($_POST['idcedulaedit']) && isset($_POST['id'])){
+            $this->estudiante->setId($this->estudiante->clean_string($_POST['id']));
+            $this->estudiante->setCedula($this->estudiante->clean_string($_POST['idcedulaedit']));
             $this->estudiante->setPnombre($this->estudiante->clean_string($_POST['idnombre1edit']));
             $this->estudiante->setSnombre($this->estudiante->clean_string($_POST['idnombre2edit']));
             $this->estudiante->setPapellido($this->estudiante->clean_string($_POST['idapellido1edit']));
@@ -87,28 +86,35 @@ class estudiantesController extends Controller
 
 
             if($response){
-                Redirect::redirect('estudiantes/editar/'.$_POST['idcedulaedit'].'?responsedit=true');
+                Redirect::redirect('estudiantes/editar/'.$_POST['id'].'?responsedit=true');
             }else{
-                Redirect::redirect('estudiantes/editar/'.$_POST['idcedulaedit'].'?responsedit=false');
+                Redirect::redirect('estudiantes/editar/'.$_POST['id'].'?responsedit=false');
             }
         }
     }
 
 
-    public function delete_student(){
-        if($_POST['id']){
-            $this->estudiante->setIdcedula($this->estudiante->clean_string($_POST['id']));
+    public function delete($id = ''){
+            $this->estudiante->setId($this->estudiante->clean_string($id));
             $this->estudiante->setEstado('0');
-            $result = $this->estudiante->delete();
-            echo $result;
-            die();
-        }
+            $response = $this->estudiante->delete();
+            if($response){
+                Redirect::redirect('estudiantes?response=true');
+            }else{
+                Redirect::redirect('estudiantes?response=false');
+            }
     }
 
     public function editar($id = ''){
-        $this->estudiante->setIdcedula($id);
+        $this->estudiante->setId($id);
         $response = $this->estudiante->getForCedula();
         return $this->view('estudiantes/editar', $response);
+    }
+
+    public function show($id = ''){
+        $this->estudiante->setId($id);
+        $response = $this->estudiante->getForCedula();
+        return $this->view('estudiantes/show', $response);
     }
 
     public function get_student(){
@@ -116,6 +122,7 @@ class estudiantesController extends Controller
         $result = $this->estudiante->getAll();
         foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
             $json[] = array(
+                'id' => $row['id'],
                 'cedula' => $row['cedula'],
                 'nombre' => $row['nombre'],
                 'nombreprograma' => $row['nombreprograma'],

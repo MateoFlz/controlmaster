@@ -11,29 +11,7 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
             <h5 class="text-dark">Editar docente</h5>
         </div>
         <div class="card-body">
-            <?php
-
-            if (strpos($fullUrl, "responsedit=true") ==  true) { ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Docente actualizado satifactoriamente
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            <?php
-            }
-
-            if (strpos($fullUrl, "responsedit=false") ==  true) { ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Ocurrio un error al actualizar el docente, la cedula ya exite!
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-            <?php
-            }
-            ?>
+           
             <form class="needs-validation" novalidate role="form" id="" action="<?php echo URL; ?>docentes/edit_docente" method="post">
                 <input type="hidden" name="id" id="id" value="<?php echo $row['id'] ?>">
                 <div class="form-group row">
@@ -50,52 +28,40 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
 
                     <div class="col-md-4">
                         <label for="idnombre2" class="control-label">Segundo nombre</label>
-                        <input type="text" class="form-control input-sm" id="idnombre2" name="idnombre2" value="<?php echo $row['snombre'] ?>" placeholder="Segundo nombre">
+                        <input type="text" class="form-control input-sm" id="idnombre2" name="idnombre2" onkeydown="return false" value="<?php echo $row['snombre'] ?>" placeholder="Segundo nombre">
                     </div>
                 </div>
                 <div class="form-group row">
 
                     <div class="col-md-4">
                         <label for="idapellido1" class="control-label">Primer apellido</label>
-                        <input type="text" class="form-control input-sm" id="idapellido1" name="idapellido1" value="<?php echo $row['papellido'] ?>" placeholder="Primer apellido" required>
+                        <input type="text" class="form-control input-sm" id="idapellido1" name="idapellido1" onkeydown="return false" value="<?php echo $row['papellido'] ?>" placeholder="Primer apellido" required>
                     </div>
 
                     <div class="col-md-4">
                         <label for="idapellido2" class="control-label">Segundo apellido</label>
-                        <input type="text" class="form-control input-sm" id="idapellido2" name="idapellido2" value="<?php echo $row['sapellido'] ?>" placeholder="Segundo apellido">
+                        <input type="text" class="form-control input-sm" id="idapellido2" name="idapellido2" onkeydown="return false" value="<?php echo $row['sapellido'] ?>" placeholder="Segundo apellido">
                     </div>
 
                     <div class="col-md-4">
                         <label for="idtelefono" class="control-label">Telefono</label>
-                        <input type="number" class="form-control input-sm" id="idtelefono" name="idtelefono" value="<?php echo $row['telefono'] ?>" placeholder="Numero telefonico" required>
+                        <input type="number" class="form-control input-sm" id="idtelefono" name="idtelefono" onkeydown="return false" value="<?php echo $row['telefono'] ?>" placeholder="Numero telefonico" required>
                     </div>
                 </div>
                 <div class="form-group row">
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="idcorreo" class="control-label">Correo</label>
-                        <input type="email" class="form-control input-sm" id="idcorreo" name="idcorreo" placeholder="Correo electronico" value="<?php echo $row['correo'] ?>" required>
+                        <input type="email" class="form-control input-sm" id="idcorreo" name="idcorreo" onkeydown="return false" placeholder="Correo electronico" value="<?php echo $row['correo'] ?>" required>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="iddireccion" class="control-label">Dirección</label>
-                        <input type="text" class="form-control input-sm" id="iddireccion" name="iddireccion" placeholder="Dirección de residencia" value="<?php echo $row['direccion'] ?>" required>
+                        <input type="text" class="form-control input-sm" id="iddireccion" name="iddireccion" onkeydown="return false" placeholder="Dirección de residencia" value="<?php echo $row['direccion'] ?>" required>
                     </div>
-                    <div class="col-md-6">
-                        <label for="tel1" class="control-label">Estado</label>
-                        <select class='form-control input-sm' id="condiciones2" name="condiciones2" required>
-                            <option value="">-- Selecciona un estado --</option>
-                            <option value="1" <?php if ($row['Estado'] == 1) {
-                                                    echo 'selected';
-                                                } ?>>Activo</option>
-                            <option value="0" <?php if ($row['Estado'] == 0) {
-                                                    echo 'selected';
-                                              } ?>>Inactivo</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="condiciones" class="control-label">Tipo</label>
-                        <select class='form-control input-sm' id="condiciones" name="condiciones" required>
+                        <select class='form-control input-sm' id="condiciones" name="condiciones" required disabled>
                             <option value=""> -- Seleccione un tipo de docente -- </option>
 
                             <option value="Tiempo completo" <?php if ($row['tipo'] == 'Tiempo completo') {
@@ -112,17 +78,6 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
                                                     } ?>>Otro</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="dropdown-divider"></div>
-                <div class="form-group row justify-content-center">
-                    <button type="submit" class="btn btn-warning btn-lg"><i class="fas fa-fingerprint"></i><br>Huella</button>
-                </div>
-                <div class="dropdown-divider"></div>
-                <div class="form-group row justify-content-end">
-
-                    <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</button>&nbsp;
-                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar</button>
                 </div>
             </form>
 

@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('#programdanger').hide();
 
     getAll_user();
-    getAll_student();   
+    //getAll_student();   
 
     $('#user').keyup(function (e) {
         if($('#user').val()){
@@ -257,18 +257,19 @@ $(document).ready(function () {
             type: 'GET',
             dataType: 'JSON',
             success: function (response) {
+                console.log(response);
                 let template = "";
                 response.forEach(respon =>{
                     template += `
-                        <tr respon="${respon.cedula}"> 
+                        <tr respon="${respon.id}"> 
                             <td scope="row">${respon.cedula}</td>
                             <td>${respon.nombre}</td>
                             <td>${respon.nombreprograma}</td>
                             <td class="text-center">${respon.semestre}</td>
                             <td>${respon.telefono}</td>
                              <td class="text-center">
-                                <a href="estudiantes/editar/${respon.cedula}?view=true" class="btneye1 btn btn-primary border"><i class="fas fa-eye"></i></a>
-                                <a href="estudiantes/editar/${respon.cedula}?edit=true" class="btnedit1 btn btn-info border"><i class="fas fa-edit"></i></a>
+                                <a href="estudiantes/editar/${respon.id}?view=true" class="btneye1 btn btn-primary border"><i class="fas fa-eye"></i></a>
+                                <a href="estudiantes/editar/${respon.id}?edit=true" class="btnedit1 btn btn-info border"><i class="fas fa-edit"></i></a>
                                 <button class="btndelet1 btn btn-danger border"><i class="fas fa-trash-alt"></i></i></button>
                              </td>
                         </tr>

@@ -30,24 +30,53 @@ class docentesController extends Controller
     }
 
     public function insert_docente(){
-        $this->docente->setIdcedula($this->docente->clean_string($_POST['idcedula']));
-        $this->docente->setPnombre($this->docente->clean_string($_POST['idnombre1']));
-        $this->docente->setSnombre($this->docente->clean_string($_POST['idnombre2']));
-        $this->docente->setPapellido($this->docente->clean_string($_POST['idapellido1']));
-        $this->docente->setSapellido($this->docente->clean_string($_POST['idapellido2']));
-        $this->docente->setTelefono($this->docente->clean_string($_POST['idtelefono']));
-        $this->docente->setCorreo($this->docente->clean_string($_POST['idcorreo']));
-        $this->docente->setDireccion($this->docente->clean_string($_POST['iddireccion']));
-        $this->docente->setEstado($this->docente->clean_string("1"));
-        $this->docente->setTipo($this->docente->clean_string($_POST['condiciones']));
+        if(isset($_POST['idcedula'])){
+            $this->docente->setCedula($this->docente->clean_string($_POST['idcedula']));
+            $this->docente->setPnombre($this->docente->clean_string($_POST['idnombre1']));
+            $this->docente->setSnombre($this->docente->clean_string($_POST['idnombre2']));
+            $this->docente->setPapellido($this->docente->clean_string($_POST['idapellido1']));
+            $this->docente->setSapellido($this->docente->clean_string($_POST['idapellido2']));
+            $this->docente->setTelefono($this->docente->clean_string($_POST['idtelefono']));
+            $this->docente->setCorreo($this->docente->clean_string($_POST['idcorreo']));
+            $this->docente->setDireccion($this->docente->clean_string($_POST['iddireccion']));
+            $this->docente->setEstado($this->docente->clean_string("1"));
+            $this->docente->setTipo($this->docente->clean_string($_POST['condiciones']));
+
+            $response = $this->docente->create();
+
+            if($response==true){
+                Redirect::redirect('docentes/create?response=true');
+            }else{
+                Redirect::redirect('docentes/create?response=false');
+            }
+        }  
+    }
+
+    public function edit_docente(){
+
+        if(isset($_POST['idcedula']) && isset($_POST['id'])){
+            $this->docente->setId($this->docente->clean_string($_POST['id']));
+            $this->docente->setCedula($this->docente->clean_string($_POST['idcedula']));
+            $this->docente->setPnombre($this->docente->clean_string($_POST['idnombre1']));
+            $this->docente->setSnombre($this->docente->clean_string($_POST['idnombre2']));
+            $this->docente->setPapellido($this->docente->clean_string($_POST['idapellido1']));
+            $this->docente->setSapellido($this->docente->clean_string($_POST['idapellido2']));
+            $this->docente->setTelefono($this->docente->clean_string($_POST['idtelefono']));
+            $this->docente->setCorreo($this->docente->clean_string($_POST['idcorreo']));
+            $this->docente->setDireccion($this->docente->clean_string($_POST['iddireccion']));
+            $this->docente->setEstado($this->docente->clean_string($_POST['condiciones2']));
+            $this->docente->setTipo($this->docente->clean_string($_POST['condiciones']));
+    
+           
+
+            $response = $this->docente->edit();
 
 
-        $response = $this->docente->create();
-
-        if($response==true){
-            Redirect::redirect('docentes/create?response=true');
-        }else{
-            Redirect::redirect('docentes/create?response=false');
+            if($response){
+                Redirect::redirect('docentes/editar/'.$_POST['id'].'?responsedit=true');
+            }else{
+                Redirect::redirect('docentes/editar/'.$_POST['id'].'?responsedit=false');
+            }
         }
     }
 
@@ -68,9 +97,15 @@ class docentesController extends Controller
     }
 
     public function editar($id = ''){
-        $this->docente->setIdcedula($id);
+        $this->docente->setId($id);
         $response = $this->docente->getForCedula();
         return $this->view('docentes/editar', $response);
+    }
+
+    public function show($id = ''){
+        $this->docente->setId($id);
+        $response = $this->docente->getForCedula();
+        return $this->view('docentes/show', $response);
     }
 
 
@@ -100,9 +135,9 @@ class docentesController extends Controller
 
     public function delete($id = '')
     {
-        $this->docente->setIdcedula($this->docente->clean_string($id));
+        $this->docente->setId($this->docente->clean_string($id));
         $this->docente->setEstado('0');
-        $response = $this->docente->delete_docente();
+        $response = $this->docente->delete();
         if($response){
             Redirect::redirect('docentes?response=true');
         }else{

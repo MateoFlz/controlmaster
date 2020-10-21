@@ -53,7 +53,7 @@ class Usuarios extends abstractModel {
         if(!empty($this->usuario) || !empty($this->password)){
 
             $this->getInstance();
-            $query = $this->Connection->prepare('CALL actionlogin(?,?)');
+            $query = $this->Connection->prepare('CALL login(?,?)');
             $query->bindParam(1, $this->usuario);
             $query->bindParam(2, $this->password);
             $query->execute();

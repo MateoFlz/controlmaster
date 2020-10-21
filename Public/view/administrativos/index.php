@@ -38,7 +38,7 @@
                          
                         foreach($datos->fetchAll(\PDO::FETCH_ASSOC) as $row){
                          ?>
-                         <tr <?php echo 'respon="'.$row['cedula'].'"'?>>
+                         <tr <?php echo 'respon="'.$row['id'].'"'?>>
                              <td><?php echo $row['cedula'] ?></td>
                              <td><?php echo $row['nombre'] ?></td>
                              <td><?php echo $row['telefono'] ?></td>

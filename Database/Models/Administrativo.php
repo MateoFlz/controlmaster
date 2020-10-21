@@ -38,8 +38,8 @@ class Administrativo extends Usuario{
             $this->getInstance();
             $this->Connection->beginTransaction();
 
-            $query = $this->Connection->prepare("INSERT INTO usuarios VALUES (?,?,?,?,?,?,?,?,?)");
-            $query->bindParam(1, $this->getIdcedula());
+            $query = $this->Connection->prepare("INSERT INTO usuarios VALUES (null,?,?,?,?,?,?,?,?,?)");
+            $query->bindParam(1, $this->getCedula());
             $query->bindParam(2, $this->getPnombre());
             $query->bindParam(3, $this->getSnombre());
             $query->bindParam(4, $this->getPapellido());
@@ -50,8 +50,8 @@ class Administrativo extends Usuario{
             $query->bindParam(9, $this->getEstado());
             $query->execute();
 
-            $query = $this->Connection->prepare("INSERT INTO administrativo VALUES (?,?)");
-            $query->bindParam(1, $this->getIdcedula());
+            $query = $this->Connection->prepare("INSERT INTO administrativo VALUES (null,?,?)");
+            $query->bindParam(1, $this->getId());
             $query->bindParam(2, $this->getDependencia());
             $result = $query->execute();
             $this->Connection->commit();
@@ -79,12 +79,12 @@ class Administrativo extends Usuario{
             $query->bindParam(5, $this->getTelefono());
             $query->bindParam(6, $this->getCorreo());
             $query->bindParam(7, $this->getDireccion());
-            $query->bindParam(8, $this->getIdcedula());
+            $query->bindParam(8, $this->getId());
             $query->execute();
 
             $query = $this->Connection->prepare("UPDATE administrativo SET dependencia = ?  WHERE usuarios_cedula = ?");
             $query->bindParam(1, $this->getDependencia());
-            $query->bindParam(2, $this->getIdcedula());
+            $query->bindParam(2, $this->getId());
             $result = $query->execute();
             $this->Connection->commit();
             return $result;
@@ -98,8 +98,8 @@ class Administrativo extends Usuario{
     }
 
     public function get_data_administrativo(){
-        $query = "SELECT a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre, a.telefono,
-        d.nombre_dependencia FROM usuarios a INNER JOIN administrativo e ON e.usuarios_cedula = a.cedula JOIN dependencia d
+        $query = "SELECT a.id, a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre, a.telefono,
+        d.nombre_dependencia FROM usuarios a INNER JOIN administrativo e ON e.id = a.id JOIN dependencia d
         ON e.dependencia = d.id WHERE a.Estado = 1;";
         $result = $this->return_query($query);
         return $result;    
@@ -107,7 +107,7 @@ class Administrativo extends Usuario{
 
     public function getForCedula(){
         $sql = "SELECT a.*, e.dependencia FROM usuarios a INNER JOIN administrativo e
-                ON e.usuarios_cedula = a.cedula WHERE a.cedula = ".$this->getIdcedula()."";
+                ON e.usuarios_cedula = a.cedula WHERE a.id = ".$this->getId()."";
         $result = $this->return_query($sql);
         return $result;
 
@@ -118,7 +118,7 @@ class Administrativo extends Usuario{
         $this->getInstance();
         $query = $this->Connection->prepare("UPDATE usuarios SET Estado = ? WHERE cedula = ?");
         $query->bindParam(1, $this->getEstado());
-        $query->bindParam(2, $this->getIdcedula());
+        $query->bindParam(2, $this->getId());
         $result = $query->execute();
         if($result){
             return true;

@@ -4,20 +4,9 @@
 namespace Database\Models;
 
 
-use Database\abstractModel;
-
-class Estudiante extends abstractModel
+class Estudiante extends Usuario
 {
 
-    private $idcedula;
-    private $pnombre;
-    private $snombre;
-    private $papellido;
-    private $sapellido;
-    private $telefono;
-    private $correo;
-    private $direccion;
-    private $estado;
     private $semestre;
     private $programa;
 
@@ -26,151 +15,6 @@ class Estudiante extends abstractModel
     {
         parent::__construct();
     }
-
-    /**
-     * @return mixed
-     */
-    public function getIdcedula()
-    {
-        return $this->idcedula;
-    }
-
-    /**
-     * @param mixed $idcedula
-     */
-    public function setIdcedula($idcedula): void
-    {
-        $this->idcedula = $idcedula;
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getPnombre()
-    {
-        return $this->pnombre;
-    }
-
-    /**
-     * @param mixed $pnombre
-     */
-    public function setPnombre($pnombre): void
-    {
-        $this->pnombre = $pnombre;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSnombre()
-    {
-        return $this->snombre;
-    }
-
-    /**
-     * @param mixed $snombre
-     */
-    public function setSnombre($snombre): void
-    {
-        $this->snombre = $snombre;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPapellido()
-    {
-        return $this->papellido;
-    }
-
-    /**
-     * @param mixed $papellido
-     */
-    public function setPapellido($papellido): void
-    {
-        $this->papellido = $papellido;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSapellido()
-    {
-        return $this->sapellido;
-    }
-
-    /**
-     * @param mixed $sapellido
-     */
-    public function setSapellido($sapellido): void
-    {
-        $this->sapellido = $sapellido;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTelefono()
-    {
-        return $this->telefono;
-    }
-
-    /**
-     * @param mixed $telefono
-     */
-    public function setTelefono($telefono): void
-    {
-        $this->telefono = $telefono;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCorreo()
-    {
-        return $this->correo;
-    }
-
-    /**
-     * @param mixed $correo
-     */
-    public function setCorreo($correo): void
-    {
-        $this->correo = $correo;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDireccion()
-    {
-        return $this->direccion;
-    }
-
-    /**
-     * @param mixed $direccion
-     */
-    public function setDireccion($direccion): void
-    {
-        $this->direccion = $direccion;
-    }
-    /**
-     * @return mixed
-     */
-    public function getEstado()
-    {
-        return $this->estado;
-    }
-
-    /**
-     * @param mixed $estado
-     */
-    public function setEstado($estado): void
-    {
-        $this->estado = $estado;
-    }
-
 
     /**
      * @return mixed
@@ -208,8 +52,8 @@ class Estudiante extends abstractModel
     public function getBySearch(){
 
         $query = "SELECT a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre, p.nombreprograma,
-                  e.semestre,  a.telefono FROM  usuarios a INNER JOIN estudiante e ON e.usuarios_cedula  = a.cedula
-                  INNER JOIN programas p ON p.idProgramas = e.programas_idProgramas WHERE a.Estado = 1 AND a.cedula LIKE '%". $this->pnombre ."%' OR
+                  e.semestre,  a.telefono FROM  usuarios a INNER JOIN estudiante e ON e.usuario_id  = a.id
+                  INNER JOIN programas p ON p.id = e.programa WHERE a.estado = 1 AND a.cedula LIKE '%". $this->pnombre ."%' OR
 	              CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) LIKE '%". $this->pnombre ."%'";
         $result = $this->return_query($query);
         return $result;
@@ -217,21 +61,17 @@ class Estudiante extends abstractModel
 
     public function getAll()
     {
-        $query = "SELECT a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre, p.nombreprograma,
+        $query = "SELECT a.id, a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre, p.nombreprograma,
                   e.semestre,  a.telefono FROM usuarios a INNER JOIN estudiante e
-                  ON e.usuarios_cedula  = a.cedula INNER JOIN programas p ON p.idProgramas = e.programas_idProgramas WHERE a.Estado = 1;";
+                  ON e.usuario_id  = a.id INNER JOIN programas p ON p.id = e.programa WHERE a.estado = 1;";
         $result = $this->return_query($query);
         return $result;
-    }
-    protected function getById()
-    {
-        // TODO: Implement getById() method.
     }
 
     public function getForCedula(){
         $sql = "SELECT a.*, p.nombreprograma, e.semestre FROM usuarios a INNER JOIN estudiante e
-                ON e.usuarios_cedula  = a.cedula INNER JOIN programas p 
-                ON p.idProgramas = e.programas_idProgramas WHERE a.cedula = ".$this->getIdcedula()."";
+                ON e.usuario_id  = a.id INNER JOIN programas p 
+                ON p.id = e.programa WHERE a.id = ".$this->getId()."";
         $result = $this->return_query($sql);
         return $result;
 
@@ -243,8 +83,8 @@ class Estudiante extends abstractModel
             $this->getInstance();
             $this->Connection->beginTransaction();
 
-            $query = $this->Connection->prepare("INSERT INTO usuarios VALUES (?,?,?,?,?,?,?,?,?)");
-            $query->bindParam(1, $this->getIdcedula());
+            $query = $this->Connection->prepare("INSERT INTO usuarios VALUES (null,?,?,?,?,?,?,?,?,?)");
+            $query->bindParam(1, $this->getCedula());
             $query->bindParam(2, $this->getPnombre());
             $query->bindParam(3, $this->getSnombre());
             $query->bindParam(4, $this->getPapellido());
@@ -255,8 +95,10 @@ class Estudiante extends abstractModel
             $query->bindParam(9, $this->getEstado());
             $query->execute();
 
-            $query = $this->Connection->prepare("INSERT INTO estudiante VALUES (?,?,?)");
-            $query->bindParam(1, $this->getIdcedula());
+            $id = $this->Connection->lastInsertId();
+
+            $query = $this->Connection->prepare("INSERT INTO estudiante VALUES (null,?,?,?)");
+            $query->bindParam(1, $id);
             $query->bindParam(2, $this->getPrograma());
             $query->bindParam(3, $this->getSemestre());
             $result = $query->execute();
@@ -279,7 +121,7 @@ class Estudiante extends abstractModel
             $this->Connection->beginTransaction();
 
             $query = $this->Connection->prepare("UPDATE usuarios SET pnombre = ?, snombre = ?, papellido = ?, sapellido = ?,
-                                                telefono = ?, correo = ?, direccion = ?, Estado = ? WHERE cedula = ?");
+                                                telefono = ?, correo = ?, direccion = ?, estado = ? WHERE id = ?");
             $query->bindParam(1, $this->getPnombre());
             $query->bindParam(2, $this->getSnombre());
             $query->bindParam(3, $this->getPapellido());
@@ -288,13 +130,13 @@ class Estudiante extends abstractModel
             $query->bindParam(6, $this->getCorreo());
             $query->bindParam(7, $this->getDireccion());
             $query->bindParam(8, $this->getEstado());
-            $query->bindParam(9, $this->getIdcedula());
+            $query->bindParam(9, $this->getId());
             $query->execute();
 
-            $query = $this->Connection->prepare("UPDATE estudiante SET programas_idProgramas = ?, semestre = ? WHERE usuarios_cedula = ?");
+            $query = $this->Connection->prepare("UPDATE estudiante SET programa = ?, semestre = ? WHERE usuario_id = ?");
             $query->bindParam(1, $this->getPrograma());
             $query->bindParam(2, $this->getSemestre());
-            $query->bindParam(3, $this->getIdcedula());
+            $query->bindParam(3, $this->getId());
             $result = $query->execute();
             $this->Connection->commit();
             return $result;
@@ -309,9 +151,9 @@ class Estudiante extends abstractModel
 
     public function delete(){
         $this->getInstance();
-        $query = $this->Connection->prepare("UPDATE usuarios SET Estado = ? WHERE cedula = ?");
+        $query = $this->Connection->prepare("UPDATE usuarios SET estado = ? WHERE id = ?");
         $query->bindParam(1, $this->getEstado());
-        $query->bindParam(2, $this->getIdcedula());
+        $query->bindParam(2, $this->getId());
         $result = $query->execute();
         if($result){
             return true;

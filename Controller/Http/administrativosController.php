@@ -38,7 +38,7 @@ class administrativosController extends Controller
     public function insert_administrativo(){
 
         if(isset($_POST['idcedula'])){
-            $this->adminstrativos->setIdcedula($this->adminstrativos->clean_string($_POST['idcedula']));
+            $this->adminstrativos->setCedula($this->adminstrativos->clean_string($_POST['idcedula']));
             $this->adminstrativos->setPnombre($this->adminstrativos->clean_string($_POST['idnombre1']));
             $this->adminstrativos->setSnombre($this->adminstrativos->clean_string($_POST['idnombre2']));
             $this->adminstrativos->setPapellido($this->adminstrativos->clean_string($_POST['idapellido1']));
@@ -64,7 +64,7 @@ class administrativosController extends Controller
     public function edit_administrativo(){
 
         if(isset($_POST['idcedulaedit'])){
-            $this->adminstrativos->setIdcedula($this->adminstrativos->clean_string($_POST['idcedulaedit']));
+            $this->adminstrativos->setCedula($this->adminstrativos->clean_string($_POST['idcedulaedit']));
             $this->adminstrativos->setPnombre($this->adminstrativos->clean_string($_POST['idnombre1edit']));
             $this->adminstrativos->setSnombre($this->adminstrativos->clean_string($_POST['idnombre2edit']));
             $this->adminstrativos->setPapellido($this->adminstrativos->clean_string($_POST['idapellido1edit']));
@@ -98,7 +98,7 @@ class administrativosController extends Controller
     }
 
     public function editar($id = ''){
-        $this->adminstrativos->setIdcedula($id);
+        $this->adminstrativos->setId($id);
         $response['administrativo'] = $this->adminstrativos->getForCedula()->fetch(\PDO::FETCH_ASSOC);
         $response['dependencia'] = $this->get_allDependence();
         return $this->view('administrativos/editar', $response);
@@ -106,7 +106,7 @@ class administrativosController extends Controller
 
     public function delete($id = '')
     {
-        $this->adminstrativos->setIdcedula($this->adminstrativos->clean_string($id));
+        $this->adminstrativos->setId($this->adminstrativos->clean_string($id));
         $this->adminstrativos->setEstado('0');
         $response = $this->adminstrativos->delete_administrivo();
         if($response){
@@ -121,6 +121,7 @@ class administrativosController extends Controller
         $result = $this->adminstrativos->get_data_administrativo();
         foreach($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
             $json[] = array(
+                'id' => $row['id'],
                 'cedula' => $row['cedula'],
                 'nombre_completo' => $row['nombre'],
                 'telefono' => $row['telefono'],

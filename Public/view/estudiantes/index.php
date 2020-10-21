@@ -1,4 +1,4 @@
-<?php include_once 'Public/view/view/header.php' ?>
+<?php include_once 'Public/view/view/header.php';?>
 <div class="container-fluid pt-4" style="max-width: 75rem;">
     <div class="card border-secondary mb-3">
         <div class="card-header bg-light">
@@ -35,6 +35,26 @@
                         </tr>
                     </thead>
                     <tbody class="tbody-student">
+                    <?php
+                         
+                         foreach($datos as $row){
+                          ?>
+                          <tr <?php echo 'respon="'.$row['id'].'"'?>>
+                              <td><?php echo $row['cedula'] ?></td>
+                              <td><?php echo $row['nombre'] ?></td>
+                              <td><?php echo $row['nombreprograma'] ?></td>
+                              <td><?php echo $row['semestre'] ?></td>
+                              <td><?php echo $row['telefono'] ?></td>
+                              
+                              <td class="text-center">
+                                    <a href="estudiantes/show/<?php echo $row['id'] ?>" class="btn btn-primary border"><i class="fas fa-eye"></i></a>
+                                    <a href="estudiantes/editar/<?php echo $row['id'] ?>" class="btnedit btn btn-info border"><i class="fas fa-edit"></i></a>
+                                    <form action="estudiantes/delete/<?php echo $row['id'] ?>" method="post" style="display: inline">
+                                        <button type="submit" class="btn btn-danger"> <i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                              </td>
+                          </tr>
+                     <?php } ?>
                     </tbody>
                 </table>
             </div>

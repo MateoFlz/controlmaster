@@ -11,32 +11,9 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
             <div type="button" class="btn-group float-md-right">
                 <a class="btn btn-info" href="<?php echo URL . 'estudiantes' ?>"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</a>
             </div>
-            <h5 class="text-dark">Editar estudiantes</h5>
+            <h5 class="text-dark">Mostrar datos estudiantes</h5>
         </div>
         <div class="card-body">
-            <?php
-
-            if (strpos($fullUrl, "responsedit=true") ==  true) { ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    administrativos actualizado satifactoriamente
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            <?php
-            }
-
-            if (strpos($fullUrl, "responsedit=false") ==  true) { ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Ocurrio un error al actualizar el administrativo, la cedula ya exite!
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-            <?php
-            }
-            ?>
             <form class="needs-validation" novalidate action="<?php echo URL; ?>estudiantes/edit_student" method="post">
                 <div class="form-group row">
                     <input type="hidden" class="form-control input-sm" name="id" value="<?php echo $row['id']; ?>">
@@ -52,43 +29,43 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
 
                     <div class="col-md-4">
                         <label for="idnombre2edit" class="control-label">Segundo nombre</label>
-                        <input type="text" class="form-control input-sm" id="idnombre2edit" name="idnombre2edit" value="<?php echo $row['snombre']; ?>" placeholder="Segundo nombre">
+                        <input type="text" class="form-control input-sm" id="idnombre2edit" name="idnombre2edit" onkeydown="return false" value="<?php echo $row['snombre']; ?>" placeholder="Segundo nombre">
                     </div>
                 </div>
                 <div class="form-group row">
 
                     <div class="col-md-4">
                         <label for="idapellido1edit" class="control-label">Primer apellido</label>
-                        <input type="text" class="form-control input-sm" id="idapellido1edit" name="idapellido1edit" value="<?php echo $row['papellido']; ?>" placeholder="Primer apellido" required>
+                        <input type="text" class="form-control input-sm" id="idapellido1edit" name="idapellido1edit" onkeydown="return false" value="<?php echo $row['papellido']; ?>" placeholder="Primer apellido" required>
                     </div>
 
                     <div class="col-md-4">
                         <label for="idapellido2edit" class="control-label">Segundo apellido</label>
-                        <input type="text" class="form-control input-sm" id="idapellido2edit" name="idapellido2edit" value="<?php echo $row['sapellido']; ?>" placeholder="Segundo apellido">
+                        <input type="text" class="form-control input-sm" id="idapellido2edit" name="idapellido2edit" onkeydown="return false" value="<?php echo $row['sapellido']; ?>" placeholder="Segundo apellido">
                     </div>
 
                     <div class="col-md-4">
                         <label for="idtelefono2edit" class="control-label">Telefono</label>
-                        <input type="number" class="form-control input-sm" id="idtelefono2edit" name="idtelefonoedit" value="<?php echo $row['telefono']; ?>" placeholder="Numero telefonico" required>
+                        <input type="number" class="form-control input-sm" id="idtelefono2edit" name="idtelefonoedit" onkeydown="return false" value="<?php echo $row['telefono']; ?>" placeholder="Numero telefonico" required>
                     </div>
                 </div>
                 <div class="form-group row">
 
                     <div class="col-md-6">
                         <label for="idCorreoedit" class="control-label">Correo</label>
-                        <input type="email" class="form-control input-sm" id="idCorreoedit" name="idCorreoedit" value="<?php echo $row['correo']; ?>" placeholder="Correo electronico" required>
+                        <input type="email" class="form-control input-sm" id="idCorreoedit" name="idCorreoedit" onkeydown="return false" value="<?php echo $row['correo']; ?>" placeholder="Correo electronico" required>
                     </div>
 
                     <div class="col-md-6">
                         <label for="idDireccionedit" class="control-label">Dirección</label>
-                        <input type="text" class="form-control input-sm" id="idDireccion" name="idDireccionedit" value="<?php echo $row['direccion']; ?>" placeholder="Dirección de residencia" required>
+                        <input type="text" class="form-control input-sm" id="idDireccion" name="idDireccionedit" onkeydown="return false" value="<?php echo $row['direccion']; ?>" placeholder="Dirección de residencia" required>
                     </div>
                 </div>
                 <div class="form-group row">
 
                     <div class="col-md-5">
                         <label for="condiciones1edit" class="control-label">Semestre</label>
-                        <select class='form-control input-sm' id="condiciones1edit" name="condiciones1edit" value="<?php echo $row['semestre']; ?>" required>
+                        <select class='form-control input-sm' id="condiciones1edit" name="condiciones1edit" value="<?php echo $row['semestre']; ?>" required disabled>
                             <option value="">-- Selecciona semestre --</option>
                             <option value="1" <?php if ($row['semestre'] == 1) {
                                                     echo 'selected';
@@ -122,25 +99,9 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
                                                 } ?>>X semestre</option>
                         </select>
                     </div>
-
-                    <div class="col-md-7">
-                        <label for="tel1" class="control-label">Estado</label>
-                        <select class='form-control input-sm' id="condiciones2edit" name="condiciones2edit" required>
-                            <option value="">-- Selecciona un estado --</option>
-                            <option value="1" <?php if ($row['Estado'] == 1) {
-                                                    echo 'selected';
-                                                } ?>>Activo</option>
-                            <option value="0" <?php if ($row['Estado'] == 0) {
-                                                    echo 'selected';
-                                                } ?>>Inactivo</option>
-                        </select>
-                    </div>
-
-                </div>
-                <div class="form-group row">
-                    <label for="condiciones3edit" class="col-md-2 control-label">Programa universitario</label>
-                    <div class="col-md-9">
-                        <select class='form-control input-sm' id="condicione3sedit" name="condiciones3edit" required>
+                    <div class="col-md-6">
+                        <label for="condiciones3edit" class=" control-label">Programa universitario</label>
+                        <select class='form-control input-sm' id="condicione3sedit" name="condiciones3edit" required disabled>
                             <option value=""> -- Selecciona un programa academico -- </option>
                             <?php
 
@@ -165,16 +126,11 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
                         </select>
                     </div>
                 </div>
-                <div class="dropdown-divider"></div>
-                <div class="form-group row justify-content-center">
-                    <button type="button" class="btn btn-warning btn-lg"><i class="fas fa-fingerprint"></i><br>Huella</button>
-                </div>
-                <div class="dropdown-divider"></div>
-                <div class="form-group row justify-content-end">
+                <div class="form-group row">
 
-                    <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</button>&nbsp;
-                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar</button>
+                    
                 </div>
+
             </form>
 
         </div>

@@ -24,7 +24,7 @@ class perfilController extends Controller{
 
 
     public function index(){
-        $this->usuario->setIdcedula($this->session->getAll()['id']);
+        $this->usuario->setId($this->session->getAll()['id']);
         $response = $this->usuario->getForCedula();
         return $this->view('perfil/index', $response->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -35,7 +35,7 @@ class perfilController extends Controller{
     public function editar(){
         
         if(isset($_POST['iddcedula'])){
-            $this->usuario->setIdcedula($this->usuario->clean_string($_POST['iddcedula']));
+            $this->usuario->setCedula($this->usuario->clean_string($_POST['iddcedula']));
             $this->usuario->setPnombre($this->usuario->clean_string($_POST['iddnombre1']));
             $this->usuario->setSnombre($this->usuario->clean_string($_POST['iddnombre2']));
             $this->usuario->setPapellido($this->usuario->clean_string($_POST['iddapellido1']));

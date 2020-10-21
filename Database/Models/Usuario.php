@@ -7,7 +7,8 @@ use Exception;
 class Usuario extends abstractModel{
 
 
-    protected $idcedula;
+    protected $id;
+    protected $cedula;
     protected $pnombre;
     protected $snombre;
     protected $papellido;
@@ -32,17 +33,34 @@ class Usuario extends abstractModel{
     /**
      * @return mixed
      */
-    public function getIdcedula()
+    public function getId()
     {
-        return $this->idcedula;
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getCedula()
+    {
+        return $this->cedula;
     }
 
     /**
      * @param mixed $idcedula
      */
-    public function setIdcedula($idcedula): void
+    public function setCedula($cedula): void
     {
-        $this->idcedula = $idcedula;
+        $this->cedula = $cedula;
     }
 
 
@@ -188,7 +206,7 @@ class Usuario extends abstractModel{
 
     public function getForCedula(){
         $this->getInstance();
-        $sql = "SELECT * FROM usuarios WHERE cedula = ".$this->getIdcedula()."";
+        $sql = "SELECT * FROM usuarios WHERE id = ".$this->getId()."";
         $result = $this->return_query($sql);
         return $result;
 
@@ -226,7 +244,7 @@ class Usuario extends abstractModel{
             $query->bindParam(5, $this->getTelefono());
             $query->bindParam(6, $this->getCorreo());
             $query->bindParam(7, $this->getDireccion());
-            $query->bindParam(8, $this->getIdcedula());
+            $query->bindParam(8, $this->getCedula());
             $result = $query->execute();
             return $result;
             

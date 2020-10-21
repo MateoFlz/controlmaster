@@ -40,7 +40,7 @@ abstract class  abstractModel extends Dataconnection
                     echo 'Error en la conexon';
                 }
             }
-        }catch (PDOException $e){
+        }catch (\PDOException $e){
             echo 'Error en el metodo openConection' . $e->getMessage();
             die();
         }
@@ -48,6 +48,11 @@ abstract class  abstractModel extends Dataconnection
 
     public function getInstance(){
         $this->openConection();
+    }
+
+    public function getLastId()
+    {
+        return $this->Connection->lastInsertId();
     }
 
     public function clean_string($string){

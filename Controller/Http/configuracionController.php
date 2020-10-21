@@ -40,7 +40,7 @@ class configuracionController extends Controller{
             foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
                 $json[] = array(
                     'nombreprograma' => $row['nombreprograma'],
-                    'idProgramas' => $row['idProgramas']
+                    'idProgramas' => $row['id']
                 );
             }
 
@@ -96,7 +96,7 @@ class configuracionController extends Controller{
         foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
             $json[] = array(
                 'nombreprograma' => $row['nombreprograma'],
-                'idProgramas' => $row['idProgramas']
+                'idProgramas' => $row['id']
             );
         }
 
@@ -170,7 +170,7 @@ class configuracionController extends Controller{
             $result = $this->program->get_forId();
             foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
                 $json[] = array(
-                    'id' => $row['idProgramas'],
+                    'id' => $row['id'],
                     'nombreprograma' => $row['nombreprograma'],
                 );
             }
