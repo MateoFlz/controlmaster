@@ -2,7 +2,7 @@
 <div class="container-fluid pt-4">
     <div class="card border-secondary mb-3">
         <div class="card-header bg-light">
-            <h5 class="text-dark">Siret</h5>
+            <h5 class="text-dark">Laboratorios institucionales</h5>
         </div>
         <div class="card-body">
             <div class="row">
