@@ -63,7 +63,7 @@ class administrativosController extends Controller
 
     public function edit_administrativo(){
 
-        if(isset($_POST['idcedulaedit'])){
+        if(isset($_POST['idcedulaedit']) && isset($_POST['id'])){
             $this->adminstrativos->setCedula($this->adminstrativos->clean_string($_POST['idcedulaedit']));
             $this->adminstrativos->setPnombre($this->adminstrativos->clean_string($_POST['idnombre1edit']));
             $this->adminstrativos->setSnombre($this->adminstrativos->clean_string($_POST['idnombre2edit']));

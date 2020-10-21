@@ -34,46 +34,53 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>
         ?>
             <form class="needs-validation" novalidate role="form" id="" action="<?php echo URL;?>administrativos/insert_administrativo" method="post">
                 <div class="form-group row">
-                    <label for="idcedula" class="col-md-1 control-label">Cédula</label>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-4">
+                        <label for="idcedula" class="control-label">Cédula</label>
                         <input type="number" class="form-control input-sm" id="idcedula" name="idcedula" placeholder="Numero de cédula" required>
                     </div>
-                    <label for="idnombre1" class="col-md-1 control-label">Primer nombre</label>
-                    <div class="col-md-2">
+                    
+                    <div class="col-md-4">
+                        <label for="idnombre1" class="control-label">Primer nombre</label>
                         <input type="text" class="form-control input-sm" id="idnombre1" name="idnombre1" placeholder="Primer nombre" required>
                     </div>
-                    <label for="idnombre2" class="col-md-1 control-label">Segundo nombre</label>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-4">
+                        <label for="idnombre2" class="control-label">Segundo nombre</label>
                         <input type="text" class="form-control input-sm" id="idnombre2" name="idnombre2" placeholder="Segundo nombre">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="idapellido1" class="col-md-1 control-label">Primer apellido</label>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
+                        <label for="idapellido1" class="control-label">Primer apellido</label>
                         <input type="text" class="form-control input-sm" id="idapellido1" name="idapellido1" placeholder="Primer apellido" required>
                     </div>
-                    <label for="idapellido2" class="col-md-1 control-label">Segundo apellido</label>
-                    <div class="col-md-2">
+                    
+                    <div class="col-md-4">
+                        <label for="idapellido2" class="control-label">Segundo apellido</label>
                         <input type="text" class="form-control input-sm" id="idapellido2" name="idapellido2" placeholder="Segundo apellido" >
                     </div>
-                    <label for="idtelefono" class="col-md-1 control-label">Telefono</label>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-4">
+                        <label for="idtelefono" class="control-label">Telefono</label>
                         <input type="number" class="form-control input-sm" id="idtelefono" name="idtelefono" placeholder="Numero telefonico" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="idcorreo" class="col-md-1 control-label">Correo</label>
+                   
                     <div class="col-md-6">
+                        <label for="idcorreo" class="control-label">Correo</label>
                         <input type="email" class="form-control input-sm" id="idcorreo" name="idcorreo" placeholder="Correo electronico" required>
                     </div>
-                    <label for="iddireccion" class="col-md-1 control-label">Dirección</label>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-6">
+                    <label for="iddireccion" class="control-label">Dirección</label>
                         <input type="text" class="form-control input-sm" id="iddireccion" name="iddireccion" placeholder="Dirección de residencia" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="condiciones" class="col-md-1 control-label">Faculta</label>
                     <div class="col-md-6">
+                    <label for="condiciones" class="control-label">Faculta</label>
                         <select class='form-control input-sm' id="condiciones" name="condiciones" required>
                             <option value="">   -- Seleccione una dependencia --   </option>
                            <?php

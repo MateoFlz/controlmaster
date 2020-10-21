@@ -36,47 +36,57 @@ $ros = $datos['dependencia'];
         }
         ?>
             <form class="needs-validation" novalidate role="form" id="" action="<?php echo URL;?>administrativos/edit_administrativo" method="post">
+                <input type="hidden" name="id" id="id" value="<?php echo $datos['administrativo']['id'] ?>">
                 <div class="form-group row">
-                    <label for="idcedula" class="col-md-1 control-label">Cédula</label>
-                    <div class="col-md-3">
+                   
+                    <div class="col-md-4">
+                    <label for="idcedula" class="control-label">Cédula</label>
                         <input type="number" class="form-control input-sm" id="idcedula" name="idcedulaedit" value="<?php echo $datos['administrativo']['cedula'] ?>" placeholder="Numero de cédula" required readonly>
                     </div>
-                    <label for="idnombre1" class="col-md-1 control-label">Primer nombre</label>
-                    <div class="col-md-2">
+                    
+                    <div class="col-md-4">
+                    <label for="idnombre1" class="control-label">Primer nombre</label>
                         <input type="text" class="form-control input-sm" id="idnombre1" name="idnombre1edit" value="<?php echo $datos['administrativo']['pnombre'] ?>" placeholder="Primer nombre" required>
                     </div>
-                    <label for="idnombre2" class="col-md-1 control-label">Segundo nombre</label>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-4">
+                    <label for="idnombre2" class="control-label">Segundo nombre</label>
                         <input type="text" class="form-control input-sm" id="idnombre2" name="idnombre2edit" value="<?php echo $datos['administrativo']['snombre'] ?>" placeholder="Segundo nombre">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="idapellido1" class="col-md-1 control-label">Primer apellido</label>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-4">
+                    <label for="idapellido1" class="control-label">Primer apellido</label>
                         <input type="text" class="form-control input-sm" id="idapellido1" name="idapellido1edit" value="<?php echo $datos['administrativo']['papellido'] ?>" placeholder="Primer apellido" required>
                     </div>
-                    <label for="idapellido2" class="col-md-1 control-label">Segundo apellido</label>
-                    <div class="col-md-2">
+                    
+                    <div class="col-md-4">
+                    <label for="idapellido2" class="control-label">Segundo apellido</label>
                         <input type="text" class="form-control input-sm" id="idapellido2" name="idapellido2edit" value="<?php echo $datos['administrativo']['sapellido'] ?>" placeholder="Segundo apellido" >
                     </div>
-                    <label for="idtelefono" class="col-md-1 control-label">Telefono</label>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-4">
+                    <label for="idtelefono" class="control-label">Telefono</label>
                         <input type="number" class="form-control input-sm" id="idtelefono" name="idtelefonoedit" value="<?php echo $datos['administrativo']['telefono'] ?>" placeholder="Numero telefonico" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="idcorreo" class="col-md-1 control-label">Correo</label>
+                    
                     <div class="col-md-6">
+                    <label for="idcorreo" class="control-label">Correo</label>
                         <input type="email" class="form-control input-sm" id="idcorreo" name="idcorreoedit" value="<?php echo $datos['administrativo']['correo'] ?>" placeholder="Correo electronico" required>
                     </div>
-                    <label for="iddireccion" class="col-md-1 control-label">Dirección</label>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-6">
+                    <label for="iddireccion" class="control-label">Dirección</label>
                         <input type="text" class="form-control input-sm" id="iddireccion" name="iddireccionedit" value="<?php echo $datos['administrativo']['direccion'] ?>" placeholder="Dirección de residencia" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="condiciones" class="col-md-1 control-label">Faculta</label>
+                    
                     <div class="col-md-6">
+                    <label for="condiciones" class="control-label">Faculta</label>
                         <select class='form-control input-sm' id="condiciones" name="condicionesedit" required>
                             <option value="">   -- Seleccione una dependencia --   </option>
                            <?php

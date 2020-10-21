@@ -51,7 +51,7 @@ class Administrativo extends Usuario{
             $query->execute();
 
             $query = $this->Connection->prepare("INSERT INTO administrativo VALUES (null,?,?)");
-            $query->bindParam(1, $this->getId());
+            $query->bindParam(1, $this->Connection->lastInsertId());
             $query->bindParam(2, $this->getDependencia());
             $result = $query->execute();
             $this->Connection->commit();
@@ -100,14 +100,14 @@ class Administrativo extends Usuario{
     public function get_data_administrativo(){
         $query = "SELECT a.id, a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre, a.telefono,
         d.nombre_dependencia FROM usuarios a INNER JOIN administrativo e ON e.id = a.id JOIN dependencia d
-        ON e.dependencia = d.id WHERE a.Estado = 1;";
+        ON e.dependencia = d.id WHERE a.estado = 1;";
         $result = $this->return_query($query);
         return $result;    
     }
 
     public function getForCedula(){
         $sql = "SELECT a.*, e.dependencia FROM usuarios a INNER JOIN administrativo e
-                ON e.usuarios_cedula = a.cedula WHERE a.id = ".$this->getId()."";
+                ON e.usuario_id = a.id WHERE a.id = ".$this->getId()."";
         $result = $this->return_query($sql);
         return $result;
 
