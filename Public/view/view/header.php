@@ -44,7 +44,7 @@
                 <i class="fas fa-vial"></i> Laboratorios
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href=""><i class="fas fa-boxes"></i> Inventario</a>
+                    <a class="dropdown-item" href="<?php echo URL . 'inventarios/laboratorios/index'?>"><i class="fas fa-boxes"></i> Inventario</a>
                     <a class="dropdown-item" href="<?php echo URL . 'inventarios/laboratorios/reservas'?>"><i class="fas fa-calendar-check"></i> Reservas</a>
                     <a class="dropdown-item" href=""><i class="fas fa-clipboard-check"></i> Asignaciones</a>
                 </div>
