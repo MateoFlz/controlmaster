@@ -364,9 +364,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                                                                             <td class="portatil-codigo"><?php echo $row['codigo'] ?></td>
                                                                                             <td class="portatil-descripcion"><?php echo $row['descripcion'] ?></td>
                                                                                             <td>
-                                                                                                <button class="btn btn-danger"> - </button>
                                                                                                 <?php echo $row['cantidad'] ?>
-                                                                                                <button class="btn btn-success"> + </button>
                                                                                             </td>
                                                                                             <td><?php echo $row['fecha'] ?></td>
                                                                                             <td class="text-center">
