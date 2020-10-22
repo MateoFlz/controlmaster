@@ -26,7 +26,7 @@
                     <a class="dropdown-item" href="<?php echo URL . 'estudiantes'?>"><i class="fas fa-user-graduate"></i> Estudiantes</a>
                     <a class="dropdown-item" href="<?php echo URL . 'docentes'?>"><i class="fas fa-chalkboard-teacher"></i> Docentes</a>
                     <a class="dropdown-item" href="<?php echo URL . 'administrativos'?>"><i class="fas fa-user-tie"></i> Administrativos</a>
-                    <a class="dropdown-item" href="<?php echo URL . 'otros'?>"><i class="fas fa-user"></i> Otros</a>
+                    <a class="dropdown-item" href="<?php echo URL . 'invitados'?>"><i class="fas fa-user"></i> Invitado</a>
                 </div>
             </li>
             <li class="nav-item dropdown">

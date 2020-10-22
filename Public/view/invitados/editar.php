@@ -1,5 +1,4 @@
 <?php
-$data = new \Database\Models\Programa();
 
 $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $row = $datos->fetch(PDO::FETCH_ASSOC);
@@ -9,7 +8,7 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
     <div class="card border-secondary mb-3">
         <div class="card-header bg-light">
             <div type="button" class="btn-group float-md-right">
-                <a class="btn btn-info" href="<?php echo URL . 'estudiantes' ?>"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</a>
+                <a class="btn btn-info" href="<?php echo URL . 'invitados' ?>"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</a>
             </div>
             <h5 class="text-dark">Editar estudiantes</h5>
         </div>
@@ -37,7 +36,7 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
             <?php
             }
             ?>
-            <form class="needs-validation" novalidate action="<?php echo URL; ?>estudiantes/edit_student" method="post">
+            <form class="needs-validation" novalidate action="<?php echo URL; ?>invitados/edit" method="post">
                 <div class="form-group row">
                     <input type="hidden" class="form-control input-sm" name="id" value="<?php echo $row['id']; ?>">
                     <div class="col-md-4">
@@ -72,58 +71,19 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
                         <input type="number" class="form-control input-sm" id="idtelefono2edit" name="idtelefonoedit" value="<?php echo $row['telefono']; ?>" placeholder="Numero telefonico" required>
                     </div>
                 </div>
+                
                 <div class="form-group row">
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="idCorreoedit" class="control-label">Correo</label>
                         <input type="email" class="form-control input-sm" id="idCorreoedit" name="idCorreoedit" value="<?php echo $row['correo']; ?>" placeholder="Correo electronico" required>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="idDireccionedit" class="control-label">Dirección</label>
-                        <input type="text" class="form-control input-sm" id="idDireccion" name="idDireccionedit" value="<?php echo $row['direccion']; ?>" placeholder="Dirección de residencia" required>
+                        <input type="text" class="form-control input-sm" id="idDireccionedit" name="idDireccionedit" value="<?php echo $row['direccion']; ?>" placeholder="Dirección de residencia" required>
                     </div>
-                </div>
-                <div class="form-group row">
-
-                    <div class="col-md-5">
-                        <label for="condiciones1edit" class="control-label">Semestre</label>
-                        <select class='form-control input-sm' id="condiciones1edit" name="condiciones1edit" value="<?php echo $row['semestre']; ?>" required>
-                            <option value="">-- Selecciona semestre --</option>
-                            <option value="1" <?php if ($row['semestre'] == 1) {
-                                                    echo 'selected';
-                                                } ?>>I semestre</option>
-                            <option value="2" <?php if ($row['semestre'] == 2) {
-                                                    echo 'selected';
-                                                } ?>>II semestre</option>
-                            <option value="3" <?php if ($row['semestre'] == 3) {
-                                                    echo 'selected';
-                                                } ?>>III semestre</option>
-                            <option value="4" <?php if ($row['semestre'] == 4) {
-                                                    echo 'selected';
-                                                } ?>>VI semestre</option>
-                            <option value="5" <?php if ($row['semestre'] == 5) {
-                                                    echo 'selected';
-                                                } ?>>V semestre</option>
-                            <option value="6" <?php if ($row['semestre'] == 6) {
-                                                    echo 'selected';
-                                                } ?>>VI semestre</option>
-                            <option value="7" <?php if ($row['semestre'] == 7) {
-                                                    echo 'selected';
-                                                } ?>>VII semestre</option>
-                            <option value="8" <?php if ($row['semestre'] == 8) {
-                                                    echo 'selected';
-                                                } ?>>VIII semestre</option>
-                            <option value="9" <?php if ($row['semestre'] == 9) {
-                                                    echo 'selected';
-                                                } ?>>IX semestre</option>
-                            <option value="10" <?php if ($row['semestre'] == 10) {
-                                                    echo 'selected';
-                                                } ?>>X semestre</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-7">
+                    <div class="col-md-4">
                         <label for="tel1" class="control-label">Estado</label>
                         <select class='form-control input-sm' id="condiciones2edit" name="condiciones2edit" required>
                             <option value="">-- Selecciona un estado --</option>
@@ -135,31 +95,13 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
                                                 } ?>>Inactivo</option>
                         </select>
                     </div>
-
-                </div>
-                <div class="form-group row">
-                    <label for="condiciones3edit" class="col-md-2 control-label">Programa universitario</label>
-                    <div class="col-md-9">
-                        <select class='form-control input-sm' id="condicione3sedit" name="condiciones3edit" required>
-                            <option value=""> -- Selecciona un programa academico -- </option>
-                            <?php
-
-                            foreach ($data->getAll()->fetchAll(\PDO::FETCH_ASSOC) as $rows) {
-                                if ($row['nombreprograma'] == $rows['nombreprograma']) {
-                            ?>
-                                    <option value="<?php echo $rows['id']; ?>" selected><?php echo $rows['nombreprograma']; ?></option>';
-                                <?php
-                                } else {
-                                ?>
-                                    <option value="<?php echo $rows['id']; ?>"><?php echo $rows['nombreprograma']; ?></option>';
-                            <?php
-                                }
-                            }
-                            ?>
-
-                        </select>
+                    <div class="col-md-12">
+                    <label for="condiciones3edit" class="control-label">Descripcion</label>
+                        <textarea class="form-control" name="descripcionedit" id="exampleFormControlTextarea1" rows="2"><?php echo $row['detalles']; ?></textarea>
                     </div>
+                    
                 </div>
+
                 <div class="dropdown-divider"></div>
                 <div class="form-group row justify-content-center">
                     <button type="button" class="btn btn-warning btn-lg"><i class="fas fa-fingerprint"></i><br>Huella</button>

@@ -2,6 +2,8 @@
 $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $row = $datos['administrativo'];
 $ros = $datos['dependencia'];
+
+
 ?>
 <div class="container-fluid pt-4 " style="max-width: 75rem;">
     <div class="card border-secondary mb-3" >
@@ -46,7 +48,7 @@ $ros = $datos['dependencia'];
                     
                     <div class="col-md-4">
                     <label for="idnombre1" class="control-label">Primer nombre</label>
-                        <input type="text" class="form-control input-sm" id="idnombre1" name="idnombre1edit" value="<?php echo $datos['administrativo']['pnombre'] ?>" placeholder="Primer nombre" required>
+                        <input type="text" class="form-control input-sm" id="idnombre1" name="idnombre1edit" onkeydown="return false" value="<?php echo $datos['administrativo']['pnombre'] ?>" placeholder="Primer nombre" required>
                     </div>
                     
                     <div class="col-md-4">
@@ -96,6 +98,18 @@ $ros = $datos['dependencia'];
                                 <?php
                                 }
                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="tel1" class="control-label">Estado</label>
+                        <select class='form-control input-sm' id="condiciones2" name="condiciones2" required>
+                            <option value="">-- Selecciona un estado --</option>
+                            <option value="1" <?php if ($row['estado'] == 1) {
+                                                    echo 'selected';
+                                                } ?>>Activo</option>
+                            <option value="0" <?php if ($row['estado'] == 0) {
+                                                    echo 'selected';
+                                              } ?>>Inactivo</option>
                         </select>
                     </div>
                 </div>

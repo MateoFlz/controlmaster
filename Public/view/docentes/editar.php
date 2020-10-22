@@ -85,10 +85,10 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
                         <label for="tel1" class="control-label">Estado</label>
                         <select class='form-control input-sm' id="condiciones2" name="condiciones2" required>
                             <option value="">-- Selecciona un estado --</option>
-                            <option value="1" <?php if ($row['Estado'] == 1) {
+                            <option value="1" <?php if ($row['estado'] == 1) {
                                                     echo 'selected';
                                                 } ?>>Activo</option>
-                            <option value="0" <?php if ($row['Estado'] == 0) {
+                            <option value="0" <?php if ($row['estado'] == 0) {
                                                     echo 'selected';
                                               } ?>>Inactivo</option>
                         </select>

@@ -73,15 +73,14 @@ class administrativosController extends Controller
             $this->adminstrativos->setCorreo($this->adminstrativos->clean_string($_POST['idcorreoedit']));
             $this->adminstrativos->setDireccion($this->adminstrativos->clean_string($_POST['iddireccionedit']));
             $this->adminstrativos->setDependencia($this->adminstrativos->clean_string($_POST['condicionesedit']));
-        
-
+            $this->adminstrativos->setEstado($this->adminstrativos->clean_string($_POST['condiciones2']));
+            $this->adminstrativos->setId($this->adminstrativos->clean_string($_POST['id']));
             $response = $this->adminstrativos->edit();
 
-
             if($response){
-                Redirect::redirect('administrativos/editar/'.$_POST['idcedulaedit'].'?responsedit=true');
+                Redirect::redirect('administrativos/editar/'.$_POST['id'].'?responsedit=true');
             }else{
-                Redirect::redirect('administrativos/editar/'.$_POST['idcedulaedit'].'?responsedit=false');
+                Redirect::redirect('administrativos/editar/'.$_POST['id'].'?responsedit=false');
             }
         }
     }

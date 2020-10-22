@@ -1,35 +1,62 @@
-<?php 
+<?php
+
 
 namespace Database\Models;
 
-class Administrativo extends Usuario{
 
-    private $idadministrativo;
-    private $dependencia;
+class Invitados extends Usuario
+{
+
+    private $detalles;
 
 
     public function __construct()
     {
         parent::__construct();
-        $this->Table = 'administrativo';
     }
-
-
 
     /**
      * @return mixed
      */
-    public function getDependencia()
+    public function getDetalles()
     {
-        return $this->dependencia;
+        return $this->detalles;
     }
 
     /**
-     * @param mixed $correo
+     * @param mixed $semestre
      */
-    public function setDependencia($dependencia): void
+    public function setDetalles($detalles): void
     {
-        $this->dependencia = $dependencia;
+        $this->detalles = $detalles;
+    }
+
+
+    public function getBySearch(){
+
+        $query = "SELECT a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre, p.nombreprograma,
+                  e.semestre,  a.telefono FROM  usuarios a INNER JOIN estudiante e ON e.usuario_id  = a.id
+                  INNER JOIN programas p ON p.id = e.programa WHERE a.estado = 1 AND a.cedula LIKE '%". $this->pnombre ."%' OR
+	              CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) LIKE '%". $this->pnombre ."%'";
+        $result = $this->return_query($query);
+        return $result;
+    }
+
+    public function getAll()
+    {
+        $query = "SELECT a.id, a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre,
+                  a.telefono, i.detalles FROM usuarios a INNER JOIN invitados i
+                  ON i.usuario_id = a.id WHERE a.estado = 1;";
+        $result = $this->return_query($query);
+        return $result;
+    }
+
+    public function getForCedula(){
+        $sql = "SELECT a.*, i.detalles FROM usuarios a INNER JOIN invitados i
+                ON i.usuario_id  = a.id WHERE a.id = ".$this->getId()."";
+        $result = $this->return_query($sql);
+        return $result;
+
     }
 
     public function create()
@@ -50,9 +77,11 @@ class Administrativo extends Usuario{
             $query->bindParam(9, $this->getEstado());
             $query->execute();
 
-            $query = $this->Connection->prepare("INSERT INTO administrativo VALUES (null,?,?)");
-            $query->bindParam(1, $this->Connection->lastInsertId());
-            $query->bindParam(2, $this->getDependencia());
+            $id = $this->Connection->lastInsertId();
+
+            $query = $this->Connection->prepare("INSERT INTO invitados VALUES (null,?,?)");
+            $query->bindParam(1, $id);
+            $query->bindParam(2, $this->getDetalles());
             $result = $query->execute();
             $this->Connection->commit();
             return $result;
@@ -61,8 +90,10 @@ class Administrativo extends Usuario{
         }catch (\Exception $e){
             $this->Connection->rollBack();
             echo "Fallo: " . $e->getMessage();
-            return false;
+            return $e->getMessage();
         }
+
+
     }
 
     public function edit(){
@@ -83,8 +114,8 @@ class Administrativo extends Usuario{
             $query->bindParam(9, $this->getId());
             $query->execute();
 
-            $query = $this->Connection->prepare("UPDATE administrativo SET dependencia = ?  WHERE usuario_id = ?");
-            $query->bindParam(1, $this->getDependencia());
+            $query = $this->Connection->prepare("UPDATE invitados SET detalles = ? WHERE usuario_id = ?");
+            $query->bindParam(1, $this->getDetalles());
             $query->bindParam(2, $this->getId());
             $result = $query->execute();
             $this->Connection->commit();
@@ -98,24 +129,7 @@ class Administrativo extends Usuario{
         }
     }
 
-    public function get_data_administrativo(){
-        $query = "SELECT a.id, a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre, a.telefono,
-        d.nombre_dependencia FROM usuarios a INNER JOIN administrativo e ON e.usuario_id = a.id JOIN dependencia d
-        ON e.dependencia = d.id WHERE a.estado = 1;";
-        $result = $this->return_query($query);
-        return $result;    
-    }
-
-    public function getForCedula(){
-        $sql = "SELECT a.*, e.dependencia FROM usuarios a INNER JOIN administrativo e
-                ON e.usuario_id = a.id WHERE a.id = ".$this->getId()."";
-        $result = $this->return_query($sql);
-        return $result;
-
-    }
-
-    public function delete_administrivo()
-    {
+    public function delete(){
         $this->getInstance();
         $query = $this->Connection->prepare("UPDATE usuarios SET estado = ? WHERE id = ?");
         $query->bindParam(1, $this->getEstado());
@@ -127,15 +141,4 @@ class Administrativo extends Usuario{
             return false;
         }
     }
-
-    public function get_by_search()
-    {
-        $query = "SELECT a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre, a.telefono,
-        d.nombre_dependencia FROM usuarios a INNER JOIN administrativo e ON e.usuarios_cedula = a.cedula JOIN dependencia d
-        ON e.dependencia = d.id WHERE a.Estado = 1 AND a.cedula LIKE '%". $this->pnombre ."%' OR
-	              CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) LIKE '%". $this->pnombre ."%'";
-        $result = $this->return_query($query);
-        return $result; 
-    }
-
 }
