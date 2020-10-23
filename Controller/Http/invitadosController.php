@@ -89,6 +89,12 @@ class invitadosController extends Controller
         return $this->view('invitados/editar', $response);
     }
 
+    public function show($id = ''){
+        $this->invitado->setId($id);
+        $response = $this->invitado->getForCedula();
+        return $this->view('invitados/show', $response);
+    }
+
     public function delete($id = ''){
         $this->invitado->setId($this->invitado->clean_string($id));
         $this->invitado->setEstado('0');

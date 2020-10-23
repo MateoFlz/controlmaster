@@ -4,6 +4,8 @@ namespace Controller\Http;
 
 use Controller\Http\Controller;
 use Controller\Redirecter\Redirect;
+use Database\Models\Etiquetas;
+
 use Database\Models\Siret\Portatil;
 use Database\Models\Siret\Sonido;
 use Database\Models\Siret\Utilidad;
@@ -12,16 +14,40 @@ use Database\Models\Siret\Video;
 class inventariosController extends Controller
 {
 
-    private $page_url;
+    private $equipos;
+    private $etiqueta;
+    private $utilidas;
 
     public function __construct()
     {
+        $this->etiqueta = new Etiquetas();
         parent::__construct();
         if ($this->session->getStatus() === PHP_SESSION_NONE || empty($this->session->get('name'))) {
             Redirect::redirect('index?session=false');
         }
     }
 
+
+    public function index()
+    {
+        return $this->view('inventarios/index');
+    }
+
+    public function equipos()
+    {
+        $data = array(
+            'etiquetas' => $this->etiqueta->getAll()->fetchAll(\PDO::FETCH_ASSOC),
+            'dependencia' => null
+        );
+        return $this->view('inventarios/equipos', $data);
+    }
+
+    public function utilidades()
+    {
+        return $this->view('inventarios/utilidades');
+    }
+
+    /** 
 
     public function siret($page = '', $metodo = '', $parametro = '')
     {
@@ -371,4 +397,6 @@ class inventariosController extends Controller
             }
         }
     }
+
+    **/
 }

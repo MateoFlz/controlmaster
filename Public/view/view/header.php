@@ -34,7 +34,7 @@
                 <i class="fas fa-desktop"></i> Recursos Educativos
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<?php echo URL . 'inventarios/siret/index'?>"><i class="fas fa-boxes"></i> Inventario</a>
+                    <a class="dropdown-item" href="<?php echo URL . 'inventarios/index'?>"><i class="fas fa-boxes"></i> Inventario</a>
                     <a class="dropdown-item" href="<?php echo URL . 'prestamos/index'?>"><i class="fas fa-hand-holding"></i> Prestamos</a>
                 
                 </div>

@@ -1,5 +1,5 @@
 <?php include_once 'Public/view/view/header.php'?>
-<div class="container-fluid pt-4 " style="max-width: 75rem;">
+<div class="container-fluid pt-4 " style="max-width: 85rem;">
     <div class="card border-secondary mb-3" >
         <div class="card-header bg-light">
             <h5 class="text-dark">Administracion de componente</h5>
@@ -19,6 +19,9 @@
                         </li>
                         <li class="nav-item" id="usuarios">
                             <a class="nav-link"  href="#users" data-toggle="tab">Gestion Usuarios</a>
+                        </li>
+                        <li class="nav-item" id="eti">
+                            <a class="nav-link"  href="#etiquetas" data-toggle="tab">Etiquetas</a>
                         </li>
                     </ul>
                 </div>
@@ -304,7 +307,7 @@
                             </form>
                             <div class="btn-group align-items-center" type="button" class="">
                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-xl">
-                                    <i class="fa fa-plus"></i> Agregar usuario
+                                    <i class="fa fa-plus"></i> Agregar usuarios
                                 </button>
                             </div>
                             <!-- Modal -->
@@ -409,6 +412,79 @@
                                     </thead>
                                     <tbody id="usuarios">
 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="etiquetas" role="tabpanel" aria-labelledby="profile-tab">
+                            <form class="" role="form" id="formsearchetiqueta">
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label"><strong>Etiqueta</strong></label>
+                                    <div class="col-md-7">
+                                        <input type="text" id="etiquetasearch" class="form-control" placeholder="Id o etiqueta">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-light border" id="btnsearchetiqueta">Buscar</button>
+                                    </div>
+                                    <span id="loader"></span>
+                                </div>
+                            </form>
+                            <div class="btn-group align-items-center" type="button" class="">
+                                <button type="button" class="btn-open-eti btn btn-success" data-toggle="modal" data-target="#staticBackdrop2eti">
+                                    <i class="fa fa-plus"></i> Agregar etiquetas
+                                </button>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop2eti" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Agregar Etiquetas</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body ">
+                                            <div id="etiquesuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+                                                Etiqueta guardado satifactoriamente
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div id="etiquedanger" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                Ocurrio un error al guardar el Etiqueta.
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form id="formetiqueta" class="pt-0">
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control" id="nametiqueta" placeholder="Nombre del etiqueta">
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn btn-success" id="successetiqueta">Guardar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="table-responsive" style="max-height: 230px;">
+                                <table class="table table-hover table-sm" style="white-space: nowrap">
+                                    <thead>
+                                    <tr class="table-success">
+                                        <th class="thead-fix" scope="col">Id etiqueta</th>
+                                        <th class="thead-fix" scope="col">Nombre del etiqueta</th>
+                                        <th class="thead-fix text-center" scope="col">Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbodyetiqueta">
                                     </tbody>
                                 </table>
                             </div>

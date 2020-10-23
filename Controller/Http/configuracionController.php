@@ -6,12 +6,14 @@ use Controller\Redirecter\Redirect;
 use Core\Sessions;
 use Database\Models\Dependencia;
 use Database\Models\Programa;
+use Database\Models\Etiquetas;
 
 class configuracionController extends Controller{
 
 
     private $program;
     private $dependenc;
+    private $etiqueta;
 
     public function __construct()
     {
@@ -19,6 +21,7 @@ class configuracionController extends Controller{
         parent::__construct();
         $this->program = new Programa();
         $this->dependenc = new Dependencia();
+        $this->etiqueta =  new Etiquetas();
         if($this->session->getStatus() === PHP_SESSION_NONE || empty($this->session->get('name'))){
             Redirect::redirect('index?session=false');
         }
@@ -68,6 +71,25 @@ class configuracionController extends Controller{
         }
     }
 
+    public function get_etiquetas(){
+        $search = $_POST['search'];
+        $json = array();
+
+        if(!empty($search)){
+            $this->etiqueta->setEtiqueta($this->etiqueta->clean_string($search));
+            $result = $this->etiqueta->get_etiqueta();
+            foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
+                $json[] = array(
+                    'nametiqueta' => $row['descripcion'],
+                    'id' => $row['id']
+                );
+            }
+
+            echo json_encode($json);
+            die();
+        }
+    }
+
     // METODOS PARA INSERTAR PROGRAMAS Y DEPENDENCIA
     public function insert_program(){
         if(isset($_POST['nameprogram'])){
@@ -84,6 +106,16 @@ class configuracionController extends Controller{
             $namedependence = $_POST['namedependencia'];
             $this->dependenc->setDependencia($namedependence);
             $result = $this->dependenc->add_dependence();
+            echo $result;
+            die();
+        }
+    }
+
+    public function insert_etiqueta(){
+        if(isset($_POST['nametiqueta'])){
+            $namedependence = $_POST['nametiqueta'];
+            $this->etiqueta->setEtiqueta($namedependence);
+            $result = $this->etiqueta->add();
             echo $result;
             die();
         }
@@ -116,6 +148,18 @@ class configuracionController extends Controller{
         die();
     }
 
+    public function get_etiqueta(){
+        $result = $this->etiqueta->getAll();
+        foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
+            $json[] = array(
+                'nametiqueta' => $row['descripcion'],
+                'id' => $row['id']
+            );
+        }
+        echo json_encode($json);
+        die();
+    }
+
 
     // METODOS PARA EDITAR PROGRAMAS Y DEPENDENCIA
     public function edit_program(){
@@ -137,6 +181,17 @@ class configuracionController extends Controller{
             die();
         }
     }
+
+    public function edit_etiqueta(){
+        if(isset($_POST['id'])){
+            $this->etiqueta->setId($_POST['id']);
+            $this->etiqueta->setEtiqueta($_POST['nametiqueta']);
+            $result = $this->etiqueta->edit();
+            echo $result;
+            die();
+        }
+    }
+
 
 
 
@@ -189,6 +244,22 @@ class configuracionController extends Controller{
                 $json[] = array(
                     'id' => $row['id'],
                     'nombredependencia' => $row['nombre_dependencia'],
+                );
+            }
+            echo json_encode($json);
+            die();
+        }
+    }
+
+    public function get_etiquetaId(){
+        $json = array();
+        if(isset($_POST['id'])){
+            $this->etiqueta->setId($_POST['id']);
+            $result = $this->etiqueta->get_forId();
+            foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
+                $json[] = array(
+                    'id' => $row['id'],
+                    'nametiqueta' => $row['descripcion'],
                 );
             }
             echo json_encode($json);

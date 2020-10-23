@@ -72,7 +72,7 @@ class Usuarios extends abstractModel {
     public function getAll()
     {
         $query = "SELECT a.cedula, CONCAT(a.pnombre, a.snombre,' ', a.papellido,' ', a.sapellido) AS nombre,
-                  cc.tipo, a.telefono, a.correo FROM usuarios a INNER JOIN acceso cc ON a.cedula = cc.usuarios_cedula;";
+                  cc.tipo, a.telefono, a.correo FROM usuarios a INNER JOIN acceso cc ON a.id = cc.usuarios_id;";
         $result = $this->return_query($query);
         $this->closeConnection();
         return $result;

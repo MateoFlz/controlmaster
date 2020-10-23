@@ -103,6 +103,13 @@ class administrativosController extends Controller
         return $this->view('administrativos/editar', $response);
     }
 
+    public function show($id = ''){
+        $this->adminstrativos->setId($id);
+        $response['administrativo'] = $this->adminstrativos->getForCedula()->fetch(\PDO::FETCH_ASSOC);
+        $response['dependencia'] = $this->get_allDependence();
+        return $this->view('administrativos/show', $response);
+    }
+
     public function delete($id = '')
     {
         $this->adminstrativos->setId($this->adminstrativos->clean_string($id));

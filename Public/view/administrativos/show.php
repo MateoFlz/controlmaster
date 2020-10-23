@@ -12,72 +12,57 @@ $ros = $datos['dependencia'];
             <h5 class="text-dark">Nuevo administrativo</h5>
         </div>
         <div class="card-body">
-        <?php
-
-        if (strpos($fullUrl, "responsedit=true") ==  true) { ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                administrativos actualizado satifactoriamente
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <?php   
-        }
-
-        if (strpos($fullUrl, "responsedit=false") ==  true) { ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Ocurrio un error al actualizar el administrativo, la cedula ya exite!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-        <?php
-        }
-        ?>
+    
             <form class="needs-validation" novalidate role="form" id="" action="<?php echo URL;?>administrativos/edit_administrativo" method="post">
                 <div class="form-group row">
-                    <label for="idcedula" class="col-md-1 control-label">Cédula</label>
-                    <div class="col-md-3">
-                        <input type="number" class="form-control input-sm" id="idcedula" name="idcedulaedit" value="<?php echo $datos['administrativo']['cedula'] ?>" placeholder="Numero de cédula" required readonly>
+                    
+                    <div class="col-md-4">
+                        <label for="idcedula" class="control-label">Cédula</label>
+                        <input type="number" class="form-control input-sm" id="idcedula" onkeydown="return false" name="idcedulaedit" value="<?php echo $datos['administrativo']['cedula'] ?>" placeholder="Numero de cédula" required readonly>
+                    </div> 
+                   
+                    <div class="col-md-4">
+                    <label for="idnombre1" class="control-label">Primer nombre</label>
+                        <input type="text" class="form-control input-sm" id="idnombre1" name="idnombre1edit" onkeydown="return false" value="<?php echo $datos['administrativo']['pnombre'] ?>" placeholder="Primer nombre" required>
                     </div>
-                    <label for="idnombre1" class="col-md-1 control-label">Primer nombre</label>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control input-sm" id="idnombre1" name="idnombre1edit" value="<?php echo $datos['administrativo']['pnombre'] ?>" placeholder="Primer nombre" required>
-                    </div>
-                    <label for="idnombre2" class="col-md-1 control-label">Segundo nombre</label>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-4">
+                    <label for="idnombre2" class="control-label">Segundo nombre</label>
                         <input type="text" class="form-control input-sm" id="idnombre2" name="idnombre2edit" value="<?php echo $datos['administrativo']['snombre'] ?>" placeholder="Segundo nombre">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="idapellido1" class="col-md-1 control-label">Primer apellido</label>
-                    <div class="col-md-3">
-                        <input type="text" class="form-control input-sm" id="idapellido1" name="idapellido1edit" value="<?php echo $datos['administrativo']['papellido'] ?>" placeholder="Primer apellido" required>
+                    
+                    <div class="col-md-4">
+                    <label for="idapellido1" class="control-label">Primer apellido</label>
+                        <input type="text" class="form-control input-sm" id="idapellido1" name="idapellido1edit" onkeydown="return false" value="<?php echo $datos['administrativo']['papellido'] ?>" placeholder="Primer apellido" required>
                     </div>
-                    <label for="idapellido2" class="col-md-1 control-label">Segundo apellido</label>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control input-sm" id="idapellido2" name="idapellido2edit" value="<?php echo $datos['administrativo']['sapellido'] ?>" placeholder="Segundo apellido" >
+                    <div class="col-md-4">
+                    <label for="idapellido2" class="control-label">Segundo apellido</label>
+                        <input type="text" class="form-control input-sm" id="idapellido2" name="idapellido2edit" onkeydown="return false" value="<?php echo $datos['administrativo']['sapellido'] ?>" placeholder="Segundo apellido" >
                     </div>
-                    <label for="idtelefono" class="col-md-1 control-label">Telefono</label>
-                    <div class="col-md-3">
-                        <input type="number" class="form-control input-sm" id="idtelefono" name="idtelefonoedit" value="<?php echo $datos['administrativo']['telefono'] ?>" placeholder="Numero telefonico" required>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="idcorreo" class="col-md-1 control-label">Correo</label>
-                    <div class="col-md-6">
-                        <input type="email" class="form-control input-sm" id="idcorreo" name="idcorreoedit" value="<?php echo $datos['administrativo']['correo'] ?>" placeholder="Correo electronico" required>
-                    </div>
-                    <label for="iddireccion" class="col-md-1 control-label">Dirección</label>
-                    <div class="col-md-3">
-                        <input type="text" class="form-control input-sm" id="iddireccion" name="iddireccionedit" value="<?php echo $datos['administrativo']['direccion'] ?>" placeholder="Dirección de residencia" required>
+                    
+                    <div class="col-md-4">
+                    <label for="idtelefono" class="control-label">Telefono</label>
+                        <input type="number" class="form-control input-sm" id="idtelefono" name="idtelefonoedit" onkeydown="return false" value="<?php echo $datos['administrativo']['telefono'] ?>" placeholder="Numero telefonico" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="condiciones" class="col-md-1 control-label">Faculta</label>
+                    <div class="col-md-8">
+                    <label for="idcorreo" class="control-label">Correo</label>
+                        <input type="email" class="form-control input-sm" id="idcorreo" name="idcorreoedit" onkeydown="return false" value="<?php echo $datos['administrativo']['correo'] ?>" placeholder="Correo electronico" required>
+                    </div>
+                    
+                    <div class="col-md-4">
+                    <label for="iddireccion" class="control-label">Dirección</label>
+                        <input type="text" class="form-control input-sm" id="iddireccion" name="iddireccionedit" onkeydown="return false" value="<?php echo $datos['administrativo']['direccion'] ?>" placeholder="Dirección de residencia" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                  
                     <div class="col-md-6">
-                        <select class='form-control input-sm' id="condiciones" name="condicionesedit" required>
+                    <label for="condiciones" class="control-label">Dependenia</label>
+                        <select class='form-control input-sm' id="condiciones" name="condicionesedit" required disabled>
                             <option value="">   -- Seleccione una dependencia --   </option>
                            <?php
                                 foreach($datos['dependencia'] AS $rows){
@@ -89,16 +74,7 @@ $ros = $datos['dependencia'];
                         </select>
                     </div>
                 </div>
-                <div class="dropdown-divider"></div>
-                <div class="form-group row justify-content-center">
-                    <button type="submit" class="btn btn-warning btn-lg"><i class="fas fa-fingerprint"></i><br>Huella</button>
-                </div>
-                <div class="dropdown-divider"></div>
-                <div class="form-group row justify-content-end">
-
-                    <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</button>&nbsp;
-                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar</button>
-                </div>
+            
             </form>
 
         </div>

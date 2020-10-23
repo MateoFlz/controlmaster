@@ -7,6 +7,8 @@ namespace Controller\Http;
 use Controller\Redirecter\Redirect;
 use Database\Models\Estudiante;
 use Database\Models\Programa;
+use Helpers;
+use helpers\FPDF;
 
 class estudiantesController extends Controller
 {
@@ -155,5 +157,28 @@ class estudiantesController extends Controller
             die();
 
         }
+    }
+
+    public function crearPdf()
+    {
+        $pdf = new FPDF();
+
+        $pdf->AddPage();
+        $pdf->SetFillColor(232,232,232);
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(40,6,'Cedula',1,0,'C',1);
+        $pdf->Cell(40,6,'Nombre completo',1,0,'C',1);
+        $pdf->Cell(40,6,'Programa',1,0,'C',1);
+        $pdf->Cell(40,6,'Semestre',1,0,'C',1);
+        $pdf->Cell(40,6,'Telefono',1,0,'C',1);
+        
+        foreach($this->estudiante->getAll()->fetchAll(\PDO::FETCH_ASSOC) as $row){
+            $pdf->Cell(40,6,utf8_decode($row['cedula']),1,0,'C');
+            $pdf->Cell(40,6,utf8_decode($row['nombre']),1,2,'C');
+            $pdf->Cell(40,6,utf8_decode($row['nombreprograma']),1,2,'C');
+            $pdf->Cell(40,6,utf8_decode($row['semestre']),1,3,'C');
+            $pdf->Cell(40,6,utf8_decode($row['telefono']),1,4,'C');
+        }
+        $pdf->Output();
     }
 }

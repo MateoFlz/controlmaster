@@ -3,10 +3,13 @@ $(document).ready(function () {
 
     let edit = false;
     let edit2 = false;
+    let edit3 = false;
     let idprogram = '';
     let id_dependencia = '';
+    let id_etiqueta = '';
     program_list();
     dependence_list();
+    etiquetas_list();
 
     
 
@@ -84,6 +87,44 @@ $(document).ready(function () {
 
     });
 
+    $("#etiquetasearch").keyup(function (e) {
+        if($("#etiquetasearch").val()){
+            let search =  $("#etiquetasearch").val();
+            $.ajax({
+                url: 'configuracion/get_etiquetas',
+                type: 'POST',
+                data: {search: search},
+                dataType: 'JSON',
+                beforeSend: function(objeto){
+                    $('#loader').html('<img src="Public/assets/icons/ajax-loader.gif"> ');
+                },
+                success: function (response) {
+                    let template = "";
+                    response.forEach(respon =>{
+                        template += `
+                        <tr respon="${respon.id}"> 
+                            <td>${respon.id}</td>
+                            <td class="text-left">${respon.nametiqueta}</td>
+                             <td class="text-center">
+                                <button class="btn-edit3 btn btn-info border"><i class="fas fa-edit"></i></button>
+                                <button class="btn-delete-eti btn btn-danger border"><i class="fas fa-trash-alt"></i></i></button>
+                             </td>
+                        </tr>
+                   `;
+                    });
+                    $("#tbodyetiqueta").html(template).fadeIn('slow');
+                    $('#loader').html('');
+
+                }
+
+            });
+        }else{
+            etiquetas_list(); 
+        }
+
+    });
+
+
     $('#formprogram').submit(function (e) {
 
         let postData = '';
@@ -142,6 +183,35 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
+    $('#formetiqueta').submit(function (e) {
+
+        let postData = '';
+        if(edit3 === true){
+             postData = {
+                 id: id_etiqueta,
+                 nametiqueta: $('#nametiqueta').val()
+            };
+        }else{
+            postData = {
+                nametiqueta: $('#nametiqueta').val()
+            };
+        }
+        console.log(postData);
+        let url = edit3 === false ? 'configuracion/insert_etiqueta' : 'configuracion/edit_etiqueta';
+        $.post(url, postData, function (response) {
+            console.log(response);
+            if(response == true){
+                $('#etiquesuccess').show();
+            }else{
+                $('#etiquedanger').show();
+            }
+            etiquetas_list();
+            $('#formetiqueta').trigger("reset");
+        });
+        edit3 = false;
+        e.preventDefault();
+    });
+
     function program_list(){
         $.ajax({
             url: 'configuracion/get_all',
@@ -190,6 +260,33 @@ $(document).ready(function () {
         });
     }
 
+    function etiquetas_list(){
+        $.ajax({
+            url: 'configuracion/get_etiqueta',
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (response) {
+                console.log(response);
+                let template = "";
+                response.forEach(respon =>{
+                    template += `
+                        <tr respon="${respon.id}"> 
+                            <td>${respon.id}</td>
+                            <td class="text-left">${respon.nametiqueta}</td>
+                             <td class="text-center">
+                                <button class="btn-edit3 btn btn-info border"><i class="fas fa-edit"></i></button>
+                                <button class="btn-delete-eti btn btn-danger border"><i class="fas fa-trash-alt"></i></i></button>
+                             </td>
+                        </tr>
+                   `;
+                });
+                $("#tbodyetiqueta").html(template);
+            }
+        });
+    }
+
+    
+
 
     $(document).on('click', '.btn-edit', function () {
         $('#staticBackdrop2').modal();
@@ -218,6 +315,22 @@ $(document).ready(function () {
             id_dependencia = name[0]['id'];
             $('#namedependencia').val(name[0]['nombredependencia']);
             edit2 = true;
+        })
+    })
+
+    $(document).on('click', '.btn-edit3', function () {
+        $('#staticBackdrop2eti').modal();
+        $('#nametiqueta').attr('readonly', false);
+        $('#etiquesuccess').hide();
+        $('#etiquedanger').hide();
+        let element = $(this)[0].parentElement.parentElement;
+        let id = $(element).attr('respon');
+        $.post('configuracion/get_etiquetaId', {id},  function (response) {
+            console.log(response);
+            let name = JSON.parse(response);
+            id_etiqueta = name[0]['id'];
+            $('#nametiqueta').val(name[0]['nametiqueta']);
+            edit3 = true;
         })
     })
 
@@ -262,7 +375,16 @@ $(document).ready(function () {
                 dependence_list();
             })
         }
+    })
 
+    $(document).on('click', '.btn-delete-eti', function () {
+        if(confirm('¿Estas seguro de eliminar esta dependencia?')){
+            let elemet = $(this)[0].parentElement.parentElement;
+            let id = $(elemet).attr('respon');
+            $.post('configuracion/etiqueta_delete', {id}, function (response) {
+                dependence_list();
+            })
+        }
     })
 
     $(document).on('click', '.btn-open', function () {
@@ -270,6 +392,14 @@ $(document).ready(function () {
         $('#nameprogram').val('');
         $('#programsuccess').hide();
         $('#programdanger').hide();
+        $('#etiquesuccess').hide();
+        $('#etiquesdanger').hide();
+    })
+
+    $(document).on('click', '.btn-open-eti', function () {
+        $('#nametiqueta').val('');
+        $('#etiquesuccess').hide();
+        $('#etiquedanger').hide();
     })
 
     $(document).on('click', '.btn-open-depe', function() {

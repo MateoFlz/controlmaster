@@ -44,7 +44,7 @@
                              <td><?php echo $row['telefono'] ?></td>
                              <td><?php echo $row['nombre_dependencia'] ?></td>
                              <td class="text-center">
-                             <button class="btn btn-primary border"><i class="fas fa-eye"></i></button>
+                             <a href="administrativos/show/<?php echo $row['id'] ?>" class="btn btn-primary border"><i class="fas fa-eye"></i></a>
                                  <a href="administrativos/editar/<?php echo $row['id'] ?>" class="btnedit btn btn-info border"><i class="fas fa-edit"></i></a>
                                  <form action="administrativos/delete/<?php echo $row['id'] ?>" method="post" style="display: inline">
                                      <button type="submit" class="btn btn-danger"> <i class="fas fa-trash-alt"></i></button>
