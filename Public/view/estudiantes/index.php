@@ -1,11 +1,10 @@
-<?php include_once 'Public/view/view/header.php';
-var_dump($datos)?>
+<?php include_once 'Public/view/view/header.php';?>
 <div class="container-fluid pt-4" style="max-width: 75rem;">
     <div class="card border-secondary mb-3">
         
         <div class="card-header bg-light">
         <div type="button" class="btn-group float-md-right">
-                <a class="btn btn-info" href="<?php echo URL . 'estudiantes/crearPdf' ?>"><i class="fa fa-arrow-alt-circle-left"></i> PDF</a>
+                <a class="btn btn-light border" href="<?php echo URL . 'estudiantes/crearPdf' ?>"><i class="fas fa-file-pdf"></i> PDF</a>
             </div>
             <h5 class="text-dark">Listado estudiantes</h5>
         </div>

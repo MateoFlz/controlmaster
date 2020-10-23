@@ -29,9 +29,13 @@
             ?>
             <form action="<?php echo URL . "inventarios/insert_equipo"; ?>" method="post">
                 <div class="form-group row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label for="idserial" class="control-label">Serial</label>
                         <input type="text" class="form-control input-sm" id="idserial" name="idserial" placeholder="Numero serial" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="idmarca" class="control-label">Marca</label>
+                        <input type="text" class="form-control" name="idmarca" id="idmarca" required>
                     </div>
                     <div class="col-md-12">
                         <label for="estado" class="control-label">Tipo de equipo</label>
@@ -46,10 +50,7 @@
                             ?>
                         </select>
                     </div>
-                    <div class="col-md-12">
-                        <label for="idmarca" class="control-label">Marca</label>
-                        <input type="text" class="form-control" name="idmarca" id="idmarca" required>
-                    </div>
+                    
                     <div class="col-md-12">
                         <label for="idmodelo" class="control-label">Modelo</label>
                         <input type="text" class="form-control" name="idmodelo" id="idmodelo">
@@ -79,10 +80,6 @@
                             <option value="Defectuoso">Defectuoso</option>
                             <option value="Dañado">Dañado</option>
                         </select>
-                    </div>
-                    <div class="col-md-12">
-                        <label for="idfecha" class="control-label">Fecha</label>
-                        <input type="date" class="form-control input-sm" id="idfecha" name="idfecha" placeholder="Segundo nombre">
                     </div>
                     <div class="col text-center">
                         <br>

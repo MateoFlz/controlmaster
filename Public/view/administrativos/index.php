@@ -1,7 +1,14 @@
-<?php include_once 'Public/view/view/header.php'?>
+<?php include_once 'Public/view/view/header.php';
+var_dump($datos->fetchAll(\PDO::FETCH_ASSOC));
+?>
+
 <div class="container-fluid pt-4 " style="max-width: 75rem;">
     <div class="card border-secondary mb-3" >
         <div class="card-header bg-light">
+    
+        <div type="button" class="btn-group float-md-right">
+                <a class="btn btn-light border" href="<?php echo URL . 'administrativos/crearPdf' ?>"><i class="fas fa-file-pdf"></i> PDF</a>
+        </div>
             <h5 class="text-dark">Listado administrativos</h5>
         </div>
         <div class="card-body">
