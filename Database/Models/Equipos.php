@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Models\Siret;
+namespace Database\Models;
 
 use Database\abstractModel;
 
@@ -89,7 +89,7 @@ class Equipos extends abstractModel
         return $this->ubicacion;
     }
 
-    public function setUbicancion($ubicacion)
+    public function setUbicacion($ubicacion)
     {
         $this->ubicacion = $ubicacion;
     }
@@ -141,6 +141,26 @@ class Equipos extends abstractModel
         $data = $this->return_query($this->query);
         return  $data;
     }
+    
+
+    public function getFull()
+    {
+        $this->query = "SELECT e.*, a.nombre, t.descripcion FROM equipos e
+        INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON e.etiqueta_id = t.id WHERE e.activo = 1";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
+
+    public function getEquipoById()
+    {
+        $query = $this->Connection->prepare("SELECT e.*, a.sede, a.nombre, t.descripcion as tipo FROM equipos e
+        INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
+         e.etiqueta_id = t.id WHERE e.activo = 1 AND e.id = ?");
+        $query->bindParam(1, $this->id);
+        $query->execute();
+        $this->closeConnection();
+        return $query;
+    }
 
     public function create()
     {
@@ -168,17 +188,31 @@ class Equipos extends abstractModel
 
     public function update()
     {
-        $this->getInstance();
-        $query = $this->Connection->prepare("UPDATE utilidades SET codigo = ?,
-         descripcion = ?, cantidad = ?, fecha = ?, activo = ? WHERE idutilida = ?");
+        try{
+            $this->getInstance();
+            $query = $this->Connection->prepare("UPDATE equipos SET serial = ?,
+            descripcion = ?, cantidad = ?, fecha = ?, activo = ? WHERE idutilida = ?");
+            $query->bindParam(1, $this->getSerial());
+            $query->bindParam(2, $this->getEtiqueta());
+            $query->bindParam(3, $this->getMarca());
+            $query->bindParam(4, $this->getModelo());
+            $query->bindParam(5, $this->getDescripcion());
+            $query->bindParam(6, $this->getUbicacion());
+            $query->bindParam(7, $this->getEstado());
+            $query->bindParam(8, $this->getActivo());
 
 
-        $result = $query->execute();
-        if ($result) {
-            return true;
-        } else {
+            $result = $query->execute();
+            if ($result) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch(\Exception $e){
+            echo "Fallo: " . $e->getMessage();
             return false;
         }
+        
     }
 
     public function delete()

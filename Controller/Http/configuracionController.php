@@ -7,6 +7,7 @@ use Core\Sessions;
 use Database\Models\Dependencia;
 use Database\Models\Programa;
 use Database\Models\Etiquetas;
+use Database\Models\Aulas;
 
 class configuracionController extends Controller{
 
@@ -14,6 +15,7 @@ class configuracionController extends Controller{
     private $program;
     private $dependenc;
     private $etiqueta;
+    private $aula;
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class configuracionController extends Controller{
         $this->program = new Programa();
         $this->dependenc = new Dependencia();
         $this->etiqueta =  new Etiquetas();
+        $this->aula = new Aulas();
         if($this->session->getStatus() === PHP_SESSION_NONE || empty($this->session->get('name'))){
             Redirect::redirect('index?session=false');
         }
@@ -90,6 +93,27 @@ class configuracionController extends Controller{
         }
     }
 
+    public function get_aula(){
+        $search = $_POST['search'];
+        $json = array();
+
+        if(!empty($search)){
+            $this->aula->setNombre($this->aula->clean_string($search));
+            $result = $this->aula->get_aula();
+            foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
+                $json[] = array(
+                    'id' => $row['id'],
+                    'sede' => $row['sede'],
+                    'nombre' => $row['nombre'],
+                    'estado' => $row['estado'],
+                );
+            }
+
+            echo json_encode($json);
+            die();
+        }
+    }
+
     // METODOS PARA INSERTAR PROGRAMAS Y DEPENDENCIA
     public function insert_program(){
         if(isset($_POST['nameprogram'])){
@@ -116,6 +140,18 @@ class configuracionController extends Controller{
             $namedependence = $_POST['nametiqueta'];
             $this->etiqueta->setEtiqueta($namedependence);
             $result = $this->etiqueta->add();
+            echo $result;
+            die();
+        }
+    }
+
+    public function insert_aula(){
+        if(isset($_POST['nameaula'])){
+            $this->aula->setSede($this->aula->clean_string($_POST['sedes']));
+            $this->aula->setNombre($this->aula->clean_string($_POST['nameaula']));
+            $this->aula->setEstado($this->aula->clean_string($_POST['estado']));
+            $this->aula->setActivo('1');
+            $result = $this->aula->add();
             echo $result;
             die();
         }
@@ -160,6 +196,20 @@ class configuracionController extends Controller{
         die();
     }
 
+    public function get_aulas(){
+        $result = $this->aula->getAll();
+        foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
+            $json[] = array(
+                'id' => $row['id'],
+                'sede' => $row['sede'],
+                'nombre' => $row['nombre'],
+                'estado' => $row['estado'],
+            );
+        }
+        echo json_encode($json);
+        die();
+    }
+
 
     // METODOS PARA EDITAR PROGRAMAS Y DEPENDENCIA
     public function edit_program(){
@@ -192,6 +242,19 @@ class configuracionController extends Controller{
         }
     }
 
+    public function edit_aula(){
+        if(isset($_POST['id'])){
+            $this->aula->setId($this->aula->clean_string($_POST['id']));
+            $this->aula->setSede($this->aula->clean_string($_POST['sedes']));
+            $this->aula->setNombre($this->aula->clean_string($_POST['nameaula']));
+            $this->aula->setEstado($this->aula->clean_string($_POST['estado']));
+            $this->aula->setActivo($this->aula->clean_string($_POST['activo']));
+            $result = $this->aula->edit();
+            echo $result;
+            die();
+        }
+    }
+
 
 
 
@@ -218,15 +281,18 @@ class configuracionController extends Controller{
 
 
     // METODOS PARA TRAER POR ID PARA EDITAR PROGRAMA O DEPENDENCIA
-    public function get_programId(){
+    public function get_aulaId(){
         $json = array();
         if(isset($_POST['id'])){
-            $this->program->setId($_POST['id']);
-            $result = $this->program->get_forId();
+            $this->aula->setId($_POST['id']);
+            $result = $this->aula->get_forId();
             foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
                 $json[] = array(
                     'id' => $row['id'],
-                    'nombreprograma' => $row['nombreprograma'],
+                    'sede' => $row['sede'],
+                    'nombre' => $row['nombre'],
+                    'estado' => $row['estado'],
+                    'activo' => $row['activo']
                 );
             }
             echo json_encode($json);

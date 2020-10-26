@@ -1,5 +1,4 @@
 <?php include_once 'Public/view/view/header.php';
-var_dump($datos->fetchAll(\PDO::FETCH_ASSOC));
 ?>
 
 <div class="container-fluid pt-4 " style="max-width: 75rem;">

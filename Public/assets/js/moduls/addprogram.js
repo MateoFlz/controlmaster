@@ -4,12 +4,16 @@ $(document).ready(function () {
     let edit = false;
     let edit2 = false;
     let edit3 = false;
+    let edit4 = false;
+
     let idprogram = '';
     let id_dependencia = '';
     let id_etiqueta = '';
+    let id_aula = '';
     program_list();
     dependence_list();
     etiquetas_list();
+    aulas_list();
 
     
 
@@ -124,6 +128,45 @@ $(document).ready(function () {
 
     });
 
+    $("#aulassearch").keyup(function (e) {
+        if($("#aulassearch").val()){
+            let search =  $("#aulassearch").val();
+            $.ajax({
+                url: 'configuracion/get_aula',
+                type: 'POST',
+                data: {search: search},
+                dataType: 'JSON',
+                beforeSend: function(objeto){
+                    $('#loader').html('<img src="Public/assets/icons/ajax-loader.gif"> ');
+                },
+                success: function (response) {
+                    let template = "";
+                    response.forEach(respon =>{
+                        template += `
+                        <tr respon="${respon.id}"> 
+                        <td>${respon.id}</td>
+                        <td class="">${respon.sede}</td>
+                        <td class="">${respon.nombre}</td>
+                        <td class="">${respon.estado}</td>
+                         <td class="text-center">
+                            <button class="btn-edit-aula btn btn-info border"><i class="fas fa-edit"></i></button>
+                            <button class="btn-delete btn btn-danger border"><i class="fas fa-trash-alt"></i></i></button>
+                         </td>
+                    </tr>
+                   `;
+                    });
+                    $("#tbodyaula").html(template).fadeIn('slow');
+                    $('#loader').html('');
+
+                }
+
+            });
+        }else{
+            aulas_list();
+        }
+
+    });
+
 
     $('#formprogram').submit(function (e) {
 
@@ -212,6 +255,40 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
+    $('#formaulas').submit(function (e) {
+
+        let postData = '';
+        if(edit4 === true){
+             postData = {
+                 id: id_aula,
+                 nameaula: $('#nameaulas').val(),
+                 sedes: $('#sedes').val(),
+                 estado: $('#estado').val(),
+                 activo: $('#activo').val()
+            };
+        }else{
+            postData = {
+                nameaula: $('#nameaulas').val(),
+                sedes: $('#sedes').val(),
+                estado: $('#estado').val()
+            };
+        }
+        console.log(postData);
+        let url = edit4 === false ? 'configuracion/insert_aula' : 'configuracion/edit_aula';
+        $.post(url, postData, function (response) {
+            console.log(response);
+            if(response == true){
+                $('#aulasuccess').show();
+            }else{
+                $('#auladanger').show();
+            }
+            aulas_list();
+            $('#formaulas').trigger("reset");
+        });
+        edit4 = false;
+        e.preventDefault();
+    });
+
     function program_list(){
         $.ajax({
             url: 'configuracion/get_all',
@@ -232,6 +309,32 @@ $(document).ready(function () {
                    `;
                 });
                 $("#tbodyprogram").html(template);
+            }
+        });
+    }
+
+    function aulas_list(){
+        $.ajax({
+            url: 'configuracion/get_aulas',
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (response) {
+                let template = "";
+                response.forEach(respon =>{
+                    template += `
+                        <tr respon="${respon.id}"> 
+                            <td>${respon.id}</td>
+                            <td class="">${respon.sede}</td>
+                            <td class="">${respon.nombre}</td>
+                            <td class="">${respon.estado}</td>
+                             <td class="text-center">
+                                <button class="btn-edit-aula btn btn-info border"><i class="fas fa-edit"></i></button>
+                                <button class="btn-delete btn btn-danger border"><i class="fas fa-trash-alt"></i></i></button>
+                             </td>
+                        </tr>
+                   `;
+                });
+                $("#tbodyaula").html(template);
             }
         });
     }
@@ -266,7 +369,7 @@ $(document).ready(function () {
             type: 'GET',
             dataType: 'JSON',
             success: function (response) {
-                console.log(response);
+        
                 let template = "";
                 response.forEach(respon =>{
                     template += `
@@ -326,11 +429,29 @@ $(document).ready(function () {
         let element = $(this)[0].parentElement.parentElement;
         let id = $(element).attr('respon');
         $.post('configuracion/get_etiquetaId', {id},  function (response) {
-            console.log(response);
             let name = JSON.parse(response);
             id_etiqueta = name[0]['id'];
             $('#nametiqueta').val(name[0]['nametiqueta']);
             edit3 = true;
+        })
+    })
+
+    $(document).on('click', '.btn-edit-aula', function () {
+        $('#staticBackdrop2aula').modal();
+        $('#aulasuccess').hide();
+        $('#auladanger').hide();
+        $('.activos').show();
+        let element = $(this)[0].parentElement.parentElement;
+        let id = $(element).attr('respon');
+        $.post('configuracion/get_aulaId', {id},  function (response) {
+            let name = JSON.parse(response);
+            id_aula = name[0]['id'];
+            $('#nameaulas').val(name[0]['nombre']);
+            $('#sedes').val(name[0]['sede']);
+            $('#estado').val(name[0]['estado']);
+            $('#activo').val(name[0]['activo']);
+         
+            edit4 = true;
         })
     })
 
@@ -400,6 +521,15 @@ $(document).ready(function () {
         $('#nametiqueta').val('');
         $('#etiquesuccess').hide();
         $('#etiquedanger').hide();
+    })
+
+    $(document).on('click', '.btn-open-aula', function () {
+        $('#nameaula').val('');
+        $('#sedes').val('');
+        $('#estado').val('');
+        $('#aulasuccess').hide();
+        $('#auladanger').hide();
+        $('.activos').hide();
     })
 
     $(document).on('click', '.btn-open-depe', function() {

@@ -1,5 +1,8 @@
 var datas;
 $(document).ready(function () {
+
+    selectAula();
+    
     $('#programsuccess').hide();
     $('#programdanger').hide();
 
@@ -323,5 +326,90 @@ $(document).ready(function () {
         divs.append(links, inputs);
         $('#show-list-item').append(divs);
     })
+
+
+    $('#selectsedes').change(function(e)
+    {
+       
+        if($('#selectsedes').val()){
+        
+            let search = $('#selectsedes').val();
+            $.ajax({
+                url: 'get_sedes',
+                type: 'POST',
+                data: {search: search},
+                dataType: 'JSON',
+                success: function (response) {
+                    let templete = `<option value=""> -- : -- -- </option>`;
+                    response.forEach(respon =>{
+                        templete += `<option value="${respon.id}">${respon.nombre}</option>`;
+                    });
+                    $('#ubicacion').html(templete);
+                }
+            });
+        }else{
+            let templete = `<option value=""> -- : -- -- </option>`;
+            $('#ubicacion').html(templete);
+        }
+    })
+
+    $('#sedesedit').change(function(e)
+    {
+       
+        if($('#sedesedit').val()){
+        
+            let search = $('#sedesedit').val();
+            $.ajax({
+                url: 'http://localhost/controlmaster/inventarios/get_sedes',
+                type: 'POST',
+                data: {search: search},
+                dataType: 'JSON',
+                success: function (response) {
+         
+                    let templete = `<option value=""> -- : -- -- </option>`;
+                    response.forEach(respon =>{
+                        templete += `<option value="${respon.id}">${respon.nombre}</option>`;
+                    });
+                    $('#ubicacionedit').html(templete);
+                }
+            });
+        }else{
+            let templete = `<option value=""> -- : -- -- </option>`;
+            $('#ubicacionedit').html(templete);
+        }
+    })
+
+    
+    function selectAula()
+    {
+        let search = $('#sedesedit').val();
+        if(search)
+        {
+            $.ajax({
+                url: 'http://localhost/controlmaster/inventarios/get_sedes',
+                type: 'POST',
+                data: {search: search},
+                dataType: 'JSON',
+                success: function (response) {
+            
+                    let templete = "<option value=''> -- : -- -- </option>";
+                    response.forEach(respon =>{
+                        if(respon.id == ubicacion){
+                            templete += "<option value="+respon.id+" selected>"+respon.nombre+"</option>";
+                        }else{
+                            templete += "<option value="+respon.id+">"+respon.nombre+"</option>";
+                        }
+                        
+                    });
+                    $('#ubicacionedit').html(templete);
+                }
+            });
+        }else{
+            let templete = "<option value=''> -- : -- -- </option>";
+            $('#ubicacionedit').html(templete);
+        }
+        
+    }
     
 });
+

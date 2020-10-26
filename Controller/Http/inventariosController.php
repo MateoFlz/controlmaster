@@ -5,6 +5,8 @@ namespace Controller\Http;
 use Controller\Http\Controller;
 use Controller\Redirecter\Redirect;
 use Database\Models\Etiquetas;
+use Database\Models\Equipos;
+use Database\Models\Aulas;
 
 use Database\Models\Siret\Portatil;
 use Database\Models\Siret\Sonido;
@@ -17,11 +19,15 @@ class inventariosController extends Controller
     private $equipos;
     private $etiqueta;
     private $utilidas;
+    private $aula;
 
     public function __construct()
     {
-        $this->etiqueta = new Etiquetas();
         parent::__construct();
+        $this->etiqueta = new Etiquetas();
+        $this->equipos = new Equipos();
+        $this->aula =  new Aulas();
+        
         if ($this->session->getStatus() === PHP_SESSION_NONE || empty($this->session->get('name'))) {
             Redirect::redirect('index?session=false');
         }
@@ -37,7 +43,8 @@ class inventariosController extends Controller
     {
         $data = array(
             'etiquetas' => $this->etiqueta->getAll()->fetchAll(\PDO::FETCH_ASSOC),
-            'dependencia' => null
+            'ubicacion' => $this->aula->getAll()->fetchAll(\PDO::FETCH_ASSOC),
+            'equipos' => $this->equipos->getFull()->fetchAll(\PDO::FETCH_ASSOC)
         );
         return $this->view('inventarios/equipos', $data);
     }
@@ -46,6 +53,66 @@ class inventariosController extends Controller
     {
         return $this->view('inventarios/utilidades');
     }
+
+    public function insert()
+    {
+      
+        if (isset($_POST['idserial'])) {
+
+            $this->equipos->setSerial($this->equipos->clean_string($_POST['idserial']));
+            $this->equipos->setEtiqueta($this->equipos->clean_string($_POST['tipo']));
+            $this->equipos->setMarca($this->equipos->clean_string($_POST['idmarca']));
+            $this->equipos->setModelo($this->equipos->clean_string($_POST['idmodelo']));
+            $this->equipos->setDescripcion($this->equipos->clean_string($_POST['iddescripcion']));
+            $this->equipos->setUbicacion($this->equipos->clean_string($_POST['ubicacion']));
+            $this->equipos->setEstado($this->equipos->clean_string($_POST['estado']));
+            $this->equipos->setActivo($this->equipos->clean_string('1'));
+
+            $response =  $this->equipos->create();
+
+            if ($response) {
+                Redirect::redirect('inventarios/equipos?response=true');
+            } else {
+                Redirect::redirect('inventarios/equipos?response=false');
+            }
+        }
+    }
+
+    public function editar($id = '')
+    {
+        if(isset($id)){
+            $this->equipos->setId($this->equipos->clean_string($id));
+            $data = array(
+                'etiquetas' => $this->etiqueta->getAll()->fetchAll(\PDO::FETCH_ASSOC),
+                'ubicacion' => $this->aula->getAll()->fetchAll(\PDO::FETCH_ASSOC),
+                'equipos' => $this->equipos->getFull()->fetchAll(\PDO::FETCH_ASSOC),
+                'equipo' => $this->equipos->getEquipoById()
+            );
+            return $this->view('inventarios/equipos', $data);
+        }
+    }
+
+    public function get_sedes()
+    {
+        $search = $_POST['search'];
+        $json = array();
+
+        if(!empty($search)){
+            $this->aula->setSede($this->aula->clean_string($search));
+            $result = $this->aula->get_aulas_sede();
+            foreach ($result->fetchAll(\PDO::FETCH_ASSOC) AS $row){
+                $json[] = array(
+                    'id' => $row['id'],
+                    'nombre' => $row['nombre'],
+                );
+            }
+
+            echo json_encode($json);
+            die();
+        }
+    }
+
+
 
     /** 
 
