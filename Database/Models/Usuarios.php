@@ -33,7 +33,7 @@ class Usuarios extends Usuario {
      */
     public function setIds($ids): void
     {
-        $this->id = $ids;
+        $this->ids = $ids;
     }
 
     /**
@@ -192,7 +192,8 @@ class Usuarios extends Usuario {
 
     public function getById()
     {
-        $query = "SELECT a.*, cc.id AS ids, cc.tipo, cc.estado AS estadoc, cc.contraseña FROM usuarios a INNER JOIN acceso cc ON a.id = cc.usuarios_id WHERE a.id = $this->id;";
+        $query = "SELECT a.*, cc.id AS ids, cc.tipo, cc.estado AS estadoc, cc.contraseña FROM usuarios a
+         INNER JOIN acceso cc ON a.id = cc.usuarios_id WHERE a.id = $this->id;";
         $result = $this->return_query($query);
         $this->closeConnection();
         return $result;
@@ -259,6 +260,15 @@ class Usuarios extends Usuario {
         }
     }
 
+    public function getPermisos()
+    {
+        $query = "SELECT a.id, p.id AS idp FROM acceso a INNER JOIN acceso_permiso ap ON ap.id_acceso = a.id
+        JOIN permisos p ON p.id = ap.id_permiso WHERE ap.estado = 1 AND p.estado = 1 AND a.id = $this->ids";
+        $result = $this->return_query($query);
+        $this->closeConnection();
+        return $result;
+    }
+    
 
 
 

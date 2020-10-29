@@ -32,9 +32,12 @@ class administradoresController extends Controller{
     }
 
     public function admin($id = '')
-    {   $data = array(
+    {   
+        $this->usuarios->setIds($id);
+        $data = array(
             'idw' => $id,
-            'permiso' => $this->permisos->getAll()->fetchAll(\PDO::FETCH_ASSOC)
+            'permiso' => $this->permisos->getAll()->fetchAll(\PDO::FETCH_ASSOC),
+            'activos' => $this->usuarios->getPermisos()->fetchAll(\PDO::FETCH_ASSOC)
         );
         return $this->view('administradores/admin', $data);
     }
@@ -158,7 +161,7 @@ class administradoresController extends Controller{
         }
     }
 
-    public function permisos($ids = '')
+    public function insert_permisos($ids = '')
     {
         foreach($_POST['permisos'] as $row){
            $this->permisos->setIda($this->usuarios->clean_string($ids));
@@ -167,12 +170,19 @@ class administradoresController extends Controller{
 
            $response = $this->permisos->create();
             if($response){
-                Redirect::redirect('administradores/admin?response=true');
+                Redirect::redirect('administradores');
             }else{
-                Redirect::redirect('administradores/admin?response=false');
+                Redirect::redirect('administradores');
             }
            
         }
+    }
+
+    public function update_permisos($ids = '')
+    {
+
+      var_dump($_POST['permisos']);
+        
     }
 
 }

@@ -456,4 +456,20 @@ $(document).ready(function () {
             $("#ubicacionedit").html(templete);
         }
     }
+
+    $(document).on('click', '#btnsaves', function(e)
+    {
+       
+        for (let x = 1; x < tamano; x++) {
+
+            if($('#permi'+x).is(':checked')){
+                console.log('click');
+            }else{
+                $('#permi'+x).val('0');
+            }
+            
+        }
+
+        $('#submit').clik();
+    })
 });
