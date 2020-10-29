@@ -1,15 +1,11 @@
 <?php include_once 'Public/view/view/header.php';
 $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-$row = $datos['administrativo'];
-$ros = $datos['dependencia'];
-
-
 ?>
 <div class="container-fluid pt-4 " style="max-width: 75rem;">
     <div class="card border-secondary mb-3" >
         <div class="card-header bg-light">
             <div type="button" class="btn-group float-md-right">
-                <a class="btn btn-info" href="<?php echo URL . 'administrativos'?>"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</a>
+                <a class="btn btn-info" href="<?php echo URL . 'administradores'?>"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</a>
             </div>
             <h5 class="text-dark">Editar administrativo</h5>
         </div>
@@ -18,7 +14,7 @@ $ros = $datos['dependencia'];
 
         if (strpos($fullUrl, "responsedit=true") ==  true) { ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                administrativos actualizado satifactoriamente
+                administrador actualizado satifactoriamente
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -28,7 +24,7 @@ $ros = $datos['dependencia'];
 
         if (strpos($fullUrl, "responsedit=false") ==  true) { ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Ocurrio un error al actualizar el administrativo, la cedula ya exite!
+                Ocurrio un error al actualizar el administrador, la cedula ya exite!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -37,89 +33,104 @@ $ros = $datos['dependencia'];
         <?php
         }
         ?>
-            <form class="needs-validation" novalidate role="form" id="" action="<?php echo URL;?>administrativos/edit_administrativo" method="post">
-                <input type="hidden" name="id" id="id" value="<?php echo $datos['administrativo']['id'] ?>">
+            <form class="needs-validation" novalidate role="form" id="" action="<?php echo URL;?>administradores/edit_administrador" method="post">
+                <input type="hidden" name="id" id="id" value="<?php echo $datos['id'] ?>">
                 <div class="form-group row">
                    
                     <div class="col-md-4">
                     <label for="idcedula" class="control-label">Cédula</label>
-                        <input type="number" class="form-control input-sm" id="idcedula" name="idcedulaedit" value="<?php echo $datos['administrativo']['cedula'] ?>" placeholder="Numero de cédula" required readonly>
+                        <input type="number" class="form-control input-sm" id="idcedula" name="idcedulaedit" value="<?php echo $datos['cedula'] ?>" placeholder="Numero de cédula" required readonly>
                     </div>
                     
                     <div class="col-md-4">
                     <label for="idnombre1" class="control-label">Primer nombre</label>
-                        <input type="text" class="form-control input-sm" id="idnombre1" name="idnombre1edit" onkeydown="return false" value="<?php echo $datos['administrativo']['pnombre'] ?>" placeholder="Primer nombre" required>
+                        <input type="text" class="form-control input-sm" id="idnombre1" name="idnombre1edit" onkeydown="return false" value="<?php echo $datos['pnombre'] ?>" placeholder="Primer nombre" required>
                     </div>
                     
                     <div class="col-md-4">
                     <label for="idnombre2" class="control-label">Segundo nombre</label>
-                        <input type="text" class="form-control input-sm" id="idnombre2" name="idnombre2edit" value="<?php echo $datos['administrativo']['snombre'] ?>" placeholder="Segundo nombre">
+                        <input type="text" class="form-control input-sm" id="idnombre2" name="idnombre2edit" value="<?php echo $datos['snombre'] ?>" placeholder="Segundo nombre">
                     </div>
                 </div>
                 <div class="form-group row">
                     
                     <div class="col-md-4">
                     <label for="idapellido1" class="control-label">Primer apellido</label>
-                        <input type="text" class="form-control input-sm" id="idapellido1" name="idapellido1edit" value="<?php echo $datos['administrativo']['papellido'] ?>" placeholder="Primer apellido" required>
+                        <input type="text" class="form-control input-sm" id="idapellido1" name="idapellido1edit" value="<?php echo $datos['papellido'] ?>" placeholder="Primer apellido" required>
                     </div>
                     
                     <div class="col-md-4">
                     <label for="idapellido2" class="control-label">Segundo apellido</label>
-                        <input type="text" class="form-control input-sm" id="idapellido2" name="idapellido2edit" value="<?php echo $datos['administrativo']['sapellido'] ?>" placeholder="Segundo apellido" >
+                        <input type="text" class="form-control input-sm" id="idapellido2" name="idapellido2edit" value="<?php echo $datos['sapellido'] ?>" placeholder="Segundo apellido" >
                     </div>
                     
                     <div class="col-md-4">
                     <label for="idtelefono" class="control-label">Telefono</label>
-                        <input type="number" class="form-control input-sm" id="idtelefono" name="idtelefonoedit" value="<?php echo $datos['administrativo']['telefono'] ?>" placeholder="Numero telefonico" required>
+                        <input type="number" class="form-control input-sm" id="idtelefono" name="idtelefonoedit" value="<?php echo $datos['telefono'] ?>" placeholder="Numero telefonico" required>
                     </div>
                 </div>
                 <div class="form-group row">
                     
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                     <label for="idcorreo" class="control-label">Correo</label>
-                        <input type="email" class="form-control input-sm" id="idcorreo" name="idcorreoedit" value="<?php echo $datos['administrativo']['correo'] ?>" placeholder="Correo electronico" required>
+                        <input type="email" class="form-control input-sm" id="idcorreo" name="idcorreoedit" value="<?php echo $datos['correo'] ?>" placeholder="Correo electronico" required>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                     <label for="iddireccion" class="control-label">Dirección</label>
-                        <input type="text" class="form-control input-sm" id="iddireccion" name="iddireccionedit" value="<?php echo $datos['administrativo']['direccion'] ?>" placeholder="Dirección de residencia" required>
+                        <input type="text" class="form-control input-sm" id="iddireccion" name="iddireccionedit" value="<?php echo $datos['direccion'] ?>" placeholder="Dirección de residencia" required>
                     </div>
-                </div>
-                <div class="form-group row">
-                    
-                    <div class="col-md-6">
-                    <label for="condiciones" class="control-label">Faculta</label>
-                        <select class='form-control input-sm' id="condiciones" name="condicionesedit" required>
-                            <option value="">   -- Seleccione una dependencia --   </option>
-                           <?php
-                                foreach($datos['dependencia'] AS $rows){
-                                    ?>
-                                    <option value="<?php echo $rows['id'] ?>"<?php if($datos['administrativo']['dependencia'] == $rows['id']){ echo ' selected';} ?>><?php  echo $rows['nombre_dependencia'] ?></option>
-                                <?php
-                                }
-                           ?>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="tel1" class="control-label">Estado</label>
                         <select class='form-control input-sm' id="condiciones2" name="condiciones2" required>
                             <option value="">-- Selecciona un estado --</option>
-                            <option value="1" <?php if ($row['estado'] == 1) {
+                            <option value="1" <?php if ($datos['estado'] == 1) {
                                                     echo 'selected';
                                                 } ?>>Activo</option>
-                            <option value="0" <?php if ($row['estado'] == 0) {
+                            <option value="0" <?php if ($datos['estado'] == 0) {
                                                     echo 'selected';
                                               } ?>>Inactivo</option>
                         </select>
                     </div>
                 </div>
                 <div class="dropdown-divider"></div>
-                <div class="form-group row justify-content-center">
-                    <button type="submit" class="btn btn-warning btn-lg"><i class="fas fa-fingerprint"></i><br>Huella</button>
+                <h5 class="text-center">Datos de acceso</h5>
+                <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="idcondiciones3" class="control-label">Tipo</label>
+                    <select class='form-control input-sm' name="idcondiciones3" id="idcondiciones3" required>
+                        <option value="">-- Selecciona un tipo de usuario --
+                        </option>
+                        <option value="Administrador" <?php if ($datos['tipo'] == 'Administrador') {
+                                                    echo 'selected';
+                                                } ?>>Administrador</option>
+                        <option value="Tecnico" <?php if ($datos['tipo'] == 'Tecnico') {
+                                                    echo 'selected';
+                                                } ?>>Tecnico</option>
+                    </select>
                 </div>
-                <div class="dropdown-divider"></div>
-                <div class="form-group row justify-content-end">
 
+                <div class="col-md-4">
+                <label for="idpasswords" class="control-label">Contraseña
+                    de acceso</label>
+                    <input type="password" class="form-control input-sm" name="idpasswords" id="idpasswords"
+                        placeholder="Digite su contraseña" autocomplete="off" value="">
+                    <input type="hidden" name="idpass" value="<?php echo $datos['contraseña']?>">
+                </div>
+                <div class="col-md-4">
+                        <label for="condiciones4" class="control-label">Estado acceso a sistema</label>
+                        <select class='form-control input-sm' id="condiciones4" name="condiciones4" required>
+                            <option value="">-- Selecciona un estado --</option>
+                            <option value="1" <?php if ($datos['estadoc'] == 1) {
+                                                    echo 'selected';
+                                                } ?>>Habilitado</option>
+                            <option value="0" <?php if ($datos['estadoc'] == 0) {
+                                                    echo 'selected';
+                                              } ?>>Inhabilitado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-end">
                     <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</button>&nbsp;
                     <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar</button>
                 </div>

@@ -1,58 +1,57 @@
 var datas;
 $(document).ready(function () {
-
     selectAula();
-    
-    $('#programsuccess').hide();
-    $('#programdanger').hide();
 
-    getAll_user();
-    //getAll_student();   
+    $("#programsuccess").hide();
+    $("#programdanger").hide();
 
-    $('#user').keyup(function (e) {
-        if($('#user').val()){
-            let search = $('#user').val();
+    //getAll_student();
+
+    $("#user").keyup(function (e) {
+        if ($("#user").val()) {
+            let search = $("#user").val();
             $.ajax({
-                url: 'getUser',
-                type: 'POST',
-                data: {search: search},
-                dataType: 'JSON',
+                url: "getUser",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
                 success: function (response) {
                     let templete = ``;
-                    response.forEach(respon =>{
+                    response.forEach((respon) => {
                         templete += `<a href="#" id="item-data" class="list-group-item list-group-item-action border-1">${respon.nombre}</a>
                         <input type="hidden" id="idcedula" value="${respon.cedula}">`;
                     });
-                    $('#show-list').html(templete);
-                }
+                    $("#show-list").html(templete);
+                },
             });
-        }else {
-            $('#show-list').html('')
+        } else {
+            $("#show-list").html("");
         }
     });
 
-    $(document).on('click', '#item-data', function(e) {
-        $('#user').val($(this).text());
-        $('#nombre').val($(this).text());
-        $('#cedula').val($('#idcedula').val());
-        $('#show-list').html('');
+    $(document).on("click", "#item-data", function (e) {
+        $("#user").val($(this).text());
+        $("#nombre").val($(this).text());
+        $("#cedula").val($("#idcedula").val());
+        $("#show-list").html("");
     });
- 
 
-    $('#searchusuario').keyup(function (e) {
-        if($('#searchusuario').val()){
-            let search = $('#searchusuario').val();
+    $("#searchusuario").keyup(function (e) {
+        if ($("#searchusuario").val()) {
+            let search = $("#searchusuario").val();
             $.ajax({
-                url: 'estudiantes/get_searchUsuario',
-                type: 'POST',
-                data: {search: search},
-                dataType: 'JSON',
-                beforeSend: function(objeto){
-                    $('#loader1').html('<img src="Public/assets/icons/ajax-loader.gif"> ');
+                url: "estudiantes/get_searchUsuario",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
+                beforeSend: function (objeto) {
+                    $("#loader1").html(
+                        '<img src="Public/assets/icons/ajax-loader.gif"> '
+                    );
                 },
                 success: function (response) {
                     let template = "";
-                    response.forEach(respon =>{
+                    response.forEach((respon) => {
                         template += `
                         <tr respon="${respon.cedula}"> 
                             <td>${respon.cedula}</td>
@@ -69,31 +68,30 @@ $(document).ready(function () {
                    `;
                     });
                     $(".tbody-student").html(template);
-                    $('#loader1').html('');
-                }
-
+                    $("#loader1").html("");
+                },
             });
-        }else{
+        } else {
             getAll_student();
         }
-
     });
 
-
-    $('#buscar_docente').keyup(function (e) {
-        if($('#buscar_docente').val()){
-            let search = $('#buscar_docente').val();
+    $("#buscar_docente").keyup(function (e) {
+        if ($("#buscar_docente").val()) {
+            let search = $("#buscar_docente").val();
             $.ajax({
-                url: 'docentes/get_search_docente',
-                type: 'POST',
-                data: {search: search},
-                dataType: 'JSON',
-                beforeSend: function(objeto){
-                    $('#loader2').html('<img src="Public/assets/icons/ajax-loader.gif"> ');
+                url: "docentes/get_search_docente",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
+                beforeSend: function (objeto) {
+                    $("#loader2").html(
+                        '<img src="Public/assets/icons/ajax-loader.gif"> '
+                    );
                 },
                 success: function (response) {
                     let template = "";
-                    response.forEach(respon =>{
+                    response.forEach((respon) => {
                         template += `
                         <tr respon="${respon.cedula}"> 
                         <td>${respon.cedula}</td>
@@ -111,32 +109,30 @@ $(document).ready(function () {
                    `;
                     });
                     $("#tbodydocente").html(template);
-                    $('#loader2').html('');
-                }
-
+                    $("#loader2").html("");
+                },
             });
-        }else{
+        } else {
             getAll_docente();
         }
-
     });
-    
 
-    $('#buscar_administrativo').keyup(function (e) {
-        if($('#buscar_administrativo').val()){
-            let search = $('#buscar_administrativo').val();
+    $("#buscar_administrativo").keyup(function (e) {
+        if ($("#buscar_administrativo").val()) {
+            let search = $("#buscar_administrativo").val();
             $.ajax({
-                url: 'administrativos/get_search_administrativo',
-                type: 'POST',
-                data: {search: search},
-                dataType: 'JSON',
-                beforeSend: function(objeto){
-                    $('#loader3').html('<img src="Public/assets/icons/ajax-loader.gif"> ');
+                url: "administrativos/get_search_administrativo",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
+                beforeSend: function (objeto) {
+                    $("#loader3").html(
+                        '<img src="Public/assets/icons/ajax-loader.gif"> '
+                    );
                 },
                 success: function (response) {
-            
                     let template = "";
-                    response.forEach(respon =>{
+                    response.forEach((respon) => {
                         template += `
                         <tr respon="${respon.cedula}"> 
                         <td>${respon.cedula}</td>
@@ -154,54 +150,104 @@ $(document).ready(function () {
                    `;
                     });
                     $("#tbodyadministrativo").html(template);
-                    $('#loader3').html('');
-                }
-
+                    $("#loader3").html("");
+                },
             });
-        }else{
+        } else {
             getAll_administrativo();
         }
-
     });
 
+    $("#buscar_administrador").keyup(function (e) {
+        if ($("#buscar_administrador").val()) {
+            let search = $("#buscar_administrador").val();
+            $.ajax({
+                url: "administradores/get_adminstradores",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
+                beforeSend: function (objeto) {
+                    $("#loader3").html(
+                        '<img src="Public/assets/icons/ajax-loader.gif"> '
+                    );
+                },
+                success: function (response) {
+                    console.log(response);
+                    let template = "";
+                    response.forEach((respon) => {
+                        template += `
+                            <tr respon="${respon.id}"> 
+                                <td>${respon.cedula}</td>
+                                <td>${respon.nombre}</td>
+                                <td>${respon.tipo}</td>
+                                <td>${respon.telefono}</td>
+                                <td>${respon.correo}</td>
+                                <td class="text-center">
+                                <a href="administradores/show/${respon.id}"
+                                    class="btn btn-primary border"><i class="fas fa-eye"></i></a>
+                                <a href="administradores/editar/${respon.id}"
+                                    class="btnedit btn btn-info border"><i class="fas fa-edit"></i></a>
+                                <form action="administradores/delete/${respon.id}" method="post"
+                                    style="display: inline">
+                                    <button type="submit" class="btn btn-danger"> <i
+                                            class="fas fa-trash-alt"></i></button>
+                                </form>
+                            </td>  
+                            </tr>
+                       `;
+                    });
+                    $("#tbodyadmins").html(template);
+                    $("#loader3").html("");
+                },
+            });
+        }else{
+            getAll_administrador();
+        }
+    });
 
-    function getAll_user() {
+    function getAll_administrador() {
         $.ajax({
-            url: 'index/get_usuarios',
-            type: 'GET',
-            dataType: 'JSON',
+            url: "administradores/get_usuarios",
+            type: "GET",
+            dataType: "JSON",
             success: function (response) {
-                
                 let template = "";
-                response.forEach(respon =>{
+                response.forEach((respon) => {
                     template += `
-                        <tr respon="${respon.cedula}"> 
-                            <td>${respon.cedula}</td>
-                            <td>${respon.nombre}</td>
-                            <td>${respon.tipo}</td>
-                            <td>${respon.telefono}</td>
-                            <td>${respon.correo}</td>
-                             <td class="text-center">
-                                <button class="btn btn-primary border"><i class="fas fa-eye"></i></button>
-                                <button class="btn btn-info border"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger border"><i class="fas fa-trash-alt"></i></i></button>
-                             </td>
-                        </tr>
+                    <tr respon="${respon.id}"> 
+                        <td>${respon.cedula}</td>
+                        <td>${respon.nombre}</td>
+                        <td>${respon.tipo}</td>
+                        <td>${respon.telefono}</td>
+                        <td>${respon.correo}</td>
+                        <td class="text-center">
+                        <a href="administradores/show/${respon.id}"
+                            class="btn btn-primary border"><i class="fas fa-eye"></i></a>
+                        <a href="administradores/editar/${respon.id}"
+                            class="btnedit btn btn-info border"><i class="fas fa-edit"></i></a>
+                        <form action="administradores/delete/${respon.id}" method="post"
+                            style="display: inline">
+                            <button type="submit" class="btn btn-danger"> <i
+                                    class="fas fa-trash-alt"></i></button>
+                        </form>
+                        </td>  
+                    </tr>
                    `;
                 });
-                $("#tbodyusuario").html(template);
-            }
+
+                $("#tbodyadmins").html(template);
+            },
         });
     }
 
     function getAll_docente() {
         $.ajax({
-            url: 'docentes/get_all_docente',
-            type: 'GET',
-            dataType: 'JSON',
+            url: "docentes/get_all_docente",
+            type: "GET",
+            dataType: "JSON",
             success: function (response) {
                 let template = "";
-                response.forEach(respon =>{
+                response.forEach((respon) => {
                     template += `
                         <tr respon="${respon.cedula}"> 
                             <td>${respon.cedula}</td>
@@ -220,18 +266,18 @@ $(document).ready(function () {
                 });
 
                 $("#tbodydocente").html(template);
-            } 
+            },
         });
     }
 
     function getAll_administrativo() {
         $.ajax({
-            url: 'administrativos/get_all_administrativo',
-            type: 'GET',
-            dataType: 'JSON',
+            url: "administrativos/get_all_administrativo",
+            type: "GET",
+            dataType: "JSON",
             success: function (response) {
                 let template = "";
-                response.forEach(respon =>{
+                response.forEach((respon) => {
                     template += `
                         <tr respon="${respon.cedula}"> 
                             <td>${respon.cedula}</td>
@@ -250,19 +296,19 @@ $(document).ready(function () {
                 });
 
                 $("#tbodyadministrativo").html(template);
-            } 
+            },
         });
     }
 
     function getAll_student() {
         $.ajax({
-            url: 'estudiantes/get_student',
-            type: 'GET',
-            dataType: 'JSON',
+            url: "estudiantes/get_student",
+            type: "GET",
+            dataType: "JSON",
             success: function (response) {
                 console.log(response);
                 let template = "";
-                response.forEach(respon =>{
+                response.forEach((respon) => {
                     template += `
                         <tr respon="${respon.id}"> 
                             <td scope="row">${respon.cedula}</td>
@@ -279,137 +325,135 @@ $(document).ready(function () {
                    `;
                 });
                 $(".tbody-student").html(template);
-            }
+            },
         });
     }
 
-
-    $(document).on('click', '.btndelet1', function () {
-        if(confirm('¿Estas seguro de eliminar este estudiante?')){
+    $(document).on("click", ".btndelet1", function () {
+        if (confirm("¿Estas seguro de eliminar este estudiante?")) {
             let elemet = $(this)[0].parentElement.parentElement;
-            let id = $(elemet).attr('respon');
-            $.post('estudiantes/delete_student', {id}, function (response) {
+            let id = $(elemet).attr("respon");
+            $.post("estudiantes/delete_student", { id }, function (response) {
                 getAll_student();
-            })
+            });
         }
+    });
 
-    })
-
-    $('#actual_contraseña').blur(function() {
+    $("#actual_contraseña").blur(function () {
         let password = $(this).val();
         console.log(password);
-        $.post('perfil/validatePassword', {password}, function(respon) {
+        $.post("perfil/validatePassword", { password }, function (respon) {
             console.log(respon);
-            if(respon == ''){
-                $('#actual_contraseña').focus();
-                $('#actual_contraseña').addClass('is-invalid');
-            }else{
-                $('#actual_contraseña').removeClass('is-invalid');
+            if (respon == "") {
+                $("#actual_contraseña").focus();
+                $("#actual_contraseña").addClass("is-invalid");
+            } else {
+                $("#actual_contraseña").removeClass("is-invalid");
             }
-        })
-    })
-
-
+        });
+    });
 
     //CRECION DE ELEMENTOS INPUT PARA INVETARIOS DINAMICOS
-    $(document).on('click', '#btn-portatil', function () {
-        var divs = document.createElement('div');
-        var links = document.createElement('a');
-        var inputs = document.createElement('input');
-        inputs.setAttribute('type', 'hidden')
-        inputs.setAttribute('name', 'portatil[]')
+    $(document).on("click", "#btn-portatil", function () {
+        var divs = document.createElement("div");
+        var links = document.createElement("a");
+        var inputs = document.createElement("input");
+        inputs.setAttribute("type", "hidden");
+        inputs.setAttribute("name", "portatil[]");
         let elemet = $(this)[0].parentElement.parentElement;
-        inputs.setAttribute('value', $(elemet).attr('respon'))
-        links.setAttribute('href', '#');
-        links.setAttribute('class', 'list-group-item list-group-item-action border-1');
-        links.append("Codigo: ", $(this).parents("tr").find(".portatil-codigo").html()," Descripcion: ",$(this).parents("tr").find(".portatil-descripcion").html());
+        inputs.setAttribute("value", $(elemet).attr("respon"));
+        links.setAttribute("href", "#");
+        links.setAttribute(
+            "class",
+            "list-group-item list-group-item-action border-1"
+        );
+        links.append(
+            "Codigo: ",
+            $(this).parents("tr").find(".portatil-codigo").html(),
+            " Descripcion: ",
+            $(this).parents("tr").find(".portatil-descripcion").html()
+        );
         divs.append(links, inputs);
-        $('#show-list-item').append(divs);
-    })
+        $("#show-list-item").append(divs);
+    });
 
-
-    $('#selectsedes').change(function(e)
-    {
-       
-        if($('#selectsedes').val()){
-        
-            let search = $('#selectsedes').val();
+    $("#selectsedes").change(function (e) {
+        if ($("#selectsedes").val()) {
+            let search = $("#selectsedes").val();
             $.ajax({
-                url: 'get_sedes',
-                type: 'POST',
-                data: {search: search},
-                dataType: 'JSON',
+                url: "get_sedes",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
                 success: function (response) {
                     let templete = `<option value=""> -- : -- -- </option>`;
-                    response.forEach(respon =>{
+                    response.forEach((respon) => {
                         templete += `<option value="${respon.id}">${respon.nombre}</option>`;
                     });
-                    $('#ubicacion').html(templete);
-                }
+                    $("#ubicacion").html(templete);
+                },
             });
-        }else{
+        } else {
             let templete = `<option value=""> -- : -- -- </option>`;
-            $('#ubicacion').html(templete);
+            $("#ubicacion").html(templete);
         }
-    })
+    });
 
-    $('#sedesedit').change(function(e)
-    {
-       
-        if($('#sedesedit').val()){
-        
-            let search = $('#sedesedit').val();
+    $("#sedesedit").change(function (e) {
+        if ($("#sedesedit").val()) {
+            let search = $("#sedesedit").val();
             $.ajax({
-                url: 'http://localhost/controlmaster/inventarios/get_sedes',
-                type: 'POST',
-                data: {search: search},
-                dataType: 'JSON',
+                url: "http://localhost/controlmaster/inventarios/get_sedes",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
                 success: function (response) {
-         
                     let templete = `<option value=""> -- : -- -- </option>`;
-                    response.forEach(respon =>{
+                    response.forEach((respon) => {
                         templete += `<option value="${respon.id}">${respon.nombre}</option>`;
                     });
-                    $('#ubicacionedit').html(templete);
-                }
+                    $("#ubicacionedit").html(templete);
+                },
             });
-        }else{
+        } else {
             let templete = `<option value=""> -- : -- -- </option>`;
-            $('#ubicacionedit').html(templete);
+            $("#ubicacionedit").html(templete);
         }
-    })
+    });
 
-    
-    function selectAula()
-    {
-        let search = $('#sedesedit').val();
-        if(search)
-        {
+    function selectAula() {
+        let search = $("#sedesedit").val();
+        if (search) {
             $.ajax({
-                url: 'http://localhost/controlmaster/inventarios/get_sedes',
-                type: 'POST',
-                data: {search: search},
-                dataType: 'JSON',
+                url: "http://localhost/controlmaster/inventarios/get_sedes",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
                 success: function (response) {
-            
                     let templete = "<option value=''> -- : -- -- </option>";
-                    response.forEach(respon =>{
-                        if(respon.id == ubicacion){
-                            templete += "<option value="+respon.id+" selected>"+respon.nombre+"</option>";
-                        }else{
-                            templete += "<option value="+respon.id+">"+respon.nombre+"</option>";
+                    response.forEach((respon) => {
+                        if (respon.id == ubicacion) {
+                            templete +=
+                                "<option value=" +
+                                respon.id +
+                                " selected>" +
+                                respon.nombre +
+                                "</option>";
+                        } else {
+                            templete +=
+                                "<option value=" +
+                                respon.id +
+                                ">" +
+                                respon.nombre +
+                                "</option>";
                         }
-                        
                     });
-                    $('#ubicacionedit').html(templete);
-                }
+                    $("#ubicacionedit").html(templete);
+                },
             });
-        }else{
+        } else {
             let templete = "<option value=''> -- : -- -- </option>";
-            $('#ubicacionedit').html(templete);
+            $("#ubicacionedit").html(templete);
         }
-        
     }
-    
 });
-

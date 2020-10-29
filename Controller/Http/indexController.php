@@ -17,7 +17,7 @@ class indexController extends Controller{
     public function __construct()
     {
         parent::__construct();
-        $this->usuarios =  new Usuarios();
+        $this->usuarios = new Usuarios();
     }
 
     public function index()
@@ -40,8 +40,8 @@ class indexController extends Controller{
             $result = $this->usuarios->actionLogin();
 
     
-            $id = $result[0];
-            $name = $result[1];
+            $id = $result[1];
+            $name = $result[2];
 
             if($result != null){
                 $this->session->add('id', $id);
@@ -74,4 +74,7 @@ class indexController extends Controller{
         echo json_encode($json);
         die();
     }
+
+
+    
 }

@@ -32,7 +32,7 @@ class configuracionController extends Controller{
 
     public function index()
     {
-        //return $this->view('configuracion/index');
+        return $this->view('configuracion/index');
     }
 
 
