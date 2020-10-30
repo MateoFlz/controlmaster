@@ -1,6 +1,7 @@
 <?php
 namespace Database;
 use Config\Dataconnection;
+use ZipArchive;
 
 abstract class  abstractModel extends Dataconnection
 {
@@ -43,6 +44,29 @@ abstract class  abstractModel extends Dataconnection
         }catch (\PDOException $e){
             echo 'Error en el metodo openConection' . $e->getMessage();
             die();
+        }
+    }
+
+    public function createbackup()
+    {
+        $fecha = date('Ymd-His');
+        $salida = $fecha.'.sql';
+
+        $dump = 'mysqldump -h$this->host -u$this->user -p$this->password --opt
+        $this->database';
+        system($dump, $dump);
+
+        $zip = new ZipArchive();
+        $salida_zip = $fecha.'.zip';
+        if($zip->open($salida_zip, ZIPARCHIVE::CREATE) === true){
+            $zip->addFile($salida);
+            $zip->close();
+            \unlink($salida);
+
+            \header('Location: '.$salida_zip);
+            return true;
+        }else{
+            return false;
         }
     }
 
@@ -121,5 +145,6 @@ abstract class  abstractModel extends Dataconnection
     }
 
 
+    
 
 }

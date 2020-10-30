@@ -87,6 +87,7 @@
                             <div class="dropleft">
                                 <div class="dropdown-menu dropdown-menu-left" aria-labelledby="btnGroupDro">
                                     <a class="dropdown-item" href="<?php echo URL . 'configuracion'?>">Sistema</a>
+                                    <a class="dropdown-item" href="<?php echo URL . 'back'?>">Respaldo</a>
                                     <a class="dropdown-item" href="<?php echo URL . 'administradores'?>">Administradores</a>
                                 </div>
                             </div>

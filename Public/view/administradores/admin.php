@@ -46,7 +46,7 @@ print_r($datos)
                                 echo 'administradores/insert_permisos/' . $datos['idw'];
                             } else {
                                 echo 'administradores/update_permisos/' . $datos['idw'];
-                            } ?>" method="POST" role="form" id="submitpermiso">
+                            } ?>" method="POST" role="form" id="submitpermiso" onsubmit="myFunction()">
                 <table class="table table-bordered ">
                     <thead>
                         <tr>
@@ -89,6 +89,16 @@ print_r($datos)
                 <script>
                     var tamano = "<?php echo sizeof($datos['permiso']); ?>";
                     console.log(tamano);
+                    function myFunction(){
+                        alert('mensaje')
+                        for (let x = 1; x < tamano; x++) {
+
+                        if(!document.getElementById('#permi'+x).checked){
+                            document.getElementById('#permi'+x).value = '0'
+                        }
+
+                        }
+                    }
                 </script>
                 <div class="dropdown-divider"></div>
                 <div class="form-group row justify-content-end">
