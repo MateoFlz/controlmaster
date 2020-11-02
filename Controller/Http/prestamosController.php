@@ -40,11 +40,8 @@ class prestamosController extends Controller
 
     public function create()
     {
-        $data[0] = $this->portatil->getAll()->fetchAll(\PDO::FETCH_ASSOC);
-        $data[1] = $this->videobeam->getAll()->fetchAll(\PDO::FETCH_ASSOC);
-        $data[2] = $this->sonido->getAll()->fetchAll(\PDO::FETCH_ASSOC);
-        $data[3] = $this->utilidades->getAll()->fetchAll(\PDO::FETCH_ASSOC);
-        return $this->view('prestamos/create', $data);
+      
+        return $this->view('prestamos/create');
     }
 
     public function getUser(){

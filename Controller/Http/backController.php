@@ -31,15 +31,12 @@ class backController extends Controller
         return $this->view('back/index');
     }
 
-    public function backups()
+
+
+    public function insert()
     {
-        $response = $this->loggbackups->createbackup();
-        if($response){
-            echo $response;
-        }else{
-            echo $response;
-        }
-            
+        header('Location: ' . URL . 'helpers/backups/descargar.php');
+        Redirect::redirect('index?session=false');
     }
     
     

@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <?php
-            $rowt = $datos['equipo']->fetchAll(\PDO::FETCH_ASSOC);
+            $rowt = $datos['utilidad']->fetchAll(\PDO::FETCH_ASSOC);
             if (strpos($fullUrl, "responsedit=true") ==  true) { ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     Equipo actualizado satifactoriamente.
@@ -27,15 +27,9 @@
             
             }
             ?>
-            <form action="<?php echo URL . "inventarios/update"; ?>" method="post">
+            <form action="<?php echo URL . "inventarios/updateutl"; ?>" method="post">
                 <input type="hidden" name="id" value="<?php echo $rowt[0]['id']?>">
                 <div class="form-group row">
-                    <div class="col-md-6">
-                        <label for="idserial" class="control-label">Serial</label>
-                        <input type="text" class="form-control input-sm" value="<?php echo $rowt[0]['serial']?>" id="idserial" name="idserial"
-                            placeholder="Numero serial" required>
-                    </div>
-
                     <div class="col-md-6">
                         <label for="estado" class="control-label">Tipo de equipo</label>
                         <select name="tipo" class="form-control" required>
@@ -53,14 +47,23 @@
                         <label for="idmarca" class="control-label">Marca</label>
                         <input type="text" class="form-control" name="idmarca" id="idmarca" value="<?php echo $rowt[0]['marca']?>">
                     </div>
-                    <div class="col-md-6">
-                        <label for="idmodelo" class="control-label">Modelo</label>
-                        <input type="text" class="form-control" name="idmodelo" id="idmodelo" value="<?php echo $rowt[0]['modelo']?>">
-                    </div>
                     <div class="col-md-12">
                         <label for="iddescripcion" class="control-label">Descripcion</label>
                         <textarea class="form-control" name="iddescripcion" id="exampleFormControlTextarea1"
                             rows="2"><?php echo $rowt[0]['descripcion']?></textarea>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="cantidad" class="control-label">Cantidad</label>
+                    </div>    
+                    <div class="col-md-12 input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button type="button" id="btndown" class="form-control btn-info"><i class="fas fa-level-down-alt"></i></button>
+                        </div>
+                        <input type="text" class="form-control text-center" value="<?php echo $rowt[0]['cantidad']?>" name="cantidad" id="cantidad" placeholder="" aria-label=""
+                            aria-describedby="basic-addon1">
+                        <div class="input-group-append">
+                            <button type="button" id="btnup" class="form-control btn-success"><i class="fas fa-level-up-alt"></i></button>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <label for="sedesedit" class="control-label float-left">Sedes</label>

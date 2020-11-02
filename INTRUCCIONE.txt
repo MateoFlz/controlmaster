@@ -1,0 +1,21 @@
+USUARIO: 1102878062
+CONTRASEÑA: 123456
+
+IMCOMPLETO: PERMISOS, REPORTES
+
+INCOMPLETO: TABLA DE USUARIOS QUE CREARON BACKUPS PARA IDENTIFICAR QUIEN LO REALIZO
+
+Buenas profe, tenemos algunas dificultades y nos ha llevado a mucho tiempo, realizar algunas cuestiones
+trabajamos MODELO VISTA CONTROLADOR ademas de programacion orienteada a objetos en PHP
+
+se nos ha dificultado algunas cuestiones, pero seguridad que 100% estara para sustentacion
+
+INTEGRANTES:
+
+MATEO FLOREZ ARROYO
+HECTOR PALMETT ASIS
+ERICH RAMOS NARVALES
+
+NUEVO INTEGRANTE: JUAN DANIEL MERCADO PABUENA
+
+TRABAJOMOS EL MISMO PROYECTO PARA PRACTICA EMPRESARIAL CON MATEO FLOREZ

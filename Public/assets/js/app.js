@@ -18,8 +18,12 @@ $(document).ready(function () {
                 success: function (response) {
                     let templete = ``;
                     response.forEach((respon) => {
-                        templete += `<a href="#" id="item-data" class="list-group-item list-group-item-action border-1">${respon.nombre}</a>
-                        <input type="hidden" id="idcedula" value="${respon.cedula}">`;
+                        templete += `
+                        <div class="list-group" id="show-list2">
+ 
+                        <a href="#" id="item-data" class="list-group-item list-group-item-action border-1">${respon.nombre}</a>
+                        <input type="hidden" id="idcedulas" value="${respon.cedula}">
+                        </div>`;
                     });
                     $("#show-list").html(templete);
                 },
@@ -29,12 +33,17 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("click", "#item-data", function (e) {
-        $("#user").val($(this).text());
-        $("#nombre").val($(this).text());
-        $("#cedula").val($("#idcedula").val());
-        $("#show-list").html("");
+    $(document).on("click", "#show-list2", function (e) {
+     
+       $("#cedula").val($(this).children('input').val());
+       
+       $("#show-list").html("");
     });
+
+    $(document).on("click", "#item-data", function (e) {
+        $("#nombre").val($(this).text());
+        $("#user").val($(this).text());
+       })
 
     $("#searchusuario").keyup(function (e) {
         if ($("#searchusuario").val()) {
@@ -473,5 +482,16 @@ $(document).ready(function () {
         }
 
         $('#submit').clik();
+    })
+
+     var count = 0;
+    $(document).on('click', '#btnup', function(e)
+    {
+       $('#cantidad').val(count+=1);
+    })
+
+    $(document).on('click', '#btndown', function(e)
+    {
+       $('#cantidad').val(count-=1);
     })
 });

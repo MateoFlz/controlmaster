@@ -4,16 +4,15 @@ namespace Database\Models;
 
 use Database\abstractModel;
 
-class Equipos extends abstractModel
+class Utilidades extends abstractModel
 {
 
     private $id;
-    private $serial;
     private $etiqueta;
     private $marca;
-    private $modelo;
     private $descripcion;
     private $ubicacion;
+    private $cantidad;
     private $estado;
     private $activo;
 
@@ -34,15 +33,6 @@ class Equipos extends abstractModel
         $this->id = $id;
     }
 
-    public function getSerial()
-    {
-        return $this->serial;
-    }
-
-    public function setSerial($serial)
-    {
-        $this->serial = $serial;
-    }
 
     public function getEtiqueta()
     {
@@ -64,16 +54,6 @@ class Equipos extends abstractModel
         $this->marca = $marca;
     }
 
-    public function getModelo()
-    {
-        return $this->modelo;
-    }
-
-    public function setModelo($modelo)
-    {
-        $this->modelo = $modelo;
-    }
-
     public function getDescripcion()
     {
         return $this->descripcion;
@@ -92,6 +72,16 @@ class Equipos extends abstractModel
     public function setUbicacion($ubicacion)
     {
         $this->ubicacion = $ubicacion;
+    }
+
+    public function getCantidad()
+    {
+        return $this->cantidad;
+    }
+
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
     }
 
     public function getEstado()
@@ -119,7 +109,7 @@ class Equipos extends abstractModel
     {
         $this->getInstance();
         $id = $this->clean_string($this->id);
-        $query = $this->Connection->prepare("SELECT * FROM equipos WHERE id = ?");
+        $query = $this->Connection->prepare("SELECT * FROM utilidades WHERE id = ?");
         $query->bindParam(1, $id);
         $query->execute();
         return $query;
@@ -135,16 +125,15 @@ class Equipos extends abstractModel
 
     public function getFull()
     {
-        $this->query = "SELECT e.*, a.nombre, t.descripcion FROM equipos e
+        $this->query = "SELECT e.*, a.nombre, t.descripcion as descrip FROM utilidades e
         INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON e.etiqueta_id = t.id WHERE e.activo = 1";
         $data = $this->return_query($this->query);
         return  $data;
     }
 
-    public function getEquipoById()
+    public function getUtilidaById()
     {
-        
-        $query = $this->Connection->prepare("SELECT e.*, a.sede, a.nombre, t.descripcion as tipo FROM equipos e
+        $query = $this->Connection->prepare("SELECT e.*, a.sede, a.nombre, t.descripcion as tipo FROM utilidades e
         INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
          e.etiqueta_id = t.id WHERE e.activo = 1 AND e.id = ?");
         $query->bindParam(1, $this->id);
@@ -153,16 +142,12 @@ class Equipos extends abstractModel
         return $query;
     }
 
-    public function getEquipoByEtiqueta()
+    public function getUtilidaByEtiqueta()
     {
-        $this->getInstance();
-        $query = $this->Connection->prepare("SELECT e.*, t.id as ideti, a.nombre, t.descripcion as tipo FROM equipos e
-         INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
-         e.etiqueta_id = t.id WHERE e.activo = 1 AND t.descripcion = ?");
-        $query->bindParam(1, $this->descripcion);
-        $query->execute();
-        $this->closeConnection();
-        return $query;
+        $this->query = "SELECT e.*, a.nombre, t.descripcion as descrip FROM utilidades e
+        INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON e.etiqueta_id = t.id WHERE e.activo = 1";
+        $data = $this->return_query($this->query);
+        return  $data;
     }
 
     public function create()
@@ -170,15 +155,14 @@ class Equipos extends abstractModel
 
         try {
             $this->getInstance();
-            $query = $this->Connection->prepare("INSERT INTO equipos VALUES (null,?,?,?,?,?,?,?,?)");
-            $query->bindParam(1, $this->getSerial());
-            $query->bindParam(2, $this->getEtiqueta());
-            $query->bindParam(3, $this->getMarca());
-            $query->bindParam(4, $this->getModelo());
-            $query->bindParam(5, $this->getDescripcion());
-            $query->bindParam(6, $this->getUbicacion());
-            $query->bindParam(7, $this->getEstado());
-            $query->bindParam(8, $this->getActivo());
+            $query = $this->Connection->prepare("INSERT INTO utilidades VALUES (null,?,?,?,?,?,?,?)");
+            $query->bindParam(1, $this->getEtiqueta());
+            $query->bindParam(2, $this->getMarca());
+            $query->bindParam(3, $this->getDescripcion());
+            $query->bindParam(4, $this->getUbicacion());
+            $query->bindParam(5, $this->getCantidad());
+            $query->bindParam(6, $this->getEstado());
+            $query->bindParam(7, $this->getActivo());
 
             $result = $query->execute();
             $this->closeConnection();
@@ -193,18 +177,17 @@ class Equipos extends abstractModel
     {
         try{
             $this->getInstance();
-            $query = $this->Connection->prepare("UPDATE equipos SET serial = ?,
-            etiqueta_id = ?, marca = ?, modelo = ?, descripcion = ?, 
-            ubicacion = ?, estado = ?, activo = ? WHERE id = ?");
-            $query->bindParam(1, $this->getSerial());
-            $query->bindParam(2, $this->getEtiqueta());
-            $query->bindParam(3, $this->getMarca());
-            $query->bindParam(4, $this->getModelo());
-            $query->bindParam(5, $this->getDescripcion());
-            $query->bindParam(6, $this->getUbicacion());
-            $query->bindParam(7, $this->getEstado());
-            $query->bindParam(8, $this->getActivo());
-            $query->bindParam(9, $this->getId());
+            $query = $this->Connection->prepare("UPDATE utilidades SET etiqueta_id = ?, 
+            marca = ?, descripcion = ?, 
+            ubicacion = ?, cantidad = ?, estado = ?, activo = ? WHERE id = ?");
+            $query->bindParam(1, $this->getEtiqueta());
+            $query->bindParam(2, $this->getMarca());
+            $query->bindParam(3, $this->getDescripcion());
+            $query->bindParam(4, $this->getUbicacion());
+            $query->bindParam(5, $this->getCantidad());
+            $query->bindParam(6, $this->getEstado());
+            $query->bindParam(7, $this->getActivo());
+            $query->bindParam(8, $this->getId());
 
             $result = $query->execute();
             if ($result) {

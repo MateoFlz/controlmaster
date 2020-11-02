@@ -23,8 +23,12 @@
             </form>
             <div class="form-group row justify-content-center">
                 <div type="button" class="btn-group ">
-                    <a class="btn btn-success" href="<?php echo URL . 'back/backups' ?>"><i class="fas fa-user-plus"></i> Nuevo backup</a>
+                    <a class="btn btn-success" href="<?php echo URL . 'helpers/backups/descargar.php' ?>"> <i class="fas fa-user-plus"></i> Nuevo backup</a>
                 </div>
+                
+                <script>function oncli(){event.preventDefault();document.getElementById('backuplogg').submit();}</script>
+                <form id="backuplogg" method="post" action="<?php echo URL . 'back/insert' ?>">
+                </form>
             </div>
             <div class="table-responsive" style="max-height: 340px">
                 <table class="table table-hover table-sm" style="white-space: nowrap">

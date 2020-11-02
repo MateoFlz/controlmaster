@@ -181,7 +181,9 @@ class administradoresController extends Controller{
     public function update_permisos($ids = '')
     {
 
-      var_dump($_POST['permisos']);
+      if(isset($_POST['permisos'])){
+         $permis = $this->permisos->getAll()->fetchAll(\PDO::FETCH_ASSOC);
+      }
         
     }
 

@@ -132,24 +132,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody class="tbody-prestamos-portatil">
-                                                                                    <?php
-                                                                                    foreach ($datos[0] as $row) {
-                                                                                    ?>
-                                                                                        <tr <?php echo 'respon="' . $row['idportatil'] . '"' ?>>
-                                                                                            <td class="portatil-codigo"><?php echo $row['codigo'] ?></td>
-                                                                                            <td class="portatil-descripcion"><?php echo $row['descripcion'] ?></td>
-                                                                                            <td><?php echo $row['estado'] ?></td>
-                                                                                            <td><?php echo $row['fecha'] ?></td>
-                                                                                            <td class="text-center">
-                                                                                                <button class="btn btn-primary" id="btn-portatil">
-                                                                                                    <i class="fas fa-plus"></i>
-                                                                                                </button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    <?php
-
-                                                                                    }
-                                                                                    ?>
+                                                                                   
                                                                                 </tbody>
                                                                             </table>
                                                                         </div>
@@ -425,10 +408,8 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                     <button class="btn btn-success" type="button"><i class="fas fa-search"></i></button>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <div class="list-group" id="show-list">
-
-                                </div>
+                            <div class="mb-3" id="show-list">
+                                
                             </div>
                             <form action="<?php echo URL . "inventarios/siret/insert_utilidad"; ?>" method="post">
                                 <div class="form-group row border pt-2">
@@ -453,10 +434,6 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                     <div class="col-md-12">
                                         <label for="observacion" class="control-label">Observacion</label>
                                         <textarea class="form-control" name="observacion" id="exampleFormControlTextarea1" rows="2"></textarea>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="cantidad" class="control-label">Cantidad</label>
-                                        <input type="number" class="form-control input-sm" id="cantidad" name="cantidad" placeholder="Cantidad">
                                     </div>
                                     <div class="col-md-12">
                                         <label for="idfecha" class="control-label">Fecha</label>

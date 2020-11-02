@@ -1,6 +1,7 @@
 <?php
 namespace Database;
 use Config\Dataconnection;
+use helpers\backups\Backdescarga;
 use ZipArchive;
 
 abstract class  abstractModel extends Dataconnection
@@ -45,6 +46,16 @@ abstract class  abstractModel extends Dataconnection
             echo 'Error en el metodo openConection' . $e->getMessage();
             die();
         }
+    }
+
+    public static function actionbackup()
+    {
+        echo backup_tables(self::$HOST, self::$USERNAME, self::$PASSWORD, self::$DATABASE);
+        $fecha=date("Y-m-d");
+        header("Content-disposition: attachment; filename=db-backup-".$fecha.".sql");
+        header("Content-type: MIME");
+        readfile("backups/db-backup-".$fecha.".sql");
+        return true;
     }
 
     public function createbackup()
