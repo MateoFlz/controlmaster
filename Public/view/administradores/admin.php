@@ -1,6 +1,5 @@
 <?php include_once 'Public/view/view/header.php';
-$fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-print_r($datos)
+$fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; 
 ?>
 <div class="container-fluid pt-4 " style="max-width: 75rem;">
     <div class="card border-secondary mb-3">
@@ -42,7 +41,7 @@ print_r($datos)
             </div>
             <br>
             <form action="<?php echo URL;
-                            if (empty($datos['activos'])) {
+                            if ($datos['existe'][0][0] == 0) {
                                 echo 'administradores/insert_permisos/' . $datos['idw'];
                             } else {
                                 echo 'administradores/update_permisos/' . $datos['idw'];
@@ -90,7 +89,7 @@ print_r($datos)
                     var tamano = "<?php echo sizeof($datos['permiso']); ?>";
                     console.log(tamano);
                     function myFunction(){
-                        alert('mensaje')
+                        
                         for (let x = 1; x < tamano; x++) {
 
                         if(!document.getElementById('#permi'+x).checked){

@@ -1,4 +1,7 @@
-<?php include_once 'Public/view/view/header.php';?>
+<?php include_once 'Public/view/view/header.php';
+$fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$_SESSION['crear'];
+?>
 <div class="container-fluid pt-4" style="max-width: 75rem;">
     <div class="card border-secondary mb-3">
         
@@ -9,6 +12,20 @@
             <h5 class="text-dark">Listado estudiantes</h5>
         </div>
         <div class="card-body">
+
+        <?php
+
+if (strpos($fullUrl, "acceso=false") ==  true) { ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Ocurrio un error al guardar el estudiantes, la cedula ya exite!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+<?php
+}
+?>
             <form class="" role="form" id="datos_estudiante">
                 <div class="form-group row">
                     <label for="inputEmail3" class="col-sm-2 col-form-label"><strong>Cédula o nombre</strong></label>

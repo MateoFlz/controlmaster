@@ -37,7 +37,8 @@ class administradoresController extends Controller{
         $data = array(
             'idw' => $id,
             'permiso' => $this->permisos->getAll()->fetchAll(\PDO::FETCH_ASSOC),
-            'activos' => $this->usuarios->getPermisos()->fetchAll(\PDO::FETCH_ASSOC)
+            'activos' => $this->usuarios->getPermisos()->fetchAll(\PDO::FETCH_ASSOC),
+            'existe' => $this->usuarios->getPermisosExiste()->fetchAll(\PDO::FETCH_NUM)
         );
         return $this->view('administradores/admin', $data);
     }
@@ -163,27 +164,71 @@ class administradoresController extends Controller{
 
     public function insert_permisos($ids = '')
     {
-        foreach($_POST['permisos'] as $row){
-           $this->permisos->setIda($this->usuarios->clean_string($ids));
-           $this->permisos->setIdp($this->usuarios->clean_string($row));
-           $this->permisos->setState('1');
+        $state = false;
+        $this->permisos->setIda($this->usuarios->clean_string($ids));
+        $permiso = $this->permisos->getAll()->fetchAll(\PDO::FETCH_ASSOC);
 
-           $response = $this->permisos->create();
-            if($response){
-                Redirect::redirect('administradores');
-            }else{
-                Redirect::redirect('administradores');
-            }
-           
+        foreach($permiso as $rowt){
+            $this->permisos->setState('0');
+            foreach($_POST['permisos'] as $row){
+
+                if($row == $rowt['id']){
+                    $this->permisos->setIdp($this->usuarios->clean_string($row));
+                    $this->permisos->setState('1');
+
+                }else{
+                    $this->permisos->setIdp($this->usuarios->clean_string($rowt['id']));
+                } 
+                
+             }
+             $response = $this->permisos->create();
+            
         }
+
+        if($response){
+            Redirect::redirect('administradores');
+        }else{
+            Redirect::redirect('administradores');
+        }
+        
     }
 
     public function update_permisos($ids = '')
     {
 
+        $permiso = $this->permisos->getAll()->fetchAll(\PDO::FETCH_ASSOC);
+        $this->permisos->setIda($this->permisos->clean_string($ids));
       if(isset($_POST['permisos'])){
-         $permis = $this->permisos->getAll()->fetchAll(\PDO::FETCH_ASSOC);
+       
+        foreach($permiso as $row){
+            $this->permisos->setState('0');
+            foreach($_POST['permisos'] as $activo){
+                if($activo == $row['id']){
+                    $this->permisos->setIdp($this->permisos->clean_string($activo));
+                    $this->permisos->setState('1'); 
+                }else{
+                    $this->permisos->setIdp($this->permisos->clean_string($row['id']));
+                }
+            }
+            $response = $this->permisos->update();
+            
+        }
+      }else{
+        foreach ($permiso as $row) { 
+            $this->permisos->setState('0');
+            $this->permisos->setIdp($this->permisos->clean_string($row['id']));
+            $response = $this->permisos->update();
+            echo $response;
+        }
+
       }
+
+      if($response){
+            Redirect::redirect('administradores');
+        }else{
+            Redirect::redirect('administradores');
+        }
+
         
     }
 

@@ -130,4 +130,29 @@ class Permisos extends abstractModel
             return false;
         }
     }
+
+    public function update()
+    {
+        try {
+            
+            $this->getInstance();
+            $query = $this->Connection->prepare("UPDATE acceso_permiso set estado = ? WHERE id_permiso = ? AND id_acceso = ?");
+            $query->bindParam(1, $this->state);
+            $query->bindParam(2, $this->idp);
+            $query->bindParam(3, $this->ida);
+            $result = $query->execute();
+            return $result;
+        } catch (\Exception $e) {
+            echo "Fallo: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getPermisos()
+    { 
+        $this->query = "SELECT *, ap.estado as activo FROM acceso_permiso ap INNER JOIN permisos p 
+        ON p.id = ap.id_permiso WHERE ap.id_acceso = $this->ida";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
 }

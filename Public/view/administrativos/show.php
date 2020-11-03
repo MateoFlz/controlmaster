@@ -12,7 +12,9 @@ $ros = $datos['dependencia'];
             <h5 class="text-dark">Nuevo administrativo</h5>
         </div>
         <div class="card-body">
-    
+        <?php
+        if($_SESSION['editar'] == 1){
+            ?>
             <form class="needs-validation" novalidate role="form" id="" action="<?php echo URL;?>administrativos/edit_administrativo" method="post">
                 <div class="form-group row">
                     
@@ -76,7 +78,18 @@ $ros = $datos['dependencia'];
                 </div>
             
             </form>
-
+            <?php
+        }else{
+            ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Usted no cuenta con privilegio para ver datos del administrativo!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php
+        }
+?>
         </div>
     </div>
     

@@ -268,6 +268,14 @@ class Usuarios extends Usuario {
         $this->closeConnection();
         return $result;
     }
+
+    public function getPermisosExiste()
+    {
+        $query = "SELECT COUNT(*) FROM acceso_permiso WHERE id_acceso = $this->ids";
+        $result = $this->return_query($query);
+        $this->closeConnection();
+        return $result;
+    }
     
 
 

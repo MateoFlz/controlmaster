@@ -15,7 +15,7 @@ $ros = $datos['dependencia'];
         </div>
         <div class="card-body">
         <?php
-
+        if($_SESSION['editar'] == 1){
         if (strpos($fullUrl, "responsedit=true") ==  true) { ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 administrativos actualizado satifactoriamente
@@ -124,7 +124,18 @@ $ros = $datos['dependencia'];
                     <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar</button>
                 </div>
             </form>
-
+            <?php
+            }else{
+                ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Usted no cuenta con privilegio para crear administrativo!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php
+            }
+?>
         </div>
     </div>
     

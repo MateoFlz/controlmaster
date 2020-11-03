@@ -14,6 +14,10 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
             <h5 class="text-dark">Mostrar datos estudiantes</h5>
         </div>
         <div class="card-body">
+        <?php
+            if($_SESSION['ver'] == 1){
+
+                ?>
             <form class="needs-validation" novalidate action="<?php echo URL; ?>estudiantes/edit_student" method="post">
                 <div class="form-group row">
                     <input type="hidden" class="form-control input-sm" name="id" value="<?php echo $row['id']; ?>">
@@ -132,7 +136,18 @@ $row = $datos->fetch(PDO::FETCH_ASSOC);
                 </div>
 
             </form>
-
+            <?php
+        }else{
+            ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Usted no cuenta con privilegio para ver datos del estudiante!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php
+        }
+?>
         </div>
     </div>
 </div>

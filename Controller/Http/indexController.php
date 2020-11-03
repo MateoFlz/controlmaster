@@ -6,6 +6,7 @@ use Controller\Http\Controller as Controller;
 use Controller\Redirecter\Redirect;
 use Core\Sessions;
 use Database\Models\Usuarios;
+use Database\Models\Permisos;
 
 
 
@@ -13,11 +14,13 @@ use Database\Models\Usuarios;
 class indexController extends Controller{
 
     private $usuarios;
+    private $permiso;
 
     public function __construct()
     {
         parent::__construct();
         $this->usuarios = new Usuarios();
+        $this->permiso = new Permisos();
     }
 
     public function index()
@@ -46,6 +49,14 @@ class indexController extends Controller{
             if($result != null){
                 $this->session->add('id', $id);
                 $this->session->add('name', $name);
+
+                $this->permiso->setIda($id);
+                $data = $this->permiso->getPermisos()->fetchAll(\PDO::FETCH_ASSOC);
+                foreach($data as $row){
+                    
+                    $this->session->add($row['descripcion'], $row['activo']);
+                }
+
                 Redirect::redirect('index?login=true');
             }else{
                 Redirect::redirect('index?login=false');

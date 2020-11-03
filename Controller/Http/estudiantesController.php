@@ -18,6 +18,7 @@ class estudiantesController extends Controller
     {
         $this->program = new Programa();
         $this->estudiante = new Estudiante();
+
         parent::__construct();
         if($this->session->getStatus() === PHP_SESSION_NONE || empty($this->session->get('name'))){
             Redirect::redirect('index?session=false');
@@ -37,8 +38,7 @@ class estudiantesController extends Controller
         //return $this->view('estudiantes/index');
     }
 
-    public function create_student(){
-
+    public function create(){
         return $this->view('estudiantes/create');
     }
 
