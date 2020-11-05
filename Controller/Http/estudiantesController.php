@@ -7,8 +7,11 @@ namespace Controller\Http;
 use Controller\Redirecter\Redirect;
 use Database\Models\Estudiante;
 use Database\Models\Programa;
+use Dompdf\Dompdf;
 use Helpers;
 use helpers\FPDF;
+
+
 
 class estudiantesController extends Controller
 {
@@ -159,27 +162,30 @@ class estudiantesController extends Controller
         }
     }
 
-    public function crearPdf()
-    {
-        $pdf = new FPDF();
+    
 
-        $pdf->AddPage('L');
-        $pdf->SetFillColor(232,232,232);
-        $pdf->SetFont('Arial', 'B', 8);
+    public function ReporteEstudiantes()
+    {
+        require_once '../controlmaster/dompdf/autoload.inc.php';
+        $pdf = new Dompdf();
+
+        $html= file_get_contents(URL. 'dompdf/pdf/estudiantes.php');
+ 
+        // Instanciamos un objeto de la clase DOMPDF.
         
-        $pdf->Cell(30,6,'Cedula',1,0,'C',1);
-        $pdf->Cell(40,6,'Nombre completo',1,0,'C',1);
-        $pdf->Cell(90,6,'Programa',1,0,'C',1);
-        $pdf->Cell(30,6,'Semestre',1,0,'C',1);
-        $pdf->Cell(30,6,'Telefono',1,1,'C',1);
         
-        foreach($this->estudiante->getAll()->fetchAll(\PDO::FETCH_ASSOC) as $row){
-            $pdf->Cell(30,6,utf8_decode($row['cedula']),1,0,'C');
-            $pdf->Cell(40,6,utf8_decode($row['nombre']),1,0,'C');
-            $pdf->Cell(90,6,utf8_decode($row['nombreprograma']),1,0,'C');
-            $pdf->Cell(30,6,utf8_decode($row['semestre']),1,0,'C');
-            $pdf->Cell(30,6,utf8_decode($row['telefono']),1,1,'C');
-        }
-        $pdf->Output();
+        // Definimos el tamaño y orientación del papel que queremos.
+        $pdf->setPaper("A4", "portrait");
+        //$pdf->set_paper(array(0,0,104,250));
+        
+        // Cargamos el contenido HTML.
+        $pdf->loadHtml($html);
+        
+        // Renderizamos el documento PDF.
+        $pdf->render();
+        
+        // Enviamos el fichero PDF al navegador.
+        $pdf->stream('reporte_estudiantes.pdf', array("Attachment" => 0));
+    
     }
 }
