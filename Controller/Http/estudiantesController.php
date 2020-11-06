@@ -8,10 +8,10 @@ use Controller\Redirecter\Redirect;
 use Database\Models\Estudiante;
 use Database\Models\Programa;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use Helpers;
 use helpers\FPDF;
-
-
+use PDO;
 
 class estudiantesController extends Controller
 {
@@ -166,16 +166,24 @@ class estudiantesController extends Controller
 
     public function ReporteEstudiantes()
     {
-        require_once '../controlmaster/dompdf/autoload.inc.php';
-        $pdf = new Dompdf();
 
-        $html= file_get_contents(URL. 'dompdf/pdf/estudiantes.php');
+        $datos = $this->estudiante->getAll()->fetchAll(\PDO::FETCH_ASSOC);
+        require_once '../controlmaster/dompdf/autoload.inc.php';
+
+        ob_start();
+        include 'Public/view/estudiantes/pdf.php';
+
+        //$html = file_get_contents(URL. 'Public/view/estudiantes/pdf.php');
+        $html = ob_get_clean();
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $pdf = new Dompdf($options);
+        
  
         // Instanciamos un objeto de la clase DOMPDF.
-        
-        
+      
         // Definimos el tamaño y orientación del papel que queremos.
-        $pdf->setPaper("A4", "portrait");
+        $pdf->setPaper("A4", "landscape");
         //$pdf->set_paper(array(0,0,104,250));
         
         // Cargamos el contenido HTML.

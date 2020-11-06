@@ -9,6 +9,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 <a class="btn btn-info" href="<?php echo URL . 'inventarios/index' ?>"><i
                         class="fa fa-arrow-alt-circle-left"></i> Regresar</a>
             </div>
+            
             <h5 class="text-dark">Lista registro de equipos tecnologicos</h5>
         </div>
         <div class="card-body">
@@ -51,6 +52,9 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                     aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                     <button class="btn btn-success" type="button"><i class="fas fa-search"></i></button>
+                                </div>
+                                <div class="input-group-append">
+                                    <a class="btn btn-success" href="<?php echo URL . 'inventarios/ReporteEquipos' ?>" target="blank"><i class="fas fa-file-pdf"></i> PDF</a>
                                 </div>
                             </div>
                         </div>

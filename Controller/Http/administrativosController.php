@@ -7,6 +7,8 @@ namespace Controller\Http;
 use Controller\Redirecter\Redirect;
 use Database\Models\Administrativo;
 use Database\Models\Dependencia;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use PDO;
 use Helpers;
 use helpers\FPDF;
@@ -186,6 +188,39 @@ class administrativosController extends Controller
             $pdf->Cell(30,6,utf8_decode($row['nombre_dependencia']),1,1,'C');
         }
         $pdf->Output();
+    }
+
+    public function ReporteAdministrativos()
+    {
+
+        $datos = $this->adminstrativos->get_data_administrativo()->fetchAll(\PDO::FETCH_ASSOC);
+        require_once '../controlmaster/dompdf/autoload.inc.php';
+
+        ob_start();
+        include 'Public/view/administrativos/pdf.php';
+
+        //$html = file_get_contents(URL. 'Public/view/estudiantes/pdf.php');
+        $html = ob_get_clean();
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $pdf = new Dompdf($options);
+        
+ 
+        // Instanciamos un objeto de la clase DOMPDF.
+      
+        // Definimos el tamaño y orientación del papel que queremos.
+        $pdf->setPaper("A4", "portrait");
+        //$pdf->set_paper(array(0,0,104,250));
+        
+        // Cargamos el contenido HTML.
+        $pdf->loadHtml($html);
+        
+        // Renderizamos el documento PDF.
+        $pdf->render();
+        
+        // Enviamos el fichero PDF al navegador.
+        $pdf->stream('reporte_administrativo.pdf', array("Attachment" => 0));
+    
     }
     
 }

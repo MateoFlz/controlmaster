@@ -1,5 +1,15 @@
-<?php include_once 'Public/view/view/header.php';
-$fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; 
+<?php
+
+use Sabberworm\CSS\Value\URL;
+
+include_once 'Public/view/view/header.php';
+$fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+if($_SESSION['permisos'] == 0){
+    echo '<script>
+    window.location="'.URL .'dashboard";
+    </script>';
+}
 ?>
 <div class="container-fluid pt-4 " style="max-width: 75rem;">
     <div class="card border-secondary mb-3">
@@ -67,15 +77,15 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 
 
-                                                                                                                                                                                                                            foreach ($datos['activos'] as $rowt) {
-                                                                                                                                                                                                                                if ($row['id'] == $rowt['idp']) {
-                                                                                                                                                                                                                            ?> <?php if ($row['id'] == $rowt['idp']) {
-                                                                                                                                                                                                                                        echo 'checked';
-                                                                                                                                                                                                                                    } ?> <?php
-                                                                                                                                                                                                                                } else {
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
-                                                                                            ?>>
+                                                                                                                                                                                                                                foreach ($datos['activos'] as $rowt) {
+                                                                                                                                                                                                                                    if ($row['id'] == $rowt['idp']) {
+                                                                                                                                                                                                                                ?> <?php if ($row['id'] == $rowt['idp']) {
+                                                                                                                                                                                                                                            echo 'checked';
+                                                                                                                                                                                                                                        } ?> <?php
+                                                                                                                                                                                                                                        } else {
+                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                            ?>>
                                 </td>
                             </tr>
                         <?php
@@ -88,22 +98,23 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 <script>
                     var tamano = "<?php echo sizeof($datos['permiso']); ?>";
                     console.log(tamano);
-                    function myFunction(){
-                        
+
+                    function myFunction() {
+
                         for (let x = 1; x < tamano; x++) {
 
-                        if(!document.getElementById('#permi'+x).checked){
-                            document.getElementById('#permi'+x).value = '0'
-                        }
+                            if (!document.getElementById('#permi' + x).checked) {
+                                document.getElementById('#permi' + x).value = '0'
+                            }
 
                         }
                     }
                 </script>
                 <div class="dropdown-divider"></div>
                 <div class="form-group row justify-content-end">
-                    <button type="reset" class="btn btn-danger" ><i class="fas fa-times"></i> Cancelar</button>&nbsp;
+                    <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</button>&nbsp;
                     <button class="btn btn-success" id="btnsaves"><i class="fas fa-save"></i> Guardar</button>
-                    <button type="submit" value="Submit" name="submit" id="submit" style="visibility:hidden">Enviar</button> 
+                    <button type="submit" value="Submit" name="submit" id="submit" style="visibility:hidden">Enviar</button>
                 </div>
             </form>
 

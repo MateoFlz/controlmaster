@@ -12,3 +12,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 input[type=number] { -moz-appearance:textfield; }
 
+
+.th-class{
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.td-class{
+  font-size: 0.7rem;
+}

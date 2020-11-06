@@ -88,7 +88,7 @@
                                 <div class="dropdown-menu dropdown-menu-left" aria-labelledby="btnGroupDro">
                                     <a class="dropdown-item" href="<?php echo URL . 'configuracion'?>">Sistema</a>
                                     <a class="dropdown-item" href="<?php echo URL . 'back'?>">Respaldo</a>
-                                    <?php if($_SESSION['permisos']){
+                                    <?php if($_SESSION['permisos'] == 1){
                                         ?>
                                           <a class="dropdown-item" href="<?php echo URL . 'administradores'?>">Administradores</a>
                                         <?php

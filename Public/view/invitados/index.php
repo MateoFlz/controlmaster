@@ -2,6 +2,9 @@
 <div class="container-fluid pt-4" style="max-width: 75rem;">
     <div class="card border-secondary mb-3" >
         <div class="card-header bg-light">
+        <div type="button" class="btn-group float-md-right">
+                <a class="btn btn-light border" href="<?php echo URL . 'invitados/ReporteInvitados' ?>" target="blank"><i class="fas fa-file-pdf"></i> PDF</a>
+            </div>
             <h5 class="text-dark">Listado invitados</h5>
         </div>
         <div class="card-body">

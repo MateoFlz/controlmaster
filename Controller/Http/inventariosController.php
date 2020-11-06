@@ -8,6 +8,8 @@ use Database\Models\Etiquetas;
 use Database\Models\Equipos;
 use Database\Models\Aulas;
 use Database\Models\Utilidades;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class inventariosController extends Controller
 {
@@ -221,6 +223,40 @@ class inventariosController extends Controller
             echo json_encode($json);
             die();
         }
+    }
+
+
+    public function ReporteEquipos()
+    {
+
+        $datos = $this->equipos->getFull()->fetchAll(\PDO::FETCH_ASSOC);
+        require_once '../controlmaster/dompdf/autoload.inc.php';
+
+        ob_start();
+        include 'Public/view/inventarios/siret/pdf.equipo.php';
+
+        //$html = file_get_contents(URL. 'Public/view/estudiantes/pdf.php');
+        $html = ob_get_clean();
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $pdf = new Dompdf($options);
+        
+ 
+        // Instanciamos un objeto de la clase DOMPDF.
+      
+        // Definimos el tamaño y orientación del papel que queremos.
+        $pdf->setPaper("A4", "portrait");
+        //$pdf->set_paper(array(0,0,104,250));
+        
+        // Cargamos el contenido HTML.
+        $pdf->loadHtml($html);
+        
+        // Renderizamos el documento PDF.
+        $pdf->render();
+        
+        // Enviamos el fichero PDF al navegador.
+        $pdf->stream('reporte_estudiantes.pdf', array("Attachment" => 0));
+    
     }
 
 }

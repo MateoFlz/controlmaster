@@ -1,4 +1,13 @@
-<?php include_once 'Public/view/view/header.php';
+<?php
+
+use Controller\Redirecter\Redirect;
+
+include_once 'Public/view/view/header.php';
+if($_SESSION['permisos'] == 0){
+    echo '<script>
+    window.location="'.URL .'dashboard";
+    </script>';
+}
 ?>
 
 <div class="container-fluid pt-4 " style="max-width: 75rem;">
