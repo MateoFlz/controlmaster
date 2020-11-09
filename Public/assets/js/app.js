@@ -1,7 +1,7 @@
 var datas;
 $(document).ready(function () {
     selectAula();
-
+    
     $("#programsuccess").hide();
     $("#programdanger").hide();
 
@@ -34,16 +34,16 @@ $(document).ready(function () {
     });
 
     $(document).on("click", "#show-list2", function (e) {
-     
-       $("#cedula").val($(this).children('input').val());
-       
-       $("#show-list").html("");
+
+        $("#cedula").val($(this).children('input').val());
+
+        $("#show-list").html("");
     });
 
     $(document).on("click", "#item-data", function (e) {
         $("#nombre").val($(this).text());
         $("#user").val($(this).text());
-       })
+    })
 
     $("#searchusuario").keyup(function (e) {
         if ($("#searchusuario").val()) {
@@ -209,7 +209,7 @@ $(document).ready(function () {
                     $("#loader3").html("");
                 },
             });
-        }else{
+        } else {
             getAll_administrador();
         }
     });
@@ -328,7 +328,7 @@ $(document).ready(function () {
                              <td class="text-center">
                                 <a href="estudiantes/editar/${respon.id}?view=true" class="btneye1 btn btn-primary border"><i class="fas fa-eye"></i></a>
                                 <a href="estudiantes/editar/${respon.id}?edit=true" class="btnedit1 btn btn-info border"><i class="fas fa-edit"></i></a>
-                                <button class="btndelet1 btn btn-danger border"><i class="fas fa-trash-alt"></i></i></button>
+                                <button class="btndelet1 btn btn-danger border"><i class="fas fa-trash-alt"></i></button>
                              </td>
                         </tr>
                    `;
@@ -430,6 +430,28 @@ $(document).ready(function () {
         }
     });
 
+    $("#selectsedesprestamo").change(function (e) {
+        if ($("#selectsedesprestamo").val()) {
+            let search = $("#selectsedesprestamo").val();
+            $.ajax({
+                url: "http://localhost/controlmaster/inventarios/get_sedes",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
+                success: function (response) {
+                    let templete = `<option value=""> -- : -- -- </option>`;
+                    response.forEach((respon) => {
+                        templete += `<option value="${respon.id}">${respon.nombre}</option>`;
+                    });
+                    $("#ubicacionprestamo").html(templete);
+                },
+            });
+        } else {
+            let templete = `<option value=""> -- : -- -- </option>`;
+            $("#ubicacionprestamo").html(templete);
+        }
+    });
+
     function selectAula() {
         let search = $("#sedesedit").val();
         if (search) {
@@ -467,31 +489,164 @@ $(document).ready(function () {
     }
 
 
-   
-    $(document).on('click', '#btnsaves', function(e)
-    {
-       
+
+    $(document).on('click', '#btnsaves', function (e) {
+
         for (let x = 1; x < tamano; x++) {
 
-            if($('#permi'+x).is(':checked')){
+            if ($('#permi' + x).is(':checked')) {
                 console.log('click');
-            }else{
-                $('#permi'+x).val('0');
+            } else {
+                $('#permi' + x).val('0');
             }
-            
+
         }
 
         $('#submit').clik();
     })
 
-     var count = 0;
-    $(document).on('click', '#btnup', function(e)
-    {
-       $('#cantidad').val(count+=1);
+    var count = 0;
+    $(document).on('click', '#btnup', function (e) {
+        $('#cantidad').val(count += 1);
     })
 
-    $(document).on('click', '#btndown', function(e)
-    {
-       $('#cantidad').val(count-=1);
+    $(document).on('click', '#btndown', function (e) {
+        $('#cantidad').val(count -= 1);
     })
+   
+    function get_equipos() {
+        $.ajax({
+            url: "get_equipos_video",
+            type: "GET",
+            dataType: "JSON",
+            success: function (response) {
+                var template = "";
+                response.forEach((respon) => {
+                    template += `
+                        <tr respon="${respon.id}"> 
+                            <td scope="row">${respon.serial}</td>
+                            <td>${respon.marca}</td>
+                            <td>${respon.descripcion}</td>
+                            <td class="text-center">${respon.estado_equipo}</td>
+                             <td class="text-center">
+                                <button id="btn_reserva" class="btn btn-primary border"><i class="fas fa-plus"></i></button>
+                             </td>
+                        </tr>
+                   `;
+                });
+                $(".tbody-prestamos-video").html(template);
+                
+            }
+        });
+    }
+
+    function get_equipos_p() {
+        $.ajax({
+            url: "get_equipos_portatil",
+            type: "GET",
+            dataType: "JSON",
+            success: function (response) {
+                var template = "";
+                response.forEach((respon) => {
+                    template += `
+                        <tr respon="${respon.id}"> 
+                            <td scope="row">${respon.serial}</td>
+                            <td>${respon.marca}</td>
+                            <td>${respon.descripcion}</td>
+                            <td class="text-center">${respon.estado_equipo}</td>
+                             <td class="text-center">
+                                <button id="btn_reserva" class="btn btn-primary border"><i class="fas fa-plus"></i></button>
+                             </td>
+                        </tr>
+                   `;
+                });
+                $(".tbody-prestamos-portatil").html(template);
+                
+            }
+        });
+    }
+
+    function get_table_temporal() {
+        $.ajax({
+            url: "temporalTable",
+            type: "GET",
+            dataType: "JSON",
+            success: function (response) {
+                var templete1 = `
+           <div class="table-responsive" style="max-height: 340px">
+                <table class="table table-hover table-sm" style="white-space: nowrap">
+                    <thead>
+                        <tr class="table-success">
+                            <th class="thead-fix" scope="col">Serial</th>
+                            <th class="thead-fix" scope="col">Marca</th>
+                            <th class="thead-fix" scope="col">Descripcion</th>
+                            <th class="thead-fix" scope="col">Tipo</th>
+                            <th class="thead-fix text-center" scope="col">Acciones</th>
+                        </tr>
+                    </thead>                                                            
+                    <tbody class="tbody-temporal">                                                            
+                    </tbody>
+                </table>
+            </div> 
+        `;
+        var templete2 = ''
+            response.forEach((respon) => {
+                templete2 += ` 
+                <tr respon="${respon.id_equipo}"> 
+                    <td scope="row">${respon.serial}</td>
+                    <td>${respon.marca}</td>
+                    <td>${respon.descripcion}</td>
+                    <td class="text-center">${respon.tipo}</td>
+                    <td class="text-center">
+                        <button class="btn btn-primary border" id="btn-tmp-delete"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>`;
+                });
+            $("#container-table").html(templete1);
+            $(".tbody-temporal").html(templete2);
+            }
+        });
+    }
+
+    $(document).on('click', '#btn_reserva', function (e) {
+        
+        var elemet = $(this)[0].parentElement.parentElement;
+        var id = $(elemet).attr('respon');
+        $.post('reservarEquipo', { id }, function (response) {
+            console.log(response)
+            if(response == 1){
+                get_table_temporal();
+                get_equipos();
+                get_equipos_p();
+            }
+        })
+    });
+
+    $(document).on('click', '#btn_reserva_utilidad', function (e) {
+        
+        var elemet = $(this)[0].parentElement.parentElement;
+        var id = $(elemet).attr('respon');
+        $.post('reservarUtilidad', { id }, function (response) {
+            console.log(response)
+            if(response == 1){
+               
+            }
+        })
+    });
+
+    $(document).on('click', '#btn-tmp-delete', function (e) {
+
+        var elemet = $(this)[0].parentElement.parentElement;
+        var id = $(elemet).attr('respon');
+        $.post('delete_temporal', { id }, function (response) {
+            console.log(response);
+            if(response == 1){
+                get_table_temporal();
+                get_equipos();
+                get_equipos_p();
+            }
+        })
+    });
+
+
 });

@@ -13,6 +13,7 @@ class Utilidades extends abstractModel
     private $descripcion;
     private $ubicacion;
     private $cantidad;
+    private $fecha;
     private $estado;
     private $activo;
 
@@ -82,6 +83,16 @@ class Utilidades extends abstractModel
     public function setCantidad($cantidad)
     {
         $this->cantidad = $cantidad;
+    }
+
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
     }
 
     public function getEstado()
@@ -202,6 +213,17 @@ class Utilidades extends abstractModel
         
     }
 
+    public function getUtilidaByactivo()
+    {
+        $this->getInstance();
+        $query = $this->Connection->prepare("SELECT * FROM utilidades u LEFT JOIN tmp_utilidad_id t ON u.id = t.id_utilidad 
+        JOIN etiquetas et ON u.etiqueta_id = et.id WHERE (t.activo IS NULL OR t.activo = 0) AND u.activo = 1 AND u.cantidad > 0");
+        $query->bindParam(1, $this->descripcion);
+        $query->execute();
+        $this->closeConnection();
+        return $query;
+    }
+
     public function delete()
     {
         $this->getInstance();
@@ -212,6 +234,32 @@ class Utilidades extends abstractModel
         if ($result) {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    public function create_temporal()
+    {
+        try {
+            $this->getInstance();
+            $query = $this->Connection->prepare("INSERT INTO tmp_utilidad VALUES (null,?,?,?,?,?,?,?)");
+            $query->bindParam(1, $this->id);
+            $query->bindParam(2, $this->marca);
+            $query->bindParam(3, $this->descripcion);
+            $query->bindParam(4, $this->cantidad);
+            $query->bindParam(5, $this->etiqueta);
+            $query->bindParam(6, $this->fecha);
+            $query->bindParam(7, $_SESSION['id']);
+            $query->execute();
+
+            $query = $this->Connection->prepare("UPDATE utilidades SET cantidad = ? WHERE id = ?");
+            $query->bindParam(1, $this->cantidad);
+            $query->bindParam(2, $this->id);
+
+            $this->closeConnection();
+            return true;
+        } catch (\Exception $e) {
+            echo "Fallo: " . $e->getMessage();
             return false;
         }
     }

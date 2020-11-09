@@ -16,6 +16,7 @@ class Equipos extends abstractModel
     private $ubicacion;
     private $estado;
     private $activo;
+    private $fecha;
 
 
     public function __construct()
@@ -114,6 +115,16 @@ class Equipos extends abstractModel
         $this->activo = $activo;
     }
 
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+    }
+
 
     public function getById()
     {
@@ -160,6 +171,29 @@ class Equipos extends abstractModel
          INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
          e.etiqueta_id = t.id WHERE e.activo = 1 AND t.descripcion = ?");
         $query->bindParam(1, $this->descripcion);
+        $query->execute();
+        $this->closeConnection();
+        return $query;
+    }
+
+    public function getEquipoByactivo()
+    {
+        $this->getInstance();
+        $query = $this->Connection->prepare("SELECT e.*, et.descripcion as tipo, t.activo, e.estado as estado_equipo FROM equipos e LEFT JOIN tmp_equipo_id t ON e.id = t.id_equipo 
+        JOIN etiquetas et ON e.etiqueta_id = et.id WHERE (t.activo IS NULL OR t.activo = 0) AND et.descripcion = ?");
+        $query->bindParam(1, $this->descripcion);
+        $query->execute();
+        $this->closeConnection();
+        return $query;
+    }
+
+    public function getEquipoByEtiquetaId()
+    {
+        $this->getInstance();
+        $query = $this->Connection->prepare("SELECT e.*, t.id as ideti, a.nombre, t.descripcion as tipo FROM equipos e
+         INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
+         e.etiqueta_id = t.id WHERE e.activo = 1 AND e.id = ?");
+        $query->bindParam(1, $this->id);
         $query->execute();
         $this->closeConnection();
         return $query;
@@ -231,5 +265,51 @@ class Equipos extends abstractModel
         } else {
             return false;
         }
+    }
+
+
+    public function existePrestamoById()
+    {
+        $this->getInstance();
+        $query = $this->Connection->prepare("SELECT e.*, t.id as ideti, a.nombre, t.descripcion as tipo FROM equipos e
+         INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
+         e.etiqueta_id = t.id WHERE e.activo = 1 AND t.descripcion = ?");
+        $query->bindParam(1, $this->descripcion);
+        $result = $query->execute();
+        $this->closeConnection();
+        if($result){
+            return true;
+        }
+        return false;
+    }
+
+    public function create_temporal()
+    {
+        try {
+            $this->getInstance();
+            $query = $this->Connection->prepare("INSERT INTO tmp_equipo VALUES (null,?,?,?,?,?,?,?)");
+            $query->bindParam(1, $this->id);
+            $query->bindParam(2, $this->serial);
+            $query->bindParam(3, $this->marca);
+            $query->bindParam(4, $this->descripcion);
+            $query->bindParam(5, $this->etiqueta);
+            $query->bindParam(6, $this->fecha);
+            $query->bindParam(7, $_SESSION['id']);
+
+            $result = $query->execute();
+            $this->closeConnection();
+            return true;
+        } catch (\Exception $e) {
+            echo "Fallo: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getTable()
+    {
+        $fecha = date('yy-m-d');
+        $this->query = "SELECT * FROM tmp_equipo WHERE fecha = '$fecha' AND admin = " .$_SESSION['id']. "";
+        $data = $this->return_query($this->query);
+        return  $data;
     }
 }
