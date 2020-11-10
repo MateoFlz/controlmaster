@@ -1,7 +1,7 @@
 var datas;
 $(document).ready(function () {
     selectAula();
-    
+
     $("#programsuccess").hide();
     $("#programdanger").hide();
 
@@ -16,13 +16,15 @@ $(document).ready(function () {
                 data: { search: search },
                 dataType: "JSON",
                 success: function (response) {
+                    console.log(response);
                     let templete = ``;
                     response.forEach((respon) => {
                         templete += `
                         <div class="list-group" id="show-list2">
  
                         <a href="#" id="item-data" class="list-group-item list-group-item-action border-1">${respon.nombre}</a>
-                        <input type="hidden" id="idcedulas" value="${respon.cedula}">
+                        <input type="hidden" id="iduser" value="${respon.cedula}">
+                        <p style="display:none">${respon.id}</p>
                         </div>`;
                     });
                     $("#show-list").html(templete);
@@ -36,7 +38,7 @@ $(document).ready(function () {
     $(document).on("click", "#show-list2", function (e) {
 
         $("#cedula").val($(this).children('input').val());
-
+        $("#id_user").val($(this).children('p').text());
         $("#show-list").html("");
     });
 
@@ -513,7 +515,7 @@ $(document).ready(function () {
     $(document).on('click', '#btndown', function (e) {
         $('#cantidad').val(count -= 1);
     })
-   
+
     function get_equipos() {
         $.ajax({
             url: "get_equipos_video",
@@ -535,7 +537,7 @@ $(document).ready(function () {
                    `;
                 });
                 $(".tbody-prestamos-video").html(template);
-                
+
             }
         });
     }
@@ -561,37 +563,47 @@ $(document).ready(function () {
                    `;
                 });
                 $(".tbody-prestamos-portatil").html(template);
-                
+
             }
         });
     }
 
+    function get_utilidades() {
+        $.ajax({
+            url: "get_all_utilidades",
+            type: "GET",
+            dataType: "JSON",
+            success: function (response) {
+                var template = "";
+                response.forEach((respon) => {
+                    template += `
+                        <tr respon="${respon.id}"> 
+                            <td>${respon.marca}</td>
+                            <td>${respon.descripcion}</td>
+                            <td>${respon.cantidad}</td>
+                            <td>${respon.tipo}</td>
+                            <td class="text-center">${respon.estado_equipo}</td>
+                             <td class="text-center">
+                                <button id="btn_reserva_utilidad" class="btn btn-primary border"><i class="fas fa-plus"></i></button>
+                             </td>
+                        </tr>
+                   `;
+                });
+                $(".tbody-prestamos-utilidad").html(template);
+
+            }
+        });
+    }
+    get_table_temporal();
     function get_table_temporal() {
         $.ajax({
             url: "temporalTable",
             type: "GET",
             dataType: "JSON",
             success: function (response) {
-                var templete1 = `
-           <div class="table-responsive" style="max-height: 340px">
-                <table class="table table-hover table-sm" style="white-space: nowrap">
-                    <thead>
-                        <tr class="table-success">
-                            <th class="thead-fix" scope="col">Serial</th>
-                            <th class="thead-fix" scope="col">Marca</th>
-                            <th class="thead-fix" scope="col">Descripcion</th>
-                            <th class="thead-fix" scope="col">Tipo</th>
-                            <th class="thead-fix text-center" scope="col">Acciones</th>
-                        </tr>
-                    </thead>                                                            
-                    <tbody class="tbody-temporal">                                                            
-                    </tbody>
-                </table>
-            </div> 
-        `;
-        var templete2 = ''
-            response.forEach((respon) => {
-                templete2 += ` 
+                var templete = ''
+                response.forEach((respon) => {
+                    templete += ` 
                 <tr respon="${respon.id_equipo}"> 
                     <td scope="row">${respon.serial}</td>
                     <td>${respon.marca}</td>
@@ -602,19 +614,43 @@ $(document).ready(function () {
                     </td>
                 </tr>`;
                 });
-            $("#container-table").html(templete1);
-            $(".tbody-temporal").html(templete2);
+                $(".tbody-temporal").html(templete);
+            }
+        });
+    }
+    get_table_temporal_utilidad();
+    function get_table_temporal_utilidad() {
+        $.ajax({
+            url: "temporal_utilidad",
+            type: "GET",
+            dataType: "JSON",
+            success: function (response) {
+             
+                var templete = ''
+                response.forEach((respon) => {
+                    templete += ` 
+                <tr respon="${respon.id_utilidad}"> 
+                    <td scope="row">${respon.marca}</td>
+                    <td>${respon.descripcion}</td>
+                    <td>${respon.cantidad}</td>
+                    <td class="text-center">${respon.tipo}</td>
+                    <td class="text-center">
+                        <button class="btn btn-primary border" id="btn-delete-utilidad"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>`;
+                });
+                $(".tbody-temporal-utilidad").html(templete);
             }
         });
     }
 
     $(document).on('click', '#btn_reserva', function (e) {
-        
+
         var elemet = $(this)[0].parentElement.parentElement;
         var id = $(elemet).attr('respon');
         $.post('reservarEquipo', { id }, function (response) {
             console.log(response)
-            if(response == 1){
+            if (response == 1) {
                 get_table_temporal();
                 get_equipos();
                 get_equipos_p();
@@ -622,14 +658,16 @@ $(document).ready(function () {
         })
     });
 
+
+
     $(document).on('click', '#btn_reserva_utilidad', function (e) {
-        
         var elemet = $(this)[0].parentElement.parentElement;
         var id = $(elemet).attr('respon');
         $.post('reservarUtilidad', { id }, function (response) {
-            console.log(response)
+            console.log(response);
             if(response == 1){
-               
+                get_utilidades();
+                get_table_temporal_utilidad();
             }
         })
     });
@@ -639,12 +677,25 @@ $(document).ready(function () {
         var elemet = $(this)[0].parentElement.parentElement;
         var id = $(elemet).attr('respon');
         $.post('delete_temporal', { id }, function (response) {
-            console.log(response);
-            if(response == 1){
+            if (response == 1) {
                 get_table_temporal();
                 get_equipos();
                 get_equipos_p();
             }
+        })
+    });
+
+    $(document).on('click', '#btn-delete-utilidad', function (e) {
+
+        var elemet = $(this)[0].parentElement.parentElement;
+        var id = $(elemet).attr('respon');
+        $.post('delete_temporal_utilidad', { id }, function (response) {
+            console.log(response);
+            if(response == true){
+                get_utilidades();
+                get_table_temporal_utilidad();
+            }
+           
         })
     });
 

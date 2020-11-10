@@ -64,6 +64,7 @@ class prestamosController extends Controller
             $result = $this->usuario->getEspecifico2();
             foreach ($result->fetchAll(\PDO::FETCH_ASSOC) as $row) {
                 $json[] = array(
+                    'id' => $row['id'],
                     'cedula' => $row['cedula'],
                     'nombre' => $row['nombre']
                 );
@@ -78,10 +79,10 @@ class prestamosController extends Controller
         $this->prestamo_equipo->setActivo('1');
         $this->prestamo_equipo->setEquipoId($this->prestamo_equipo->clean_string($_POST['id']));
         $this->equipos->setId($this->equipos->clean_string($_POST['id']));
-        $equipoprestado = $this->prestamo_equipo->equipoPrestado()->fetchAll(PDO::FETCH_ASSOC);
-        if(empty($equipoprestado)){
+        $equipoprestado = $this->prestamo_equipo->equipoPrestado()->fetchAll(\PDO::FETCH_ASSOC);
+        if (empty($equipoprestado)) {
             $this->prestamo_equipo->create_tmp_equipo();
-            $data = $this->equipos->getEquipoByEtiquetaId()->fetchAll(PDO::FETCH_ASSOC);
+            $data = $this->equipos->getEquipoByEtiquetaId()->fetchAll(\PDO::FETCH_ASSOC);
             $this->equipos->setId($data[0]['id']);
             $this->equipos->setSerial($data[0]['serial']);
             $this->equipos->setMarca($data[0]['marca']);
@@ -90,9 +91,9 @@ class prestamosController extends Controller
             $this->equipos->setFecha(date('yy-m-d'));
             $this->equipos->create_temporal();
             echo true;
-        }else{
+        } else {
             $this->prestamo_equipo->update_tmp_equipo();
-            $data = $this->equipos->getEquipoByEtiquetaId()->fetchAll(PDO::FETCH_ASSOC);
+            $data = $this->equipos->getEquipoByEtiquetaId()->fetchAll(\PDO::FETCH_ASSOC);
             $this->equipos->setId($data[0]['id']);
             $this->equipos->setSerial($data[0]['serial']);
             $this->equipos->setMarca($data[0]['marca']);
@@ -100,7 +101,7 @@ class prestamosController extends Controller
             $this->equipos->setEtiqueta($data[0]['tipo']);
             $this->equipos->setFecha(date('yy-m-d'));
             $this->equipos->create_temporal();
-           echo true;
+            echo true;
         }
         die();
     }
@@ -109,33 +110,48 @@ class prestamosController extends Controller
     {
 
 
-        $this->prestamo_equipo->setActivo('1');
-        $this->prestamo_equipo->setEquipoId($this->prestamo_equipo->clean_string($_POST['id']));
-        $this->utilidad->setId($this->utilidad->clean_string($_POST['id']));
-        $equipoprestado = $this->prestamo_equipo->utilidadPrestado()->fetchAll(PDO::FETCH_ASSOC);
-        if(empty($equipoprestado)){
-            $this->prestamo_equipo->create_tmp_utilidad();
-            $data = $this->equipos->getEquipoByEtiquetaId()->fetchAll(PDO::FETCH_ASSOC);
-            $this->utilidad->setId($data[0]['id']);
+        if (isset($_POST['id'])) {
+            $this->prestamo_equipo->setActivo('1');
+            $this->prestamo_equipo->setUtilidadId($_POST['id']);
+            $this->utilidad->setId($_POST['id']);
+
+
+            $data = $this->utilidad->getUtilidaById()->fetchAll(\PDO::FETCH_ASSOC);
+
             $this->utilidad->setMarca($data[0]['marca']);
             $this->utilidad->setDescripcion($data[0]['descripcion']);
-            $this->utilidad->setCantidad($data[0]['cantidad']);
             $this->utilidad->setEtiqueta($data[0]['tipo']);
             $this->utilidad->setFecha(date('yy-m-d'));
-            $this->utilidad->create_temporal();
-            echo true;
-        }else{
-            $this->prestamo_equipo->update_tmp_equipo();
-            $data = $this->utilidad->getUtilidaByactivo()->fetchAll(PDO::FETCH_ASSOC);
-            $this->utilidad->setId($data[0]['id']);
-            $this->utilidad->setMarca($data[0]['marca']);
-            $this->utilidad->setDescripcion($data[0]['descripcion']);
-            $this->utilidad->setCantidad($data[0]['cantidad']);
-            $this->utilidad->setEtiqueta($data[0]['tipo']);
-            $this->utilidad->setFecha(date('yy-m-d'));
-            $this->utilidad->create_temporal();
-           echo true;
+
+            if (empty($this->prestamo_equipo->utilidadPrestado()->fetchAll(\PDO::FETCH_ASSOC))) {
+
+                if (empty($this->utilidad->getUtilidaBycantidad()->fetchAll(\PDO::FETCH_ASSOC))) {
+                    $this->prestamo_equipo->create_tmp_utilidad();
+                    $this->utilidad->setCantidad('1');
+                    $this->utilidad->setCantidad2(($data[0]['cantidad'] - 1));
+                    $response = $this->utilidad->create_temporal();
+                    echo $response;
+                } else {
+                    echo "No Ingreso 1: <br>";
+                }
+            } else {
+                $tmp_utilidad = $this->utilidad->getUtilidaBycantidad()->fetchAll(\PDO::FETCH_ASSOC);
+                if (!empty($tmp_utilidad)) {
+                    $this->prestamo_equipo->update_tmp_utilidad();
+                    $this->utilidad->setCantidad(($tmp_utilidad[0]['cantidad'] + 1));
+                    $this->utilidad->setCantidad2(($data[0]['cantidad'] - 1));
+                    $response = $this->utilidad->update_temporal();
+                    echo $response;
+                } else {
+                    $this->prestamo_equipo->update_tmp_utilidad();
+                    $this->utilidad->setCantidad('1');
+                    $this->utilidad->setCantidad2(($data[0]['cantidad'] - 1));
+                    $response = $this->utilidad->create_temporal();
+                    echo $response;
+                }
+            }
         }
+
         die();
     }
 
@@ -151,6 +167,24 @@ class prestamosController extends Controller
                 'marca' => $row['marca'],
                 'descripcion' => $row['descripcion'],
                 'estado_equipo' => $row['estado_equipo'],
+                'tipo' => $row['tipo']
+            );
+        }
+        echo json_encode($json);
+        die();
+    }
+
+    public function get_all_utilidades()
+    {
+        $data = $this->utilidad->getUtilidaByactivo();
+        $json = array();
+        foreach ($data->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            $json[] = array(
+                'id' => $row['id'],
+                'marca' => $row['marca'],
+                'descripcion' => $row['descripcion'],
+                'cantidad' => $row['cantidad'],
+                'estado_equipo' => $row['estado'],
                 'tipo' => $row['tipo']
             );
         }
@@ -194,21 +228,84 @@ class prestamosController extends Controller
         die();
     }
 
+    public function temporal_utilidad()
+    {
+        $json = array();
+        $data = $this->utilidad->getTableutilidad();
+        foreach ($data->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            $json[] = array(
+                'id_utilidad' => $row['id_utilidad'],
+                'marca' => $row['marca'],
+                'descripcion' => $row['descripcion'],
+                'cantidad' => $row['cantidad'],
+                'tipo' => $row['tipo']
+            );
+        }
+        echo json_encode($json);
+        die();
+    }
+
     public function delete_temporal()
     {
-        if(isset($_POST['id'])){
+        if (isset($_POST['id'])) {
 
             $this->prestamo_equipo->setEquipoId($this->prestamo_equipo->clean_string($_POST['id']));
-            $this->prestamo_equipo->setActivo('0')  ;
+            $this->prestamo_equipo->setActivo('0');
             $response = $this->prestamo_equipo->delete_tmp_equipo();
             $id_tmp = $this->prestamo_equipo->delete_tmp_id_equipo();
-            if($response && $id_tmp){
+            if ($response && $id_tmp) {
                 echo true;
-            }else{
+            } else {
                 echo false;
             }
-           
+
             die();
+        }
+    }
+
+    public function delete_temporal_utilidad()
+    {
+        if (isset($_POST['id'])) {
+            $this->prestamo_equipo->setUtilidadId($this->prestamo_equipo->clean_string($_POST['id']));
+            $this->prestamo_equipo->setActivo('0');
+            $this->utilidad->setId($_POST['id']);
+
+            $tmp_utilidad = $this->utilidad->getUtilidaBycantidad()->fetchAll(\PDO::FETCH_ASSOC);
+            $data = $this->utilidad->getUtilidaById()->fetchAll(\PDO::FETCH_ASSOC);
+
+            if ($tmp_utilidad) {
+                if ($tmp_utilidad[0]['cantidad'] != 0) {
+                    $this->utilidad->setCantidad(($tmp_utilidad[0]['cantidad'] - 1));
+                    $this->utilidad->setCantidad2(($data[0]['cantidad'] + 1));
+                    $response = $this->utilidad->update_temporal();
+                    $tmp_utilidad = $this->utilidad->getUtilidaBycantidad()->fetchAll(\PDO::FETCH_ASSOC);
+                    if ($tmp_utilidad[0]['cantidad'] == 0) {
+                        $this->prestamo_equipo->update_tmp_utilidad();
+                        $response = $this->prestamo_equipo->delete_tmp_utilidad();
+                    }
+                    echo $response;
+                }
+            }
+        }
+        die();
+    }
+
+
+    public function insert_prestamo()
+    {
+        if (isset($_POST['cod2']) && isset($_POST['iduser'])) {
+            $this->prestamo_equipo->setObservacion($this->prestamo_equipo->clean_string($_POST['observacion']));
+            $this->prestamo_equipo->setUbicacion($this->prestamo_equipo->clean_string($_POST['sedes'] . ' - ' . $_POST['ubicacionprestamo']));
+            $this->prestamo_equipo->setCedula($this->prestamo_equipo->clean_string($_POST['iduser']));
+            $this->prestamo_equipo->setFecha(date('yy-m-d'));
+            $this->prestamo_equipo->setHoraEntrega(date('H:i:s A'));
+            $this->prestamo_equipo->setEstado('1');
+            if($this->prestamo_equipo->getTable()->fetchAll(\PDO::FETCH_ASSOC)){
+                $response = $this->prestamo_equipo->create_prestamo();
+                echo $response;
+            }else{
+                echo "No hay datos";
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 <div class="col-md-7">
                     <div class="card">
                         <?php
-
+                
                         if (strpos($fullUrl, "delete=true") ==  true) { ?>
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 Portatil eliminado satifactoriamente.
@@ -47,8 +47,20 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                             </div>
                         </div>
                         <div class="card-body">
-                            <div id="container-table">
-
+                            <div class="table-responsive" style="max-height: 340px">
+                                <table class="table table-hover table-sm" style="white-space: nowrap">
+                                    <thead>
+                                        <tr class="table-success">
+                                            <th class="thead-fix" scope="col">Serial</th>
+                                            <th class="thead-fix" scope="col">Marca</th>
+                                            <th class="thead-fix" scope="col">Descripcion</th>
+                                            <th class="thead-fix" scope="col">Tipo</th>
+                                            <th class="thead-fix text-center" scope="col">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody-temporal">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -86,8 +98,20 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                             </div>
                         </div>
                         <div class="card-body">
-                            <div id="container-table-utilidad">
-
+                        <div class="table-responsive" style="max-height: 340px">
+                                <table class="table table-hover table-sm" style="white-space: nowrap">
+                                    <thead>
+                                        <tr class="table-success">
+                                            <th class="thead-fix" scope="col">Marca</th>
+                                            <th class="thead-fix" scope="col">Descripcion</th>
+                                            <th class="thead-fix" scope="col">cantidad</th>
+                                            <th class="thead-fix" scope="col">Tipo</th>
+                                            <th class="thead-fix text-center" scope="col">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody-temporal-utilidad">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -309,19 +333,21 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                                                                         <th class="thead-fix" scope="col">Marca</th>
                                                                                         <th class="thead-fix" scope="col">Descripcion</th>
                                                                                         <th class="thead-fix" scope="col">Cantidad</th>
+                                                                                        <th class="thead-fix" scope="col">Tipo</th>
                                                                                         <th class="thead-fix" scope="col">Estado</th>
                                                                                         <th class="thead-fix text-center" scope="col">Acciones</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody class="tbody-prestamos-utilidad">
-                                                                                    <?php
 
+                                                                                    <?php
                                                                                     foreach ($datos['utilidad'] as $row) {
                                                                                     ?>
                                                                                         <tr <?php echo 'respon="' . $row['id'] . '"' ?>>
                                                                                             <td><?php echo $row['marca'] ?></td>
                                                                                             <td><?php echo $row['descripcion'] ?></td>
                                                                                             <td><?php echo $row['cantidad'] ?></td>
+                                                                                            <td><?php echo $row['tipo'] ?></td>
                                                                                             <td><?php echo $row['estado'] ?></td>
                                                                                             <td class="text-center">
                                                                                                 <button id="btn_reserva_utilidad" class="btn btn-primary border"><i class="fas fa-plus"></i></button>
@@ -383,13 +409,14 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                             <div class="mb-3" id="show-list">
 
                             </div>
-                            <form action="<?php echo URL . "inventarios/siret/insert_utilidad"; ?>" method="post">
+                            <form action="<?php echo URL . "prestamos/insert_prestamo"; ?>" method="post">
                                 <div class="form-group row border pt-2">
                                     <div class="col-md-12">
                                         <div class="row  mb-2">
                                             <label for="cod1" class="col control-label">Cedula:</label>
                                             <div class="col-lg-10 col-md-12 col-sm-12">
                                                 <input type="text" class="form-control" id="cedula" name="cod2" placeholder="N° documento" onkeydown="return false" required readonly>
+                                                <input type="hidden" id="id_user" name="iduser">
                                             </div>
                                         </div>
                                     </div>

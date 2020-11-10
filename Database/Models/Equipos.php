@@ -312,4 +312,8 @@ class Equipos extends abstractModel
         $data = $this->return_query($this->query);
         return  $data;
     }
+
+    
+
+    
 }

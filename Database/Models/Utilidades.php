@@ -13,6 +13,7 @@ class Utilidades extends abstractModel
     private $descripcion;
     private $ubicacion;
     private $cantidad;
+    private $cantidad2;
     private $fecha;
     private $estado;
     private $activo;
@@ -85,6 +86,16 @@ class Utilidades extends abstractModel
         $this->cantidad = $cantidad;
     }
 
+    public function getCantidad2()
+    {
+        return $this->cantidad2;
+    }
+
+    public function setCantidad2($cantidad2)
+    {
+        $this->cantidad2 = $cantidad2;
+    }
+
     public function getFecha()
     {
         return $this->fecha;
@@ -144,6 +155,7 @@ class Utilidades extends abstractModel
 
     public function getUtilidaById()
     {
+        $this->getInstance();
         $query = $this->Connection->prepare("SELECT e.*, a.sede, a.nombre, t.descripcion as tipo FROM utilidades e
         INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
          e.etiqueta_id = t.id WHERE e.activo = 1 AND e.id = ?");
@@ -215,10 +227,17 @@ class Utilidades extends abstractModel
 
     public function getUtilidaByactivo()
     {
+        $this->query = "SELECT u.*, et.descripcion as tipo FROM utilidades u LEFT JOIN tmp_utilidad_id t ON u.id = t.id_utilidad JOIN etiquetas et
+        ON u.etiqueta_id = et.id WHERE  u.activo = 1 AND u.cantidad > 0 OR t.activo = 0;";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
+
+    public function getUtilidaBycantidad()
+    {
         $this->getInstance();
-        $query = $this->Connection->prepare("SELECT * FROM utilidades u LEFT JOIN tmp_utilidad_id t ON u.id = t.id_utilidad 
-        JOIN etiquetas et ON u.etiqueta_id = et.id WHERE (t.activo IS NULL OR t.activo = 0) AND u.activo = 1 AND u.cantidad > 0");
-        $query->bindParam(1, $this->descripcion);
+        $query = $this->Connection->prepare("SELECT * FROM tmp_utilidad WHERE id_utilidad = ?");
+        $query->bindParam(1, $this->id);
         $query->execute();
         $this->closeConnection();
         return $query;
@@ -242,6 +261,8 @@ class Utilidades extends abstractModel
     {
         try {
             $this->getInstance();
+            $this->Connection->beginTransaction();
+
             $query = $this->Connection->prepare("INSERT INTO tmp_utilidad VALUES (null,?,?,?,?,?,?,?)");
             $query->bindParam(1, $this->id);
             $query->bindParam(2, $this->marca);
@@ -253,14 +274,48 @@ class Utilidades extends abstractModel
             $query->execute();
 
             $query = $this->Connection->prepare("UPDATE utilidades SET cantidad = ? WHERE id = ?");
+            $query->bindParam(1, $this->cantidad2);
+            $query->bindParam(2, $this->id);
+            $result = $query->execute();
+            
+            $this->Connection->commit();
+            $this->closeConnection();
+            return $result;
+        } catch (\Exception $e) {
+            echo "Fallo: " . $e->getMessage();
+            return $e->getMessage();
+        }
+    }
+
+    public function update_temporal()
+    {
+        try {
+            $this->getInstance();
+            $this->Connection->beginTransaction();
+            $query = $this->Connection->prepare("UPDATE tmp_utilidad SET cantidad = ? WHERE id_utilidad = ?");
             $query->bindParam(1, $this->cantidad);
             $query->bindParam(2, $this->id);
+            $query->execute();
 
+            $query = $this->Connection->prepare("UPDATE utilidades SET cantidad = ? WHERE id = ?");
+            $query->bindParam(1, $this->cantidad2);
+            $query->bindParam(2, $this->id);
+            $result = $query->execute();
+            $this->Connection->commit();
             $this->closeConnection();
-            return true;
+            return $result;
         } catch (\Exception $e) {
             echo "Fallo: " . $e->getMessage();
             return false;
         }
     }
+
+    public function getTableutilidad()
+    {
+        $fecha = date('yy-m-d');
+        $this->query = "SELECT * FROM tmp_utilidad WHERE fecha = '$fecha' AND admin = " .$_SESSION['id']. " AND cantidad > 0";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
+
 }

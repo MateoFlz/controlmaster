@@ -14,6 +14,9 @@ class PrestamoEquipo extends abstractModel
     private $fecha;
     private $fecha_entrega;
     private $fecha_devolucion;
+    private $cedula;
+    private $observacion;
+    private $ubicacion;
     private $cantidad;
     private $hora_entrega;
     private $hora_final;
@@ -48,6 +51,16 @@ class PrestamoEquipo extends abstractModel
         $this->prestamo_id = $prestamo_id;
     }
 
+    public function getUtilidadId()
+    {
+        return $this->utilidad_id;
+    }
+
+    public function setUtilidadId($utilidad_id)
+    {
+        $this->utilidad_id = $utilidad_id;
+    }
+
     public function getEquipoId()
     {
         return $this->equipo_id;
@@ -56,6 +69,16 @@ class PrestamoEquipo extends abstractModel
     public function setEquipoId($equipo_id)
     {
         $this->equipo_id = $equipo_id;
+    }
+
+    public function getObservacion()
+    {
+        return $this->observacion;
+    }
+
+    public function setObservacion($observacion)
+    {
+        $this->observacion = $observacion;
     }
 
     public function getFecha()
@@ -86,6 +109,36 @@ class PrestamoEquipo extends abstractModel
     public function setFechaDevolucion($fecha_devolucion)
     {
         $this->fecha_devolucion = $fecha_devolucion;
+    }
+
+    public function getCedula()
+    {
+        return $this->cedula;
+    }
+
+    public function setCedula($cedula)
+    {
+        $this->cedula = $cedula;
+    }
+
+    public function getUbicacion()
+    {
+        return $this->ubicacion;
+    }
+
+    public function setUbicacion($ubicacion)
+    {
+        $this->ubicacion = $ubicacion;
+    }
+
+    public function getCantidad()
+    {
+        return $this->cantidad;
+    }
+
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
     }
 
     public function getHoraEntrega()
@@ -156,39 +209,6 @@ class PrestamoEquipo extends abstractModel
         return  $data;
     }
     
-
-    /*public function getFull()
-    {
-        $this->query = "SELECT e.*, a.nombre, t.descripcion FROM equipos e
-        INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON e.etiqueta_id = t.id WHERE e.activo = 1";
-        $data = $this->return_query($this->query);
-        return  $data;
-    }
-
-    public function getEquipoById()
-    {
-        
-        $query = $this->Connection->prepare("SELECT e.*, a.sede, a.nombre, t.descripcion as tipo FROM equipos e
-        INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
-         e.etiqueta_id = t.id WHERE e.activo = 1 AND e.id = ?");
-        $query->bindParam(1, $this->id);
-        $query->execute();
-        $this->closeConnection();
-        return $query;
-    }
-
-    public function getEquipoByEtiqueta()
-    {
-        $this->getInstance();
-        $query = $this->Connection->prepare("SELECT e.*, t.id as ideti, a.nombre, t.descripcion as tipo FROM equipos e
-         INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
-         e.etiqueta_id = t.id WHERE e.activo = 1 AND t.descripcion = ?");
-        $query->bindParam(1, $this->descripcion);
-        $query->execute();
-        $this->closeConnection();
-        return $query;
-    }*/
-
     public function create_tmp_equipo()
     {
         try {
@@ -258,62 +278,6 @@ class PrestamoEquipo extends abstractModel
             return false;
         }
     }
-    
-    /*public function create()
-    {
-
-        try {
-            $this->getInstance();
-            $query = $this->Connection->prepare("INSERT INTO equipos VALUES (null,?,?,?,?,?,?,?,?)");
-            $query->bindParam(1, $this->getSerial());
-            $query->bindParam(2, $this->getEtiqueta());
-            $query->bindParam(3, $this->getMarca());
-            $query->bindParam(4, $this->getModelo());
-            $query->bindParam(5, $this->getDescripcion());
-            $query->bindParam(6, $this->getUbicacion());
-            $query->bindParam(7, $this->getEstado());
-            $query->bindParam(8, $this->getActivo());
-
-            $result = $query->execute();
-            $this->closeConnection();
-            return $result;
-        } catch (\Exception $e) {
-            echo "Fallo: " . $e->getMessage();
-            return false;
-        }
-    }
-
-    public function update()
-    {
-        try{
-            $this->getInstance();
-            $query = $this->Connection->prepare("UPDATE equipos SET serial = ?,
-            etiqueta_id = ?, marca = ?, modelo = ?, descripcion = ?, 
-            ubicacion = ?, estado = ?, activo = ? WHERE id = ?");
-            $query->bindParam(1, $this->getSerial());
-            $query->bindParam(2, $this->getEtiqueta());
-            $query->bindParam(3, $this->getMarca());
-            $query->bindParam(4, $this->getModelo());
-            $query->bindParam(5, $this->getDescripcion());
-            $query->bindParam(6, $this->getUbicacion());
-            $query->bindParam(7, $this->getEstado());
-            $query->bindParam(8, $this->getActivo());
-            $query->bindParam(9, $this->getId());
-
-            $result = $query->execute();
-            if ($result) {
-                return true;
-            } else {
-                return false;
-            }
-        }catch(\Exception $e){
-            echo "Fallo: " . $e->getMessage();
-            return false;
-        }
-        
-    }*/
-
-
 
     public function delete()
     {
@@ -355,18 +319,34 @@ class PrestamoEquipo extends abstractModel
     public function utilidadPrestado()
     {
         $this->getInstance();
-        $query = $this->Connection->prepare("SELECT * FROM utilidades e INNER JOIN tmp_utilidad_id te ON te.id_utilidad = e.id WHERE e.id = ?");
-        $query->bindParam(1, $this->equipo_id);
+        $query = $this->Connection->prepare("SELECT * FROM utilidades u INNER JOIN tmp_utilidad_id ti ON ti.id_utilidad = u.id WHERE ti.id_utilidad  = ?");
+        $query->bindParam(1, $this->utilidad_id);
         $query->execute();
         $this->closeConnection();
-        return $query; 
+        return $query;
+      
     }
+
+
 
     public function delete_tmp_equipo()
     {
         $this->getInstance();
         $query = $this->Connection->prepare("DELETE FROM tmp_equipo WHERE id_equipo = ?");
         $query->bindParam(1, $this->equipo_id);
+        $result = $query->execute();
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function delete_tmp_utilidad()
+    {
+        $this->getInstance();
+        $query = $this->Connection->prepare("DELETE FROM tmp_utilidad WHERE id_utilidad = ?");
+        $query->bindParam(1, $this->utilidad_id);
         $result = $query->execute();
         if ($result) {
             return true;
@@ -387,5 +367,74 @@ class PrestamoEquipo extends abstractModel
         } else {
             return false;
         }
+    }
+
+    public function delete_tmp_id_utilidad()
+    {
+        $this->getInstance();
+        $query = $this->Connection->prepare("UPDATE tmp_utilidad_id SET activo = ? WHERE id_utilidad = ?");
+        $query->bindParam(1, $this->activo);
+        $query->bindParam(2, $this->utilidad_id);
+        $result = $query->execute();
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getTable()
+    {
+        $fecha = date('yy-m-d');
+        $this->query = "SELECT * FROM tmp_equipo WHERE fecha = '$fecha' AND admin = " .$_SESSION['id']. "";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
+
+    public function create_prestamo()
+    {
+        try {
+            $this->getInstance();
+           $this->Connection->beginTransaction();
+
+            $query = $this->Connection->prepare("INSERT INTO prestamo VALUES (null,?,?,?,?,?,?)");
+            $query->bindParam(1, $this->ubicacion);
+            $query->bindParam(2, $this->observacion);
+            $query->bindParam(3, $this->fecha);
+            $query->bindParam(4, $this->estado);
+            $query->bindParam(5, $this->cedula);
+            $query->bindParam(6, $_SESSION['id']);
+            $query->execute();
+
+            $this->setId($this->get_prestamo()->fetch(\PDO::FETCH_NUM)[0]);
+
+            foreach($this->getTable()->fetchAll(\PDO::FETCH_ASSOC) as $row){
+    
+                $query = $this->Connection->prepare("INSERT INTO prestamo_equipo VALUES (null,?,?,?,?,?,?,?,?,?)");
+                $query->bindParam(1, $this->id);
+                $query->bindParam(2, $row['id_equipo']);
+                $query->bindParam(3, $this->fecha);
+                $query->bindParam(4, $this->fecha_devolucion);
+                $query->bindParam(5, $this->hora_entrega);
+                $query->bindParam(6, $this->hora_final);
+                $query->bindParam(7, $this->recive);
+                $query->bindParam(8, $this->estado);
+                $query->bindParam(9, $this->estado);
+                $result = $query->execute();
+                
+            }
+            $this->Connection->commit();
+            return $result;
+        } catch (\Exception $e) {
+            echo "Fallo: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function get_prestamo()
+    {
+        $this->query = "SELECT max(id) FROM prestamo";
+        $data = $this->return_query($this->query);
+        return  $data;
     }
 }

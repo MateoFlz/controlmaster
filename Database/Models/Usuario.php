@@ -223,7 +223,7 @@ class Usuario extends abstractModel{
 
     public function getEspecifico2()
     {
-        $query = "SELECT a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre FROM  usuarios a WHERE a.Estado = 1 AND a.cedula LIKE '%". $this->pnombre ."%' OR
+        $query = "SELECT a.id, a.cedula, CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) AS nombre FROM  usuarios a WHERE a.Estado = 1 AND a.cedula LIKE '%". $this->pnombre ."%' OR
         CONCAT(a.pnombre,' ', a.papellido,' ', a.sapellido) LIKE '%". $this->pnombre ."%'";
         $result = $this->return_query($query);
         $this->closeConnection();
