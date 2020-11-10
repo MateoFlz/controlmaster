@@ -391,11 +391,19 @@ class PrestamoEquipo extends abstractModel
         return  $data;
     }
 
+    public function getTableutilidad()
+    {
+        $fecha = date('yy-m-d');
+        $this->query = "SELECT * FROM tmp_utilidad WHERE fecha = '$fecha' AND admin = " .$_SESSION['id']. " AND cantidad > 0";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
+
+
     public function create_prestamo()
     {
         try {
             $this->getInstance();
-           $this->Connection->beginTransaction();
 
             $query = $this->Connection->prepare("INSERT INTO prestamo VALUES (null,?,?,?,?,?,?)");
             $query->bindParam(1, $this->ubicacion);
@@ -406,24 +414,7 @@ class PrestamoEquipo extends abstractModel
             $query->bindParam(6, $_SESSION['id']);
             $query->execute();
 
-            $this->setId($this->get_prestamo()->fetch(\PDO::FETCH_NUM)[0]);
-
-            foreach($this->getTable()->fetchAll(\PDO::FETCH_ASSOC) as $row){
-    
-                $query = $this->Connection->prepare("INSERT INTO prestamo_equipo VALUES (null,?,?,?,?,?,?,?,?,?)");
-                $query->bindParam(1, $this->id);
-                $query->bindParam(2, $row['id_equipo']);
-                $query->bindParam(3, $this->fecha);
-                $query->bindParam(4, $this->fecha_devolucion);
-                $query->bindParam(5, $this->hora_entrega);
-                $query->bindParam(6, $this->hora_final);
-                $query->bindParam(7, $this->recive);
-                $query->bindParam(8, $this->estado);
-                $query->bindParam(9, $this->estado);
-                $result = $query->execute();
-                
-            }
-            $this->Connection->commit();
+            $result = $this->Connection->lastInsertId();
             return $result;
         } catch (\Exception $e) {
             echo "Fallo: " . $e->getMessage();
@@ -431,10 +422,54 @@ class PrestamoEquipo extends abstractModel
         }
     }
 
-    public function get_prestamo()
+    public function create_prestamo_equipo()
     {
-        $this->query = "SELECT max(id) FROM prestamo";
-        $data = $this->return_query($this->query);
-        return  $data;
+        try {
+            $this->getInstance();
+
+            $query = $this->Connection->prepare("INSERT INTO prestamo_equipo VALUES (null,?,?,?,?,?,?,?,?,?)");
+            $query->bindParam(1, $this->id);
+            $query->bindParam(2, $this->equipo_id);
+            $query->bindParam(3, $this->fecha);
+            $query->bindParam(4, $this->fecha_devolucion);
+            $query->bindParam(5, $this->hora_entrega);
+            $query->bindParam(6, $this->hora_final);
+            $query->bindParam(7, $this->recive);
+            $query->bindParam(8, $this->estado);
+            $query->bindParam(9, $this->estado);
+            $result = $query->execute();
+
+            return $result;
+        } catch (\Exception $e) {
+            echo "Fallo: " . $e->getMessage();
+            return false;
+        }
     }
+
+    public function create_prestamo_utilidad()
+    {
+        try {
+            $this->getInstance();
+
+            $query = $this->Connection->prepare("INSERT INTO prestamo_utilidad VALUES (null,?,?,?,?,?,?,?,?,?)");
+            $query->bindParam(1, $this->id);
+            $query->bindParam(2, $this->utilidad_id);
+            $query->bindParam(3, $this->fecha);
+            $query->bindParam(4, $this->fecha_devolucion);
+            $query->bindParam(5, $this->hora_entrega);
+            $query->bindParam(6, $this->hora_final);
+            $query->bindParam(7, $this->recive);
+            $query->bindParam(8, $this->estado);
+            $query->bindParam(9, $this->estado);
+            $result = $query->execute();
+
+            return $result;
+        } catch (\Exception $e) {
+            echo "Fallo: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
+
 }

@@ -381,7 +381,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
                             if (strpos($fullUrl, "response=true") ==  true) { ?>
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    Utilidad guardado satifactoriamente.
+                                    Prestamo guardado satifactoriamente.
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -391,7 +391,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
                             if (strpos($fullUrl, "response=false") ==  true) { ?>
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    Ocurrio un error al guardar el utilidad.
+                                    Ocurrio un error o al guardar el prestamo.
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>

@@ -300,11 +300,49 @@ class prestamosController extends Controller
             $this->prestamo_equipo->setFecha(date('yy-m-d'));
             $this->prestamo_equipo->setHoraEntrega(date('H:i:s A'));
             $this->prestamo_equipo->setEstado('1');
-            if($this->prestamo_equipo->getTable()->fetchAll(\PDO::FETCH_ASSOC)){
-                $response = $this->prestamo_equipo->create_prestamo();
-                echo $response;
-            }else{
-                echo "No hay datos";
+            $this->prestamo_equipo->setHoraFinal('');
+            $this->prestamo_equipo->setRecive('');
+            $this->prestamo_equipo->setFechaDevolucion('');
+
+            $data = $this->prestamo_equipo->getTable()->fetchAll(\PDO::FETCH_ASSOC);
+            $utilidad = $this->prestamo_equipo->getTableutilidad()->fetchAll(\PDO::FETCH_ASSOC);
+            $response = $this->prestamo_equipo->create_prestamo();
+            if($data){
+                
+               if($response){
+                    $this->prestamo_equipo->setId($response);
+                    foreach($data as $row){
+                        $this->prestamo_equipo->setEquipoId($row['id_equipo']);
+                        $result = $this->prestamo_equipo->create_prestamo_equipo();
+                        $this->prestamo_equipo->delete_tmp_equipo();
+                    }
+                    if($result){
+                        
+                        Redirect::redirect('prestamos/create?response=true');
+                    }
+                }else{
+
+                }
+                    
+            }
+            if($utilidad){
+                if($response){
+                    $this->prestamo_equipo->setId($response);
+                    foreach($utilidad as $row){
+                        $this->prestamo_equipo->setUtilidadId($row['id_utilidad']);
+                        $result = $this->prestamo_equipo->create_prestamo_utilidad();
+                        $this->prestamo_equipo->delete_tmp_utilidad();
+                    }
+                    if($result){
+                        
+                        Redirect::redirect('prestamos/create?response=true');
+                    }
+                }else{
+
+                }
+            }
+            if(empty($utilidad) && empty($data)){
+                Redirect::redirect('prestamos/create?response=false');
             }
         }
     }
