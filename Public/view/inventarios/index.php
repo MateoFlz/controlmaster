@@ -89,44 +89,11 @@
                         <div class="col-sm-4 pt-3">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Tabla de consumibles</h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional
-                                        content.</p>
-                                    <a href="<?php echo URL . 'inventarios/siret/videobeam'; ?>"
-                                        class="btn btn-success">Ir al inventario</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 pt-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Tabla de sonido</h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional
-                                        content.</p>
-                                    <a href="<?php echo URL . 'inventarios/siret/audio'; ?>" class="btn btn-success">Ir
-                                        al inventario</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 pt-3">
-                            <div class="card">
-                                <div class="card-body">
                                     <h5 class="card-title">Table de utilidades</h5>
                                     <p class="card-text">With supporting text below as a natural lead-in to additional
                                         content.</p>
                                     <a href="<?php echo URL . 'inventarios/siret/utilidades'; ?>"
                                         class="btn btn-success">Ir al inventario</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 pt-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Table de otros accesorios</h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional
-                                        content.</p>
-                                    <a href="<?php echo URL . 'inventarios/siret/otro'; ?>" class="btn btn-success">Ir
-                                        al inventario</a>
                                 </div>
                             </div>
                         </div>

@@ -8,6 +8,8 @@ use Database\Models\Etiquetas;
 use Database\Models\Equipos;
 use Database\Models\PrestamoEquipo;
 use Database\Models\Utilidades;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use PDO;
 
 class prestamosController extends Controller
@@ -35,7 +37,7 @@ class prestamosController extends Controller
     public function index()
     {
 
-        return $this->view('prestamos/index');
+        return $this->view('prestamos/index', $this->prestamo_equipo->get_prestamos()->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     public function create()
@@ -52,6 +54,10 @@ class prestamosController extends Controller
         ];
 
         return $this->view('prestamos/create', $data);
+    }
+
+    public function show($id = ''){
+        return $this->view('prestamos/show');
     }
 
     public function getUser()
@@ -295,7 +301,7 @@ class prestamosController extends Controller
     {
         if (isset($_POST['cod2']) && isset($_POST['iduser'])) {
             $this->prestamo_equipo->setObservacion($this->prestamo_equipo->clean_string($_POST['observacion']));
-            $this->prestamo_equipo->setUbicacion($this->prestamo_equipo->clean_string($_POST['sedes'] . ' - ' . $_POST['ubicacionprestamo']));
+            $this->prestamo_equipo->setUbicacion($this->prestamo_equipo->clean_string($_POST['ubicacionprestamo']));
             $this->prestamo_equipo->setCedula($this->prestamo_equipo->clean_string($_POST['iduser']));
             $this->prestamo_equipo->setFecha(date('yy-m-d'));
             $this->prestamo_equipo->setHoraEntrega(date('H:i:s A'));
@@ -345,5 +351,39 @@ class prestamosController extends Controller
                 Redirect::redirect('prestamos/create?response=false');
             }
         }
+    }
+
+    public function ReportePrestamo($id = '')
+    {
+
+        $this->prestamo_equipo->setId($this->prestamo_equipo->clean_string($id));
+        $datos_utilidad = $this->prestamo_equipo->get_prestado_activo()->fetchAll(\PDO::FETCH_ASSOC);
+        require_once '../controlmaster/dompdf/autoload.inc.php';
+
+        ob_start();
+        include 'Public/view/prestamos/pdf.prestamo.php';
+
+        //$html = file_get_contents(URL. 'Public/view/estudiantes/pdf.php');
+        $html = ob_get_clean();
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $pdf = new Dompdf($options);
+        
+ 
+        // Instanciamos un objeto de la clase DOMPDF.
+      
+        // Definimos el tamaño y orientación del papel que queremos.
+        $pdf->setPaper("A4", "landscape");
+        //$pdf->set_paper(array(0,0,104,250));
+        
+        // Cargamos el contenido HTML.
+        $pdf->loadHtml($html);
+        
+        // Renderizamos el documento PDF.
+        $pdf->render();
+        
+        // Enviamos el fichero PDF al navegador.
+        $pdf->stream('reporte_presstamos.pdf', array("Attachment" => 0));
+    
     }
 }

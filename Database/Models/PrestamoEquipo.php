@@ -208,6 +208,15 @@ class PrestamoEquipo extends abstractModel
         $data = $this->return_query($this->query);
         return  $data;
     }
+
+    public function get_prestamos()
+    {
+        $this->query = "SELECT p.id, u.cedula, CONCAT(u.pnombre,' ', u.papellido,' ', u.sapellido) AS nombre, 
+        CONCAT(a.sede,' - ', a.nombre) as ubicacion, p.observaciones, p.fecha FROM usuarios u
+         INNER JOIN prestamo p ON p.id_usuario = u.id JOIN aulas a ON a.id = p.ubicacion WHERE activo = 1;";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
     
     public function create_tmp_equipo()
     {
@@ -328,6 +337,21 @@ class PrestamoEquipo extends abstractModel
     }
 
 
+    public function get_prestado_activo()
+    {
+        $this->getInstance();
+        $query = $this->Connection->prepare("SELECT p.id, p.observaciones, u.cedula, e.serial, e.marca, e.modelo, et.descripcion AS tipo,
+        e.descripcion, CONCAT(u.pnombre,' ', u.papellido,' ', u.sapellido) AS nombre, pe.fecha_entrega,  CONCAT(a.sede , ' - ', a.nombre) AS ubicacion,
+        pe.hora_entrega FROM prestamo p INNER JOIN prestamo_equipo pe ON pe.prestamo_id = p.id
+         JOIN equipos e ON e.id = pe.equipo_id JOIN usuarios u ON p.id_usuario = u.id JOIN etiquetas et 
+         ON et.id = e.etiqueta_id JOIN aulas a ON a.id = e.ubicacion WHERE p.id = ?");
+        $query->bindParam(1, $this->id);
+        $query->execute();
+        $this->closeConnection();
+        return $query;
+      
+    }
+
 
     public function delete_tmp_equipo()
     {
@@ -405,13 +429,14 @@ class PrestamoEquipo extends abstractModel
         try {
             $this->getInstance();
 
-            $query = $this->Connection->prepare("INSERT INTO prestamo VALUES (null,?,?,?,?,?,?)");
+            $query = $this->Connection->prepare("INSERT INTO prestamo VALUES (null,?,?,?,?,?,?,?)");
             $query->bindParam(1, $this->ubicacion);
             $query->bindParam(2, $this->observacion);
             $query->bindParam(3, $this->fecha);
             $query->bindParam(4, $this->estado);
             $query->bindParam(5, $this->cedula);
             $query->bindParam(6, $_SESSION['id']);
+            $query->bindParam(7, $this->estado);
             $query->execute();
 
             $result = $this->Connection->lastInsertId();

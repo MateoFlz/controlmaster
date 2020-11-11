@@ -54,7 +54,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                     <button class="btn btn-success" type="button"><i class="fas fa-search"></i></button>
                                 </div>
                                 <div class="input-group-append">
-                                    <a class="btn btn-success" href="<?php echo URL . 'inventarios/ReporteEquipos' ?>" target="blank"><i class="fas fa-file-pdf"></i> PDF</a>
+                                    <a class="btn btn-light border" href="<?php echo URL . 'inventarios/ReporteEquipos' ?>" target="blank"><i class="fas fa-file-pdf"></i> PDF</a>
                                 </div>
                             </div>
                         </div>
