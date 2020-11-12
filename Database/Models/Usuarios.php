@@ -202,7 +202,7 @@ class Usuarios extends Usuario {
     public function getAll()
     {
         $query = "SELECT a.id, a.cedula, CONCAT(a.pnombre, a.snombre,' ', a.papellido,' ', a.sapellido) AS nombre,
-                  cc.tipo, a.telefono, a.correo, cc.id AS ids FROM usuarios a INNER JOIN acceso cc ON a.id = cc.usuarios_id WHERE a.estado = 1 AND cc.estado = 1;";
+                  cc.tipo, a.telefono, a.correo, a.direccion, cc.id AS ids FROM usuarios a INNER JOIN acceso cc ON a.id = cc.usuarios_id WHERE a.estado = 1 AND cc.estado = 1;";
         $result = $this->return_query($query);
         $this->closeConnection();
         return $result;

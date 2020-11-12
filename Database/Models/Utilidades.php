@@ -143,6 +143,13 @@ class Utilidades extends abstractModel
         $data = $this->return_query($this->query);
         return  $data;
     }
+
+    public function count_utilidad()
+    {
+        $this->query = "SELECT COUNT(*) AS cantidad FROM " . $this->Table . " WHERE activo = 1;";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
     
 
     public function getFull()
@@ -171,6 +178,18 @@ class Utilidades extends abstractModel
         INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON e.etiqueta_id = t.id WHERE e.activo = 1";
         $data = $this->return_query($this->query);
         return  $data;
+    }
+
+    public function getUtilidaByEtiqueta2()
+    {
+        $this->getInstance();
+        $query = $this->Connection->prepare("SELECT e.*, a.nombre, t.descripcion as descrip FROM utilidades e
+        INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON e.etiqueta_id = t.id 
+        WHERE e.activo = 1 AND t.descripcion = ?");
+        $query->bindParam(1, $this->descripcion);
+        $query->execute();
+        $this->closeConnection();
+        return $query;
     }
 
     public function create()

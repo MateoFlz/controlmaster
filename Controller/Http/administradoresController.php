@@ -6,6 +6,8 @@ use Core\Sessions;
 use Database\Models\Usuarios;
 use Database\Models\Usuario;
 use Database\Models\Permisos;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class administradoresController extends Controller{
 
@@ -108,6 +110,13 @@ class administradoresController extends Controller{
             }
         }
         
+    }
+
+    public function show($id = ''){
+        $this->usuarios->setId($id);
+        $response = $this->usuarios->getById()->fetch(\PDO::FETCH_ASSOC);
+        $this->pass = $response['contraseña'];
+        return $this->view('administradores/show', $response);
     }
 
     public function editar($id = ''){
@@ -230,6 +239,39 @@ class administradoresController extends Controller{
         }
 
         
+    }
+
+    public function ReporteAdministradores()
+    {
+
+        $datos = $this->usuarios->getAll()->fetchAll(\PDO::FETCH_ASSOC);
+        require_once '../controlmaster/dompdf/autoload.inc.php';
+
+        ob_start();
+        include 'Public/view/administradores/pdf.php';
+
+        //$html = file_get_contents(URL. 'Public/view/estudiantes/pdf.php');
+        $html = ob_get_clean();
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $pdf = new Dompdf($options);
+        
+ 
+        // Instanciamos un objeto de la clase DOMPDF.
+      
+        // Definimos el tamaño y orientación del papel que queremos.
+        $pdf->setPaper("A4", "landscape");
+        //$pdf->set_paper(array(0,0,104,250));
+        
+        // Cargamos el contenido HTML.
+        $pdf->loadHtml($html);
+        
+        // Renderizamos el documento PDF.
+        $pdf->render();
+        
+        // Enviamos el fichero PDF al navegador.
+        $pdf->stream('reporte_administradores.pdf', array("Attachment" => 0));
+    
     }
 
 }

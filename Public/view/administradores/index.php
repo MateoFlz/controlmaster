@@ -15,7 +15,7 @@ if($_SESSION['permisos'] == 0){
         <div class="card-header bg-light">
 
             <div type="button" class="btn-group float-md-right">
-                <a class="btn btn-light border" href="<?php echo URL . 'administrativos/crearPdf' ?>"><i
+                <a class="btn btn-light border" href="<?php echo URL . 'administradores/ReporteAdministradores' ?>" target="blank"><i
                         class="fas fa-file-pdf"></i> PDF</a>
             </div>
             <h5 class="text-dark">Listado administradores</h5>

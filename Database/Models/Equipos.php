@@ -152,9 +152,24 @@ class Equipos extends abstractModel
         return  $data;
     }
 
+    public function count_video()
+    {
+        $this->query = "SELECT COUNT(*) as cantidad FROM equipos e INNER JOIN etiquetas t ON e.etiqueta_id = t.id WHERE t.descripcion = 'Video' AND e.activo = 1";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
+
+    public function count_portatil()
+    {
+        $this->query = "SELECT COUNT(*) as cantidad FROM equipos e INNER JOIN etiquetas t ON e.etiqueta_id = t.id WHERE t.descripcion = 'Portatil' AND e.activo = 1";
+        $data = $this->return_query($this->query);
+        return  $data;
+    }
+
+
     public function getEquipoById()
     {
-        
+        $this->getInstance();
         $query = $this->Connection->prepare("SELECT e.*, a.sede, a.nombre, t.descripcion as tipo FROM equipos e
         INNER JOIN aulas a ON a.id = e.ubicacion JOIN etiquetas t ON
          e.etiqueta_id = t.id WHERE e.activo = 1 AND e.id = ?");

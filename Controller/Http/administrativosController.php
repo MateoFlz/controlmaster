@@ -168,27 +168,6 @@ class administrativosController extends Controller
 
     }
 
-    public function crearPdf()
-    {
-        $pdf = new FPDF();
-
-        $pdf->AddPage();
-        $pdf->SetFillColor(232,232,232);
-        $pdf->SetFont('Arial', 'B', 8);
-        
-        $pdf->Cell(30,6,'Cedula',1,0,'C',1);
-        $pdf->Cell(40,6,'Nombre completo',1,0,'C',1);
-        $pdf->Cell(30,6,'Telefono',1,0,'C',1);
-        $pdf->Cell(30,6,'Dependencia',1,1,'C',1);
-        
-        foreach($this->adminstrativos->get_data_administrativo()->fetchAll(\PDO::FETCH_ASSOC) as $row){
-            $pdf->Cell(30,6,utf8_decode($row['cedula']),1,0,'C');
-            $pdf->Cell(40,6,utf8_decode($row['nombre']),1,0,'C');
-            $pdf->Cell(30,6,utf8_decode($row['telefono']),1,0,'C');
-            $pdf->Cell(30,6,utf8_decode($row['nombre_dependencia']),1,1,'C');
-        }
-        $pdf->Output();
-    }
 
     public function ReporteAdministrativos()
     {

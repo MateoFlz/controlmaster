@@ -340,11 +340,26 @@ class PrestamoEquipo extends abstractModel
     public function get_prestado_activo()
     {
         $this->getInstance();
-        $query = $this->Connection->prepare("SELECT p.id, p.observaciones, u.cedula, e.serial, e.marca, e.modelo, et.descripcion AS tipo,
+        $query = $this->Connection->prepare("SELECT p.id, pe.id as pequipo, p.observaciones, u.cedula, e.serial, e.marca, e.modelo, et.descripcion AS tipo,
         e.descripcion, CONCAT(u.pnombre,' ', u.papellido,' ', u.sapellido) AS nombre, pe.fecha_entrega,  CONCAT(a.sede , ' - ', a.nombre) AS ubicacion,
-        pe.hora_entrega FROM prestamo p INNER JOIN prestamo_equipo pe ON pe.prestamo_id = p.id
+        pe.hora_entrega, e.estado, a.sede, a.id as idubicacion FROM prestamo p INNER JOIN prestamo_equipo pe ON pe.prestamo_id = p.id
          JOIN equipos e ON e.id = pe.equipo_id JOIN usuarios u ON p.id_usuario = u.id JOIN etiquetas et 
-         ON et.id = e.etiqueta_id JOIN aulas a ON a.id = e.ubicacion WHERE p.id = ?");
+         ON et.id = e.etiqueta_id JOIN aulas a ON a.id = p.ubicacion WHERE p.id = ?");
+        $query->bindParam(1, $this->id);
+        $query->execute();
+        $this->closeConnection();
+        return $query;
+      
+    }
+
+    public function get_prestado_activo2()
+    {
+        $this->getInstance();
+        $query = $this->Connection->prepare("SELECT p.id, p.observaciones, u.cedula, e.marca, et.descripcion AS tipo, pe.cantidad,
+        e.descripcion, CONCAT(u.pnombre,' ', u.papellido,' ', u.sapellido) AS nombre, pe.fecha_entrega,  CONCAT(a.sede , ' - ', a.nombre) AS ubicacion,
+        pe.hora_entrega, a.sede, a.id as idubicacion FROM prestamo p INNER JOIN prestamo_utilidad pe ON pe.prestamo_id = p.id
+         JOIN utilidades e ON e.id = pe.utilidad_id JOIN usuarios u ON p.id_usuario = u.id JOIN etiquetas et 
+         ON et.id = e.etiqueta_id JOIN aulas a ON a.id = p.ubicacion WHERE p.id = ?");
         $query->bindParam(1, $this->id);
         $query->execute();
         $this->closeConnection();
@@ -471,21 +486,42 @@ class PrestamoEquipo extends abstractModel
         }
     }
 
+    public function delete_prestamo_equipo()
+    {
+        try {
+            $this->getInstance();
+
+            $query = $this->Connection->prepare("UPDATE prestamo_equipo SET fecha_devolucion = ?, hora_final = ?, recive = ?, estado = ? WHERE id = ?");
+            $query->bindParam(1, $this->fecha_devolucion);
+            $query->bindParam(2, $this->hora_final);
+            $query->bindParam(3, $this->recive);
+            $query->bindParam(4, $this->activo);
+            $query->bindParam(5, $this->id);
+            $result = $query->execute();
+
+            return $result;
+        } catch (\Exception $e) {
+            echo "Fallo: " . $e->getMessage();
+            return false;
+        }
+    }
+
     public function create_prestamo_utilidad()
     {
         try {
             $this->getInstance();
 
-            $query = $this->Connection->prepare("INSERT INTO prestamo_utilidad VALUES (null,?,?,?,?,?,?,?,?,?)");
+            $query = $this->Connection->prepare("INSERT INTO prestamo_utilidad VALUES (null,?,?,?,?,?,?,?,?,?,?)");
             $query->bindParam(1, $this->id);
             $query->bindParam(2, $this->utilidad_id);
             $query->bindParam(3, $this->fecha);
             $query->bindParam(4, $this->fecha_devolucion);
             $query->bindParam(5, $this->hora_entrega);
             $query->bindParam(6, $this->hora_final);
-            $query->bindParam(7, $this->recive);
-            $query->bindParam(8, $this->estado);
+            $query->bindParam(7, $this->cantidad);
+            $query->bindParam(8, $this->recive);
             $query->bindParam(9, $this->estado);
+            $query->bindParam(10, $this->estado);
             $result = $query->execute();
 
             return $result;

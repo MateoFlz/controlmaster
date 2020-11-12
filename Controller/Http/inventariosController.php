@@ -34,15 +34,26 @@ class inventariosController extends Controller
 
     public function index()
     {
-
-        return $this->view('inventarios/index', $this->etiqueta->getAll()->fetchAll(\PDO::FETCH_ASSOC));
+        $data = [
+            'etiqueta' =>  $this->etiqueta->getAll()->fetchAll(\PDO::FETCH_ASSOC),
+            'count_equipo' => $this->equipos->count_video()->fetchAll(\PDO::FETCH_ASSOC),
+            'count_portatil' => $this->equipos->count_portatil()->fetchAll(\PDO::FETCH_ASSOC),
+            'count_utilidad' => $this->utilidades->count_utilidad()->fetchAll(\PDO::FETCH_ASSOC),
+        ];
+        return $this->view('inventarios/index', $data);
     }
 
     public function equipo($name = '')
     {
         $this->equipos->setDescripcion($this->equipos->clean_string($name));
+        $this->utilidades->setDescripcion($this->equipos->clean_string($name));
+        if($name == 'utilidades'){
+            $utilidad = $this->utilidades->getUtilidaByEtiqueta()->fetchAll(\PDO::FETCH_ASSOC);
+        }else{
+            $utilidad = $this->utilidades->getUtilidaByEtiqueta2()->fetchAll(\PDO::FETCH_ASSOC);
+        }
         $data = array(
-            'utilidades' => $this->utilidades->getUtilidaByEtiqueta()->fetchAll(\PDO::FETCH_ASSOC),
+            'utilidades' =>  $utilidad,
             'equipos' =>  $this->equipos->getEquipoByEtiqueta()->fetchAll(\PDO::FETCH_ASSOC)
         ); 
  
@@ -223,6 +234,30 @@ class inventariosController extends Controller
             echo json_encode($json);
             die();
         }
+    }
+
+    public function show_equipo()
+    {
+        if(isset($_POST['id'])){
+            $this->equipos->setId($this->equipos->clean_string($_POST['id']));
+            $data = array(
+                'equipo' => $this->equipos->getEquipoById()->fetchAll(\PDO::FETCH_ASSOC)
+            );
+        }
+        echo json_encode($data);
+        die();
+    }
+
+    public function show_utilidad()
+    {
+        if(isset($_POST['id'])){
+            $this->utilidades->setId($this->utilidades->clean_string($_POST['id']));
+            $data = array(
+                'utilidades' => $this->utilidades->getUtilidaById()->fetchAll(\PDO::FETCH_ASSOC)
+            );
+        }
+        echo json_encode($data);
+        die();
     }
 
 

@@ -32,7 +32,7 @@
                 <div class="form-group row">
                     <div class="col-md-6">
                         <label for="idserial" class="control-label">Serial</label>
-                        <input type="text" class="form-control input-sm" value="<?php echo $rowt[0]['serial']?>" id="idserial" name="idserial"
+                        <input type="text" class="form-control input-sm" onkeydown="return false" value="<?php echo $rowt[0]['serial']?>" id="idserial" name="idserial"
                             placeholder="Numero serial" required>
                     </div>
 

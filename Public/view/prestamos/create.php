@@ -120,8 +120,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     <div class="card">
                         <div class="card-header">
                             <div type="button" class="btn-group float-md-right">
-                                <button class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lx"><i class="fas fa-plus-circle"></i></button>
-                                <a class="btn btn-light border" href="<?php echo URL . 'prestamos/ReportePrestamo' ?>" target="blank"><i class="fas fa-file-pdf"></i> PDF</a>
+                                <button class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lx"><i class="fas fa-plus-circle"></i> Agregar</button>
                             </div>
                             <div class="modal fade bd-example-modal-lx" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl">

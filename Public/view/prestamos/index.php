@@ -49,8 +49,8 @@
                                 <td><span class="badge badge-secondary"><?php echo $row['fecha'] ?></span></td>
                                 <td class="text-center">
                                     <a href="<?php echo URL ?>prestamos/show/<?php echo $row['id'] ?>" class="btn btn-primary border"><i class="fas fa-eye"></i></a>
-                                    <a href="prestamos/editar/<?php echo $row['id'] ?>" class="btn btn-info border"><i class="fas fa-cogs"></i></a>
-                                    <a href="prestamos/delete/<?php echo $row['id'] ?>" class="btn btn-danger border"><i class="fas fa-trash-alt"></i></a>
+                                    <a href="<?php echo URL ?>prestamos/editar/<?php echo $row['id'] ?>" class="btn btn-info border"><i class="fas fa-cogs"></i></a>
+                                    <a href="<?php echo URL ?>prestamos/delete/<?php echo $row['id'] ?>" class="btn btn-danger border"><i class="fas fa-trash-alt"></i></a>
                                     <a href="<?php echo URL . 'prestamos/ReportePrestamo/'.  $row['id'] ?>" target="blank" class="btn btn-light border"><i class="fas fa-file-pdf"></i></a>
                                 </td>
                             </tr>

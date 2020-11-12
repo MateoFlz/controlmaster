@@ -56,10 +56,6 @@ class prestamosController extends Controller
         return $this->view('prestamos/create', $data);
     }
 
-    public function show($id = ''){
-        return $this->view('prestamos/show');
-    }
-
     public function getUser()
     {
         $search = $_POST['search'];
@@ -78,6 +74,68 @@ class prestamosController extends Controller
             echo json_encode($json);
             die();
         }
+    }
+
+    public function editar($id = '')
+    {
+        $this->equipos->setDescripcion('Video');
+        $data_uno = $this->equipos->getEquipoByactivo()->fetchAll(\PDO::FETCH_ASSOC);
+        $this->equipos->setDescripcion('Portatil');
+        $data_dos = $this->equipos->getEquipoByactivo()->fetchAll(\PDO::FETCH_ASSOC);
+        $data_tres = $this->utilidad->getUtilidaByactivo()->fetchAll(\PDO::FETCH_ASSOC);
+
+        $this->prestamo_equipo->setId($this->prestamo_equipo->clean_string($id));
+        $datos_equipos = $this->prestamo_equipo->get_prestado_activo()->fetchAll(\PDO::FETCH_ASSOC);
+        $datos_utilidad = $this->prestamo_equipo->get_prestado_activo2()->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = [
+            'video' => $data_uno,
+            'portatil' => $data_dos,
+            'utilidad' => $data_tres,
+            'activo_equipo' => $datos_equipos,
+            'activo_utilidad' => $datos_utilidad
+        ];
+        return $this->view('prestamos/editar', $data);
+    }
+
+    public function show($id = '')
+    {
+        
+        $this->prestamo_equipo->setId($this->prestamo_equipo->clean_string($id));
+        $datos_equipos = $this->prestamo_equipo->get_prestado_activo()->fetchAll(\PDO::FETCH_ASSOC);
+        $datos_utilidad = $this->prestamo_equipo->get_prestado_activo2()->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = [
+            'activo_equipo' => $datos_equipos,
+            'activo_utilidad' => $datos_utilidad
+        ];
+        return $this->view('prestamos/show', $data);
+    }
+
+    public function delete_item($id = '')
+    {
+        if($id){
+            $this->prestamo_equipo->setFechaDevolucion(date('yy-m-d'));
+            $this->prestamo_equipo->setHoraFinal(date('H:i:s A'));
+            $this->prestamo_equipo->setRecive($_SESSION['name']);
+            $this->prestamo_equipo->setActivo('0');
+            $this->prestamo_equipo->setId($id);
+            $response = $this->prestamo_equipo->delete_prestamo_equipo();
+            if($response){
+                Redirect::redirect('prestamos/editar/' .$id.'?delete=true');
+            }else{
+                Redirect::redirect('prestamos/editar/' .$id.'?delete=false');
+            }
+        }
+        
+
+
+    }
+
+    public function delete($id = '')
+    {
+        
+        
     }
 
     public function reservarEquipo()
@@ -336,6 +394,7 @@ class prestamosController extends Controller
                     $this->prestamo_equipo->setId($response);
                     foreach($utilidad as $row){
                         $this->prestamo_equipo->setUtilidadId($row['id_utilidad']);
+                        $this->prestamo_equipo->setCantidad($row['cantidad']);
                         $result = $this->prestamo_equipo->create_prestamo_utilidad();
                         $this->prestamo_equipo->delete_tmp_utilidad();
                     }
@@ -357,7 +416,8 @@ class prestamosController extends Controller
     {
 
         $this->prestamo_equipo->setId($this->prestamo_equipo->clean_string($id));
-        $datos_utilidad = $this->prestamo_equipo->get_prestado_activo()->fetchAll(\PDO::FETCH_ASSOC);
+        $datos_equipos = $this->prestamo_equipo->get_prestado_activo()->fetchAll(\PDO::FETCH_ASSOC);
+        $datos_utilidad = $this->prestamo_equipo->get_prestado_activo2()->fetchAll(\PDO::FETCH_ASSOC);
         require_once '../controlmaster/dompdf/autoload.inc.php';
 
         ob_start();

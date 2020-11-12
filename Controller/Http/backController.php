@@ -28,16 +28,35 @@ class backController extends Controller
 
     public function index()
     {
-        return $this->view('back/index');
+        return $this->view('back/index', $this->loggbackups->get_detalle()->fetchAll(\PDO::FETCH_ASSOC));
     }
 
 
 
-    public function insert()
+    public function create_backup()
     {
-        header('Location: ' . URL . 'helpers/backups/descargar.php');
-        Redirect::redirect('index?session=false');
+        $this->loggbackups->setIdu($_SESSION['id']);
+        $this->loggbackups->setFecha(date('yy-m-d'));
+        $this->loggbackups->setActivo('1');
+        $this->loggbackups->setDetalles('db-backup-'. date('yy-m-d') .'.sql creado ' . date('H:i:s A'));
+        $response = $this->loggbackups->create();
+        if($response){
+            echo true;
+        }else{
+            echo false;
+        }
+        die();
     }
     
-    
+    public function delete($id = '')
+    {
+        $this->loggbackups->setId($this->loggbackups->clean_string($id));
+        $this->loggbackups->setActivo('0');
+        $response = $this->loggbackups->delete();
+        if($response){
+            Redirect::redirect('back?response=true');
+        }else{
+            Redirect::redirect('back?response=false');
+        }
+    }
 }

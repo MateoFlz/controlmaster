@@ -1,6 +1,7 @@
 var datas;
 $(document).ready(function () {
     selectAula();
+    selectAulaprestamo();
 
     $("#programsuccess").hide();
     $("#programdanger").hide();
@@ -410,6 +411,7 @@ $(document).ready(function () {
         }
     });
 
+   
     $("#sedesedit").change(function (e) {
         if ($("#sedesedit").val()) {
             let search = $("#sedesedit").val();
@@ -487,6 +489,66 @@ $(document).ready(function () {
         } else {
             let templete = "<option value=''> -- : -- -- </option>";
             $("#ubicacionedit").html(templete);
+        }
+    }
+
+    $("#selectsedesprestamoedit").change(function (e) {
+        if ($("#selectsedesprestamoedit").val()) {
+            let search = $("#selectsedesprestamoedit").val();
+            $.ajax({
+                url: "http://localhost/controlmaster/inventarios/get_sedes",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
+                success: function (response) {
+                    let templete = `<option value=""> -- : -- -- </option>`;
+                    response.forEach((respon) => {
+                        templete += `<option value="${respon.id}">${respon.nombre}</option>`;
+                    });
+                    $("#ubicacionprestamoedit").html(templete);
+                },
+            });
+        } else {
+            let templete = `<option value=""> -- : -- -- </option>`;
+            $("#ubicacionprestamoedit").html(templete);
+        }
+    });
+    
+
+    function selectAulaprestamo() {
+        let search = $("#selectsedesprestamoedit").val();
+    
+        if (search) {
+            $.ajax({
+                url: "http://localhost/controlmaster/inventarios/get_sedes",
+                type: "POST",
+                data: { search: search },
+                dataType: "JSON",
+                success: function (response) {
+                    let templete = "<option value=''> -- : -- -- </option>";
+                    response.forEach((respon) => {
+                        if (respon.id == ubicacions) {
+                            templete +=
+                                "<option value=" +
+                                respon.id +
+                                " selected>" +
+                                respon.nombre +
+                                "</option>";
+                        } else {
+                            templete +=
+                                "<option value=" +
+                                respon.id +
+                                ">" +
+                                respon.nombre +
+                                "</option>";
+                        }
+                    });
+                    $("#ubicacionprestamoedit").html(templete);
+                },
+            });
+        } else {
+            let templete = "<option value=''> -- : -- -- </option>";
+            $("#ubicacionprestamoedit").html(templete);
         }
     }
 
@@ -685,6 +747,19 @@ $(document).ready(function () {
         })
     });
 
+    $(document).on('click', '#btn-edit-equipo', function (e) {
+
+        var elemet = $(this)[0].parentElement.parentElement;
+        var id = $(elemet).attr('respon');
+        $.post('delete_temporal', { id }, function (response) {
+            if (response == 1) {
+                get_table_temporal();
+                get_equipos();
+                get_equipos_p();
+            }
+        })
+    });
+
     $(document).on('click', '#btn-delete-utilidad', function (e) {
 
         var elemet = $(this)[0].parentElement.parentElement;
@@ -697,6 +772,51 @@ $(document).ready(function () {
             }
            
         })
+    });
+
+    $(document).on('click', '#show_equipo', function (e) {
+
+        var elemet = $(this)[0].parentElement.parentElement;
+        var id = $(elemet).attr('respon');
+        $.post('http://localhost/controlmaster/inventarios/show_equipo', { id }, function (response) {
+            console.log(JSON.parse(response));
+            var colection = JSON.parse(response);
+            $('#eq_serial').val(colection.equipo[0].serial);
+            $('#eq_marca').val(colection.equipo[0].marca);
+            $('#eq_modelo').val(colection.equipo[0].modelo);
+            $('#eq_tipo').val(colection.equipo[0].tipo);
+            $('#eq_descripcion').val(colection.equipo[0].descripcion);
+            $('#eq_sede').val(colection.equipo[0].sede);
+            $('#eq_ubicacion').val(colection.equipo[0].nombre);
+        })
+    });
+
+    $(document).on('click', '#show_utilidad', function (e) {
+
+        var elemet = $(this)[0].parentElement.parentElement;
+        var id = $(elemet).attr('respon');
+        $.post('http://localhost/controlmaster/inventarios/show_utilidad', { id }, function (response) {
+            console.log(JSON.parse(response));
+            var colection = JSON.parse(response);
+   
+            $('#ut_marca').val(colection.utilidades[0].marca);
+            $('#ut_tipo').val(colection.utilidades[0].tipo);
+            $('#ut_cantidad').val(colection.utilidades[0].cantidad);
+            $('#ut_descripcion').val(colection.utilidades[0].descripcion);
+            $('#ut_estado').val(colection.utilidades[0].estado);
+            $('#ut_sede').val(colection.utilidades[0].sede);
+            $('#ut_ubicacion').val(colection.utilidades[0].nombre);
+        })
+    });
+
+    $(document).on('click', '#idbackp', function (e) {
+        var id = 'info';
+        $.post('http://localhost/controlmaster/back/create_backup', { id }, function (response) {
+            if(response){
+                window.location='http://localhost/controlmaster/back';
+            }
+        })
+        
     });
 
     $('[data-toggle="popover"]').popover()
