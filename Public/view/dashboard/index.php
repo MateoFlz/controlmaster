@@ -5,54 +5,16 @@
             <h5 class="text-dark">Bienvenido</h5>
         </div>
         <div class="card-body d-flex align-content-end flex-wrap justify-content-center" >
-            <div class="card text-black bg-Light mb-3 m-1" style="max-width: 20rem;">
-                <div class="card-header">Usuarios Registrados</div>
-                <div class="card-body">
-                    <h4 class="card-title"><a class="text-decoration-none text-black" href="<?php echo URL . 'dashboard/userlist'?>">Usuarios</a></h4>
-                    <p class="card-text"><strong>Numero de registrados: </strong> 2</p>
-                    <p class="card-text"><strong>Ultimo registro: </strong> Mateo Florez Arroyo</p>
+            <div class="row">
+                <div class="col-12 text-center">
+                <img   src="<?php URL ?>Public/assets/icons/LOGOVERTICAL.jpg" alt="Logo proncipal" width="370" height="400">
+                </div>
+                <div class="col-12 text-center">
+                <h3>Sistema integrado de prestamos</h3>
                 </div>
             </div>
-            <div class="card text-black bg-Light  mb-3 m-1" style="max-width: 20rem;">
-                <div class="card-header">Estudiantes Registrados</div>
-                <div class="card-body">
-                    <h4 class="card-title"><a class="text-decoration-none text-black" href="<?php echo URL . 'dashboard/userlist'?>">Estudiantes</a></h4>
-                    <p class="card-text"><strong>Numero de registrados: </strong> 2</p>
-                    <p class="card-text"><strong>Ultimo registro: </strong> carlos Lopez Perez</p>
-                </div>
-            </div>
-            <div class="card text-black bg-Light mb-3 m-1" style="max-width: 20rem;">
-            <div class="card-header">Docentes Registrados</div>
-            <div class="card-body">
-                    <h4 class="card-title"><a class="text-decoration-none text-black" href="<?php echo URL . 'dashboard/userlist'?>">Docente</a></h4>
-                    <p class="card-text"><strong>Numero de registrados: </strong> 2</p>
-                    <p class="card-text"><strong>Ultimo registro: </strong> Daniel Hernandez Perez</p>
-                </div>
-            </div>
-            <div class="card text-black bg-Light mb-3 m-1" style="max-width: 20rem;">
-            <div class="card-header">Administrativos Registrados</div>
-            <div class="card-body">
-                    <h4 class="card-title"><a class="text-decoration-none text-black" href="<?php echo URL . 'dashboard/userlist'?>">Administrativos</a></h4>
-                    <p class="card-text"><strong>Numero de registrados: </strong> 2</p>
-                    <p class="card-text"><strong>Ultimo registro: </strong> Mateo Florez Arroyo</p>
-                </div>
-            </div>
-            <div class="card text-black bg-Light  mb-3 m-1" style="max-width: 20rem;">
-            <div class="card-header">Inventarios Registrados</div>
-            <div class="card-body">
-                    <h4 class="card-title"><a class="text-decoration-none text-black" href="<?php echo URL . 'dashboard/userlist'?>">Inventarios</a></h4>
-                    <p class="card-text"><strong>Numero de registrados: </strong> 2</p>
-                    <p class="card-text"><strong>Ultimo registro: </strong> Video beam EPSON 463</p>
-                </div>
-            </div>
-            <div class="card text-black bg-Light  mb-3 m-1" style="max-width: 20rem;">
-            <div class="card-header">Prestamos Registrados</div>
-            <div class="card-body">
-                    <h4 class="card-title"><a class="text-decoration-none text-black" href="<?php echo URL . 'dashboard/userlist'?>">Prestamos</a></h4>
-                    <p class="card-text"><strong>Numero de registrados: </strong> 2</p>
-                    <p class="card-text"><strong>Ultimo registro: </strong> Video beam EPSON 463</p>
-                </div>
-            </div>
+            
+           
         </div>
     </div>
 </div>
