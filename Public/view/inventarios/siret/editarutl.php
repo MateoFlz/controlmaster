@@ -5,6 +5,7 @@
         </div>
         <div class="card-body">
             <?php
+             if($_SESSION['editar'] == 1){    
             $rowt = $datos['utilidad']->fetchAll(\PDO::FETCH_ASSOC);
             if (strpos($fullUrl, "responsedit=true") ==  true) { ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -111,6 +112,18 @@
                     </div>
                 </div>
             </form>
+            <?php
+        }else{
+                ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Usted no cuenta con privilegio para editar utlidad!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php
+            }
+?>
         </div>
     </div>
     <br>

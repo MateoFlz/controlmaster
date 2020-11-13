@@ -11,6 +11,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
             <h5 class="text-dark">Registrar nuevo prestamo</h5>
         </div>
         <div class="card-body">
+            <?php if($_SESSION['editar'] == 1){  ?>
             <div class="row">
                 <div class="col-md-7">
                     <div class="card">
@@ -515,6 +516,18 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     </div>
                 </div>
             </div>
+            <?php
+        }else{
+                ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Usted no cuenta con privilegio para editar equipo!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php
+            }
+?>
         </div>
     </div>
     <br>

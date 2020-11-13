@@ -11,7 +11,7 @@ $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         </div>
         <div class="card-body">
         <?php
-
+        
         if (strpos($fullUrl, "responsedit=true") ==  true) { ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 administrador actualizado satifactoriamente

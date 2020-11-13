@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <?php
-
+            if($_SESSION['crear'] == 1){
             if (strpos($fullUrl, "response=true") ==  true) { ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 Equipos guardado satifactoriamente.
@@ -95,6 +95,18 @@
                     </div>
                 </div>
             </form>
+            <?php
+        }else{
+                ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Usted no cuenta con privilegio para crear equipo!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php
+            }
+?>
         </div>
     </div>
     <br>

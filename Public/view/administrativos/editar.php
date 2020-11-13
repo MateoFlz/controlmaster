@@ -128,7 +128,7 @@ $ros = $datos['dependencia'];
             }else{
                 ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Usted no cuenta con privilegio para crear administrativo!
+                Usted no cuenta con privilegio para editar administrativo!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
